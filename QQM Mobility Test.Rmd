@@ -17,6 +17,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 load("database_PT_final.Rda")
 #NB - the data is called "database"
+
+database_choices=read.csv("finaldata.csv",header=TRUE)
+
+database<-inner_join(database_choices, database, by ='RID')
 ```
 
 ```{r}
