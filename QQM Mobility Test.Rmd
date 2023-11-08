@@ -49,3 +49,9 @@ database <-
 glimpse(database)
 ```
 
+```{r}
+database_rural <- subset(database, p_place_inhab %in% c(1,2))
+
+database_nonrural <- subset(database, p_place_inhab %in% c(3,4,5))
+
+```
