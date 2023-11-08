@@ -55,3 +55,21 @@ database_rural <- subset(database, p_place_inhab %in% c(1,2))
 database_nonrural <- subset(database, p_place_inhab %in% c(3,4,5))
 
 ```
+
+```{r}
+table(database_rural$sex_front)
+
+database_rural_boomer_filtered <- database_rural %>%
+  filter(DURATION < quantile(DURATION, 0.95))
+
+ggplot(data = database_rural_boomer_filtered) + 
+  geom_point(mapping = aes(x = age_front, y = DURATION)) +
+  geom_smooth(mapping = aes(x = age_front, y = DURATION)) +
+ggtitle ("Boomerism and being shit at surveys")
+```
+```{r}
+database_rural_boomer_filtered %>%
+  select(age_front, DURATION) %>%
+  correlation(method = "spearman")
+```
+
