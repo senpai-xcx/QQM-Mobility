@@ -82,6 +82,8 @@ database_rural_boomer_filtered %>%
 ```
 #Car Ownership Visualisations
 
+## Do you own a car?
+
 ```{r}
 #I want to create a clustered bar chart showing the different frequencies of whether people own a car or not in different Austrian states.
 
@@ -112,6 +114,45 @@ ggplot(database_test, aes(x = p_bundesland_front, fill = p_mtools_1)) +
   labs(title = "Do you have a car?",
        x = "p_bundesland_front",
        y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+
+```
+## Which mobility options do you use?
+```{r}
+# Create a data frame
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(reshape2)
+
+#Create a copy of the database to play with.
+database_test_p_mtools <- database_rural %>%
+  select(p_mtools_1, p_mtools_2, p_mtools_3, p_mtools_4, p_mtools_5, p_mtools_6)
+
+#Show tables for the p_mtools variables. We will use the values from the tables to manually create a data frame with which we can create a clustered bar chart.
+
+table(database_test_p_mtools$p_mtools_1)
+table(database_test_p_mtools$p_mtools_2)
+table(database_test_p_mtools$p_mtools_3)
+table(database_test_p_mtools$p_mtools_4)
+table(database_test_p_mtools$p_mtools_5)
+table(database_test_p_mtools$p_mtools_6)
+
+#Creating dataframes
+database_test_p_mtools_df <- data.frame(
+  "mobility.tool" = c("Own car", "Household Car", "Motorbike or Moped", "Bike or E-Bike", "Scooter or E-Scooter", "Carsharing Membership"),
+  "no" = c(405, 1455, 1985, 1175, 2115, 2225),
+  "yes" = c(1855, 805, 275, 1085, 145, 35)
+  )
+
+melted_data_p_mtools <- reshape2::melt(database_test_p_mtools_df, id.vars = "mobility.tool")
+
+# Create a clustered bar chart
+ggplot(melted_data_p_mtools, aes(x = `mobility.tool`, y = value, fill = variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Mobility options in rural areas",
+       x = "mobility option",
+       y = "Count") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
 
