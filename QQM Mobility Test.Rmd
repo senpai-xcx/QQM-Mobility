@@ -98,6 +98,7 @@ database_test__p_bundesland_vm <- c("1" = "Burgenland", "2" = "Kärnten", "3" = 
 
 database_test_p_mtools_1_vm <- c("1" = "No", "2" = "Yes")
 
+#Now I use the value maapping above to rename the values.
 database_test <- database_test %>%
   mutate(p_bundesland_front = factor(p_bundesland_front, levels = as.character(1:10), labels = database_test__p_bundesland_vm))
 
@@ -110,8 +111,8 @@ database_test <- database_test %>%
 
 library(ggplot2)
 ggplot(database_test, aes(x = p_bundesland_front, fill = p_mtools_1)) +
-  geom_bar(position = "dodge") +
-  labs(title = "Do you have a car?",
+  geom_bar(aes(y = after_stat(count/5)), position = "dodge") +
+  labs(title = "Car ownership across Austrian states",
        x = "p_bundesland_front",
        y = "Frequency") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
@@ -145,6 +146,7 @@ database_test_p_mtools_df <- data.frame(
   "yes" = c(371, 161, 55, 217, 29, 7)
   )
 
+#I now need to reshape the data, which will make it possible to plot in a clustered bar graph.
 melted_data_p_mtools <- reshape2::melt(database_test_p_mtools_df, id.vars = "mobility.tool")
 
 # Create a clustered bar chart
