@@ -129,7 +129,7 @@ library(reshape2)
 database_test_p_mtools <- database_rural %>%
   select(p_mtools_1, p_mtools_2, p_mtools_3, p_mtools_4, p_mtools_5, p_mtools_6)
 
-#Show tables for the p_mtools variables. We will use the values from the tables to manually create a data frame with which we can create a clustered bar chart.
+#Show tables for the p_mtools variables. We will use the values from the tables to manually create a data frame with which we can create a clustered bar chart.Remember, the values need to be divided by 5, as we multiplied the data by 5 when merging the two datasets.
 
 table(database_test_p_mtools$p_mtools_1)
 table(database_test_p_mtools$p_mtools_2)
@@ -141,8 +141,8 @@ table(database_test_p_mtools$p_mtools_6)
 #Creating dataframes
 database_test_p_mtools_df <- data.frame(
   "mobility.tool" = c("Own car", "Household Car", "Motorbike or Moped", "Bike or E-Bike", "Scooter or E-Scooter", "Carsharing Membership"),
-  "no" = c(405, 1455, 1985, 1175, 2115, 2225),
-  "yes" = c(1855, 805, 275, 1085, 145, 35)
+  "no" = c(81, 291, 397, 235, 423, 445),
+  "yes" = c(371, 161, 55, 217, 29, 7)
   )
 
 melted_data_p_mtools <- reshape2::melt(database_test_p_mtools_df, id.vars = "mobility.tool")
