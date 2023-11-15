@@ -77,23 +77,159 @@ database_rural_boomer_filtered %>%
   select(age_front, DURATION) %>%
   correlation(method = "spearman")
 ```
+##Comparing rural and nonrural kilometrage
+
+#Rural regions
 ```{r}
-library(ggplot2)
+# Creating four separate databases from the rural database containing the kilometrage variable without missing data
+database_kilometres_rural_1 <- subset(database_rural, kilometrage_per_car_1 %in% c(1,2,3,4,5))
+database_kilometres_rural_2 <- subset(database_rural, kilometrage_per_car_2 %in% c(1,2,3,4,5))
+database_kilometres_rural_3 <- subset(database_rural, kilometrage_per_car_3 %in% c(1,2,3,4,5))
+database_kilometres_rural_4 <- subset(database_rural, kilometrage_per_car_4 %in% c(1,2,3,4,5))
 
-# Assuming your breaks are based on your categories
-breaks <- c(0, 1000, 5000, 10000, 15000, 25000, Inf)
-kilometres <- c("0 or up to 1,000 km", "1,000 to 5,000 km", "5,000 to 10,000 km", "10,000 to 15,000 km", "15,000 to 25,000 km", "over 25,000 km")
+# Creating new data frame "kilometres" used to label the x axis of the plots
+kilometres <- c("1" = "0 or up to 1,000 km", "2"="1,000 to 5,000 km", "3" = "5,000 to 10,000 km", "4" = "10,000 to 15,000 km", "5" ="15,000 to 25,000 km", "6" = "over 25,000 km")
 
-# Your ggplot code
-ggplot(data = database) +
-  geom_col(mapping = aes(x = cut(kilometrage_per_car_1, breaks = breaks, labels = kilometres), fill = cut(kilometrage_per_car_1, breaks = breaks, labels = kilometres))) +
-  scale_fill_manual(values = "skyblue") +
-  labs(
-    title = "Kilometrege of Car 1",
-    x = "Kilometrage per year",
-    y = "Frequency"
-  ) +
-  scale_x_discrete(breaks = breaks, labels = breaks)  # Adjusted labels to use breaks
+# Constructing databases to rename the x axis
+database_kilometres_rural_1 <- database_kilometres_rural_1 %>%
+    mutate(kilometrage_per_car_1 = factor(kilometrage_per_car_1, 
+                                          levels = as.character(1:6), 
+                                          labels = kilometres))
 
+database_kilometres_rural_2 <- database_kilometres_rural_2 %>%
+    mutate(kilometrage_per_car_2 = factor(kilometrage_per_car_2, 
+                                          levels = as.character(1:6), 
+                                          labels = kilometres))
+
+database_kilometres_rural_3 <- database_kilometres_rural_3 %>%
+    mutate(kilometrage_per_car_3 = factor(kilometrage_per_car_3, 
+                                          levels = as.character(1:6), 
+                                          labels = kilometres))
+
+database_kilometres_rural_4 <- database_kilometres_rural_4 %>%
+    mutate(kilometrage_per_car_4 = factor(kilometrage_per_car_4, 
+                                          levels = as.character(1:6), 
+                                          labels = kilometres))
+
+# Plotting Total car kilometrage
+ggplot(database_kilometres_rural_1, aes(x = kilometrage_per_car_1)) +
+  geom_bar(position = "dodge", fill = "orange") +
+  labs(title = "Total kilometrage in rural regions",
+       x = "Kilometrage per year",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+
+# Plotting Car 1
+ggplot(database_kilometres_rural_2, aes(x = kilometrage_per_car_2)) +
+  geom_bar(position = "dodge", fill = "orange") +
+  labs(title = "Most used car kilometrage in rural regions",
+       x = "Kilometrage per year",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+
+# Plotting Car 2
+ggplot(database_kilometres_rural_3, aes(x = kilometrage_per_car_3)) +
+  geom_bar(position = "dodge", fill = "orange") +
+  labs(title = "Car 2 kilometrage in rural regions",
+       x = "Kilometrage per year",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+
+# Plotting Car 3
+ggplot(database_kilometres_rural_4, aes(x = kilometrage_per_car_4)) +
+  geom_bar(position = "dodge", fill = "orange") +
+  labs(title = "Car 3 kilometrage in rural regions",
+       x = "Kilometrage per year",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
+#Nonrural regions
+```{r}
+database_kilometres_nonrural_1 <- subset(database_nonrural, kilometrage_per_car_1 %in% c(1,2,3,4,5))
+database_kilometres_nonrural_2 <- subset(database_nonrural, kilometrage_per_car_2 %in% c(1,2,3,4,5))
+database_kilometres_nonrural_3 <- subset(database_nonrural, kilometrage_per_car_3 %in% c(1,2,3,4,5))
+database_kilometres_nonrural_4 <- subset(database_nonrural, kilometrage_per_car_4 %in% c(1,2,3,4,5))
 
+
+database_kilometres_nonrural_1 <- database_kilometres_nonrural_1 %>%
+    mutate(kilometrage_per_car_1 = factor(kilometrage_per_car_1, 
+                                          levels = as.character(1:6), 
+                                          labels = kilometres))
+
+database_kilometres_nonrural_2 <- database_kilometres_nonrural_2 %>%
+    mutate(kilometrage_per_car_2 = factor(kilometrage_per_car_2, 
+                                          levels = as.character(1:6), 
+                                          labels = kilometres))
+
+database_kilometres_nonrural_3 <- database_kilometres_nonrural_3 %>%
+    mutate(kilometrage_per_car_3 = factor(kilometrage_per_car_3, 
+                                          levels = as.character(1:6), 
+                                          labels = kilometres))
+
+database_kilometres_nonrural_4 <- database_kilometres_nonrural_4 %>%
+    mutate(kilometrage_per_car_4 = factor(kilometrage_per_car_4, 
+                                          levels = as.character(1:6), 
+                                          labels = kilometres))
+
+ggplot(database_kilometres_nonrural_1, aes(x = kilometrage_per_car_1)) +
+  geom_bar(position = "dodge", fill = "slateblue") +
+  labs(title = "Total kilometrage in nonrural regions",
+       x = "Kilometrage per year",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+
+ggplot(database_kilometres_nonrural_2, aes(x = kilometrage_per_car_2)) +
+  geom_bar(position = "dodge", fill = "slateblue") +
+  labs(title = "Most used car kilometrage in nonrural regions",
+       x = "Kilometrage per year",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+
+ggplot(database_kilometres_nonrural_3, aes(x = kilometrage_per_car_3)) +
+  geom_bar(position = "dodge", fill = "slateblue") +
+  labs(title = "Car 2 kilometrage in nonrural regions",
+       x = "Kilometrage per year",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+
+ggplot(database_kilometres_nonrural_4, aes(x = kilometrage_per_car_4)) +
+  geom_bar(position = "dodge", fill = "slateblue") +
+  labs(title = "Car 3 kilometrage in nonrural regions",
+       x = "Kilometrage per year",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+```
+#Rural car 2
+
+```{r}
+#I want to create a clustered bar chart showing the different frequencies of whether people own a car or not in different Austrian states.
+
+#First, I will rename the variables. This will make the graph more readable.
+library(dplyr)
+
+#Create a copy of the database to play with.
+database_test <- database_rural
+
+#Rename the variables. Start with value mapping (vm)
+database_test__p_bundesland_vm <- c("1" = "Burgenland", "2" = "Kärnten", "3" = "Niederösterreich", "4" = "Oberösterreich", "5" = "Salzburg", "6" = "Steiermark", "7" = "Tirol", "8" = "Vorarlberg", "9" = "Wien", "10" = "Not Austria")
+
+database_test_p_mtools_1_vm <- c("1" = "No", "2" = "Yes")
+
+database_test <- database_test %>%
+  mutate(p_bundesland_front = factor(p_bundesland_front, levels = as.character(1:10), labels = database_test__p_bundesland_vm))
+
+database_test <- database_test %>%
+  mutate(p_mtools_1 = factor(p_mtools_1, levels = as.character(1:2), labels = database_test_p_mtools_1_vm))
+
+
+
+# Here I create a clustered bar chart.
+
+library(ggplot2)
+ggplot(database_test, aes(x = p_bundesland_front, fill = p_mtools_1)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Do you have a car?",
+       x = "p_bundesland_front",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+```
