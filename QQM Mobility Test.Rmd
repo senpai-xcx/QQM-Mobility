@@ -15,15 +15,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-load("database_PT_final.Rda")
-#NB - the data is called "database"
-
-database_choices=read.csv("finaldata.csv",header=TRUE)
-
-database<-inner_join(database_choices, database, by ='RID')
-```
-
-```{r}
 #Load libraries
 library(dplyr)
 library(ggplot2)
@@ -36,7 +27,20 @@ library(ggdist)
 library(car)
 library(correlation)
 library(scales)
+library(gtsummary)
+library(quantreg)
 ```
+
+```{r}
+load("database_PT_final.Rda")
+#NB - the data is called "database"
+
+database_choices=read.csv("finaldata.csv",header=TRUE)
+
+database<-inner_join(database_choices, database, by ='RID')
+```
+
+
 
 ```{r}
 database <-
@@ -233,3 +237,32 @@ ggplot(database_test, aes(x = p_bundesland_front, fill = p_mtools_1)) +
        y = "Frequency") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
+
+
+```{r}
+database_inhab_complete <- subset(database, p_place_inhab %in% c(1,2,3,4,5))
+
+inhabitants <- c("1" = "up to 1,000", "2"="1,000 to 5,000", "3" = "5,000 to 50,000", "4" = "50,000 to 100,000", "5" ="more than 100.000")
+
+database_inhab_complete <- database_inhab_complete %>%
+    mutate(p_place_inhab = factor(p_place_inhab, 
+                                          levels = as.character(1:5), 
+                                          labels = inhabitants))
+
+ggplot(database_inhab_complete, aes(x = n_o_v_hh, fill = p_place_inhab)) +
+  geom_bar(position = "dodge") +
+  labs(title = "How many cars in which sized town?",
+       x = "Number of cars",
+       y = "Frequency") 
+```
+```{r}
+tb1 <- lm(n_o_v_hh~p_place_inhab + p_central_nonwien + p_mob_time + p_mob_rural + kilometrage_per_car_2,data=database)
+tbl_regression(tb1)
+plot(tb1)
+```
+```{r}
+tb2 <- rq(age_front~p_place_inhab + p_central_nonwien + p_mob_time + p_mob_rural + kilometrage_per_car_2,data=database, tau= seq(0.1, 0.9, by = 0.1))
+quantreg.plot <- summary(tb2)
+plot(quantreg.plot)
+```
+
