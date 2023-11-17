@@ -178,3 +178,23 @@ ggplot(database_inhab_complete, aes(x = n_o_v_hh, fill = p_place_inhab)) +
        x = "Number of cars",
        y = "Frequency") 
 ```
+
+```{r}
+# Creating database that excludes NA data
+database_inhab_complete <- subset(database, p_place_inhab %in% c(1,2,3,4,5))
+
+# Vector assigning values 1 through 5 to the explanations of p_place_inhab used for labeling
+inhabitants <- c("1" = "up to 1,000", "2"="1,000 to 5,000", "3" = "5,000 to 50,000", "4" = "50,000 to 100,000", "5" ="more than 100.000")
+
+# Converts p_place_inhab in database_inhab_complete into a factor variable with levels 1 to 5 and labels assigned from the inhabitants vector
+database_inhab_complete <- database_inhab_complete %>%
+    mutate(p_place_inhab = factor(p_place_inhab, 
+                                          levels = as.character(1:5), 
+                                          labels = inhabitants))
+# Designs the clustered bar chart
+ggplot(database_inhab_complete, aes(x = n_o_v_hh, fill = p_place_inhab)) +
+  geom_bar(position = "dodge") +
+  labs(title = "How many cars in which sized town?",
+       x = "Number of cars",
+       y = "Frequency") 
+```
