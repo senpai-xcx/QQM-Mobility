@@ -1,29 +1,27 @@
 ---
 title: "QQM Mobility"
-  knit: (function(input_file, encoding) {
-    out_dir <- 'docs';
-    rmarkdown::render(input_file,
-      encoding=encoding,
-      output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
-author: "Rowan Carew"
-date: "2023-11-03"
-output: html_document
+author: "Rowan Carew & Julia Gershenzon"
+date: "2023-11-25"
+output:
+    html_document:
+      toc: true
+      toc_float: true
+      number_sections: true
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
-load("database_PT_final.Rda")
-#NB - the data is called "database"
+*The following document is divided into these sections:*
+*1 - Setting Up. Use this for installing packages and uploading data*
+*2 - Playground. Use this for testing code*
+*3 - Descriptive Statistics*
+*4 - Ordinal Models*
+*5 - Choice Experiment Modelling*
 
-database_choices=read.csv("finaldata.csv",header=TRUE)
 
-database<-inner_join(database_choices, database, by ='RID')
-```
-
-#Setting Up
+# Setting Up
 
 ```{r}
 #Load libraries
@@ -39,8 +37,17 @@ library(car)
 library(correlation)
 library(scales)
 ```
+```{r}
+load("database_PT_final.Rda")
+#NB - the data is called "database"
+
+database_choices=read.csv("finaldata.csv",header=TRUE)
+
+database<-inner_join(database_choices, database, by ='RID')
+```
 
 ```{r}
+#This code is for changing the variables to the correct data type.
 database <-
   database %>%
   mutate(sex_front = as.factor(sex_front),
@@ -50,7 +57,8 @@ database <-
          m_known = as.factor(m_known),
          DRT_knowledge = as.factor(DRT_knowledge),
          p_place_inhab = as.factor(p_place_inhab),
-         p_mtools_1 = as.factor(p_mtools_1)
+         p_mtools_1 = as.factor(p_mtools_1),
+         kilometrage_per_car_1 = as.factor(kilometrage_per_car_1)
          )
 
 glimpse(database)
@@ -63,6 +71,9 @@ database_rural <- subset(database, p_place_inhab %in% c(1,2))
 database_nonrural <- subset(database, p_place_inhab %in% c(3,4,5))
 
 ```
+
+# Playground
+## Boomerism and filling out surveys
 
 ```{r}
 table(database_rural$sex_front)
@@ -80,9 +91,10 @@ database_rural_boomer_filtered %>%
   select(age_front, DURATION) %>%
   correlation(method = "spearman")
 ```
-#Car Ownership Visualisations
 
-## Do you own a car?
+# Descriptive Statistics & Data Visualisations
+
+## Rural Car Ownership across Austrian states
 
 ```{r}
 #I want to create a clustered bar chart showing the different frequencies of whether people own a car or not in different Austrian states.
@@ -98,7 +110,7 @@ database_test__p_bundesland_vm <- c("1" = "Burgenland", "2" = "Kärnten", "3" = 
 
 database_test_p_mtools_1_vm <- c("1" = "No", "2" = "Yes")
 
-#Now I use the value maapping above to rename the values.
+#Now I use the value mapping above to rename the values.
 database_test <- database_test %>%
   mutate(p_bundesland_front = factor(p_bundesland_front, levels = as.character(1:10), labels = database_test__p_bundesland_vm))
 
@@ -118,7 +130,8 @@ ggplot(database_test, aes(x = p_bundesland_front, fill = p_mtools_1)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 
 ```
-## Which mobility options do you use?
+
+## Mobility options in rural areas
 ```{r}
 # Create a data frame
 library(dplyr)
@@ -158,13 +171,14 @@ ggplot(melted_data_p_mtools, aes(x = `mobility.tool`, y = value, fill = variable
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
 
-
+## Cars in different sized towns
+*NB - VALUES HAVE YET TO BE DIVIDED BY 5*
 ```{r}
 # Creating database that excludes NA data
 database_inhab_complete <- subset(database, p_place_inhab %in% c(1,2,3,4,5))
 
 # Vector assigning values 1 through 5 to the explanations of p_place_inhab used for labeling
-inhabitants <- c("1" = "up to 1,000", "2"="1,000 to 5,000", "3" = "5,000 to 50,000", "4" = "50,000 to 100,000", "5" ="more than 100.000")
+inhabitants <- c("1" = "up to 1,000", "2" = "1,000 to 5,000", "3" = "5,000 to 50,000", "4" = "50,000 to 100,000", "5" = "more than 100.000")
 
 # Converts p_place_inhab in database_inhab_complete into a factor variable with levels 1 to 5 and labels assigned from the inhabitants vector
 database_inhab_complete <- database_inhab_complete %>%
@@ -176,6 +190,29 @@ ggplot(database_inhab_complete, aes(x = n_o_v_hh, fill = p_place_inhab)) +
   geom_bar(position = "dodge") +
   labs(title = "How many cars in which sized town?",
        x = "Number of cars",
+       y = "Frequency") 
+```
+
+## Distances driven in rural areas: Primary car
+*NB - VALUES HAVE YET TO BE DIVIDED BY 5*
+```{r}
+#Load libraries
+library(ggplot2)
+library(dplyr)
+
+# Vector assigning values 1 through 5 to the explanations of kilometrage_per_car_1 used for labeling
+km_driven_car_1 <- c("1" = "=<1,000km", "2" = "1,000 to 5,000km", "3" = "5,000 to 10,000km", "4" = "10,000 to 15,000", "5" = "15,000 to 25,000km", "6" = ">25,000km")
+
+# Converts p_place_inhab in database_inhab_complete into a factor variable with levels 1 to 5 and labels assigned from the inhabitants vector
+database_rural_km_car_1 <- database_rural_km_car_1 %>%
+    mutate(kilometrage_per_car_1 = factor(kilometrage_per_car_1, 
+                                          levels = as.character(1:6), 
+                                          labels = km_driven_car_1))
+# Designs the clustered bar chart
+ggplot(database_rural_km_car_1, aes(x = n_o_v_hh, fill = kilometrage_per_car_1)) +
+  geom_bar(position = "dodge") +
+  labs(title = "How many km did you drive with your primary car?",
+       x = "Kilometres driven by primary car",
        y = "Frequency") 
 ```
 
