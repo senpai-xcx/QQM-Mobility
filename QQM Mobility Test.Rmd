@@ -1,6 +1,6 @@
 ---
 title: "QQM Mobility"
-author: "Rowan Carew & Julia Gershenzon"
+author: "Rowan Carew and Julia Gershenzon"
 date: "2023-11-25"
 output:
     html_document:
@@ -58,7 +58,23 @@ database <-
          DRT_knowledge = as.factor(DRT_knowledge),
          p_place_inhab = as.factor(p_place_inhab),
          p_mtools_1 = as.factor(p_mtools_1),
-         kilometrage_per_car_1 = as.factor(kilometrage_per_car_1)
+         p_central_wien = as.factor(p_central_wien),
+         p_central_nonwien = as.factor(p_central_nonwien),
+         kilometrage_per_car_1 = as.factor(kilometrage_per_car_1),
+         kilometrage_per_car_2 = as.factor(kilometrage_per_car_2),
+         kilometrage_per_car_3 = as.factor(kilometrage_per_car_3),
+         kilometrage_per_car_4 = as.factor(kilometrage_per_car_4),
+         n_o_v_hh = as.factor(n_o_v_hh),
+         income = as.factor(income),
+         children_1 = as.factor(children_1),
+         children_2 = as.factor(children_2),
+         children_3 = as.factor(children_3),
+         status = as.factor(status),
+         n_o_hhm = as.factor(n_o_hhm),
+         p_season_1 = as.factor(p_season_1),
+         p_season_2 = as.factor(p_season_2),
+         p_season_3 = as.factor(p_season_3),
+         p_season_4 = as.factor(p_season_4)
          )
 
 glimpse(database)
@@ -87,8 +103,10 @@ ggplot(data = database_rural_boomer_filtered) +
 ggtitle ("Boomerism and being shit at surveys")
 ```
 ```{r}
+library(dplyr)
+library(pspearman)
 database_rural_boomer_filtered %>%
-  select(age_front, DURATION) %>%
+ dplyr::select(age_front, DURATION) %>%
   correlation(method = "spearman")
 ```
 
@@ -141,7 +159,7 @@ library(reshape2)
 
 #Create a copy of the database to play with.
 database_test_p_mtools <- database_rural %>%
-  select(p_mtools_1, p_mtools_2, p_mtools_3, p_mtools_4, p_mtools_5, p_mtools_6)
+  dplyr::select(p_mtools_1, p_mtools_2, p_mtools_3, p_mtools_4, p_mtools_5, p_mtools_6)
 
 #Show tables for the p_mtools variables. We will use the values from the tables to manually create a data frame with which we can create a clustered bar chart.Remember, the values need to be divided by 5, as we multiplied the data by 5 when merging the two datasets.
 
@@ -204,7 +222,7 @@ library(tidyverse)
 
 #Create a copy of the database to play with.
 database_test_km_driven <- database_rural %>%
-  select(kilometrage_per_car_1, kilometrage_per_car_2, kilometrage_per_car_3, kilometrage_per_car_4)
+  dplyr::select(kilometrage_per_car_1, kilometrage_per_car_2, kilometrage_per_car_3, kilometrage_per_car_4)
 
 #Show tables for the kilometrage_per_car variables. We will use the values from the tables to manually create a data frame with which we can create a clustered bar chart.Remember, the values need to be divided by 5, as we multiplied the data by 5 when merging the two datasets.
 
@@ -237,4 +255,247 @@ ggplot(melted_data_km_driven, aes(x = `km.driven`, y = value, fill = km.driven.t
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 ```
 
+# Correlation Analysis
+## Rural Income and No. Vehicles and Season Ticket
+```{r}
+database_rural <-
+  database_rural %>%
+  mutate(sex_front = as.factor(sex_front),
+         p_bundesland_front = as.factor(p_bundesland_front),
+         p_educ_front = as.factor(p_educ_front),
+         age_front = as.integer(age_front),
+         m_known = as.factor(m_known),
+         DRT_knowledge = as.factor(DRT_knowledge),
+         p_place_inhab = as.factor(p_place_inhab),
+         p_mtools_1 = as.factor(p_mtools_1),
+         p_central_wien = as.factor(p_central_wien),
+         p_central_nonwien = as.factor(p_central_nonwien),
+         kilometrage_per_car_1 = as.factor(kilometrage_per_car_1),
+         kilometrage_per_car_2 = as.factor(kilometrage_per_car_2),
+         kilometrage_per_car_3 = as.factor(kilometrage_per_car_3),
+         kilometrage_per_car_4 = as.factor(kilometrage_per_car_4),
+         n_o_v_hh = as.factor(n_o_v_hh),
+         income = as.factor(income),
+         children_1 = as.factor(children_1),
+         children_2 = as.factor(children_2),
+         children_3 = as.factor(children_3),
+         status = as.factor(status),
+         n_o_hhm = as.factor(n_o_hhm),
+         p_season_1 = as.factor(p_season_1),
+         p_season_2 = as.factor(p_season_2),
+         p_season_3 = as.factor(p_season_3),
+         p_season_4 = as.factor(p_season_4)
+         )
+
+library(polycor)
+poly_corr_income <- hetcor(database_rural[, c('income', 'p_season_1', 'p_season_2', 'p_season_3', 'p_season_4', 'n_o_v_hh')], ML = TRUE)
+print(poly_corr_income)
+
+#Interpreting these results:
+#Table 1 shoes correlations. A value of "0" means no correlation. -1 implies a perfect negative correlation, and 1 implies a positive correlation. The main finding here is that income has a weak positive correlation with number of household vehicles.
+#Table 2 shows standard deviations.
+#Table 3 shows p-values. Any value <0.05 is significant.
+
+#Overall, the only variable that income has no statistically significant relationship with is p_season_4, which is ownership of an OBB Vorteilscard.
+```
+### Regression Test
+```{r}
+library(MASS)
+library(lmtest)
+library(AER)
+library(modelsummary)
+rural_income_model <- polr(income ~ p_season_1 + p_season_2 + p_season_3 + p_season_4 + n_o_v_hh, data = database_rural, Hess=TRUE)
+summary(rural_income_model)
+
+# QUESTION FOR STEFANIE: The regression model above gives us coefficients, std. errors and t values. The t values represent measures of how many standard errors the estimated coefficient is away from zero. A larger t-value indicates a stronger evidence against the null hypothesis that the true coefficient is zero.
+
+#Now to calculate the p-values:
+tidy_custom.polr <- function(x, ...) {
+  s <- coeftest(x)
+  out <- data.frame(
+    term = row.names(s),
+    p.value = s[, "Pr(>|z|)"])
+  out
+}
+
+mod = list(
+  "LM" = lm(income ~ p_season_1 + p_season_2 + p_season_3 + p_season_4 + n_o_v_hh, data = database_rural),
+  "POLR" = polr(as.ordered(income) ~ p_season_1 + p_season_2 + p_season_3 + p_season_4 + n_o_v_hh, data = database_rural))
+
+modelsummary(mod, stars = TRUE)
+
+#https://modelsummary.com/articles/modelsummary.html#adding-new-information-to-existing-models-1
+```
+
+# Choice Models
+
+## Set Up
+```{r}
+#First, we need to rename some variables. Commented this out because once the dataset has been renamed once, this code no longer works.
+database_rural <- database_rural %>% rename("Spatial_1" = "a1_x2",
+                          "Temporal_1" = "a1_x3",
+                          "DRTPattern_1" = "a1_x4",
+                          "Waitingtime_1" = "a1_x5",
+                          "Discount_1" = "a1_x6",
+                          "Compensation_1" = "a1_x7",
+                          "Price_1" = "a1_x8",
+                          "Spatial_2" = "a3_x2",
+                          "Temporal_2" = "a2_x3",
+                          "DRTPattern_2" = "a2_x4",
+                          "Waitingtime_2" = "a2_x5",
+                          "Discount_2" = "a2_x6",
+                          "Compensation_2" = "a2_x7",
+                          "Price_2" = "a2_x8",
+                          "CHOICE" = "pref1"
+                          )
+
+#Now to make sure they are correctly shown to be ordinal variables.
+database_rural <-
+  database_rural %>%
+  mutate(Spatial_1 = as.factor(Spatial_1),
+         Temporal_1 = as.factor(Temporal_1),
+         DRTPattern_1 = as.factor(DRTPattern_1),
+         Waitingtime_1 = as.factor(Waitingtime_1),
+         Discount_1 = as.factor(Discount_1),
+         Compensation_1 = as.factor(Compensation_1),
+         Price_1 = as.factor(Price_1),
+         Spatial_2 = as.factor(Spatial_2),
+         Temporal_2 = as.factor(Temporal_2),
+         DRTPattern_2 = as.factor(DRTPattern_2),
+         Waitingtime_2 = as.factor(Waitingtime_2),
+         Discount_2 = as.factor(Discount_2),
+         Compensation_2 = as.factor(Compensation_2),
+         Price_2 = as.factor(Price_2),
+         CHOICE = as.factor(CHOICE)
+         )
+```
+
+## Apollo
+```{r}
+# Load apollo library and core settings                                                                                
+
+### Clear memory
+#rm(list = ls())
+
+### Load Apollo library
+#library(apollo)
+
+### Initialise code
+#apollo_initialise()
+
+### Set core controls
+#apollo_control = list(
+  #modelName  ="Apollo_example_1",
+  #modelDescr ="TESTING GIVE BETTER DESCRIPTION LATER",
+  #indivID    ="ID",
+  #outputDirectory = "output"
+#)
+
+# ################################################################# #
+#### DEFINE MODEL PARAMETERS                                     ####
+# ################################################################# #
+
+### Vector of parameters, including any that are kept fixed in estimation
+#apollo_beta=c(
+ #             b_spatial  = 0,
+ #             b_temporal  = 0,
+#              b_drtpattern  = 0,
+  #            b_waiting = 0,
+  #            b_discount  = 0,
+  ##            b_compensation  = 0,
+  #            b_price = 0
+  #        )
+
+### TAKEN FROM STEFANIE CODE. Vector with names (in quotes) of parameters to be kept fixed at their starting value in apollo_beta, use apollo_beta_fixed = c() if none
+
+#apollo_fixed = c()
+
+# ################################################################# #
+#### GROUP AND VALIDATE INPUTS                                   ####
+# ################################################################# #
+
+#apollo_inputs = apollo_validateInputs()
+
+#OK so this is throwing up an error probably for one of these reasons: "This function takes no arguments but looks in the global environment for the various inputs required for a model. This always includes the control settings apollo_control, the model parameters apollo_beta, the vector with names of fixed parameters apollo_fixed and finally the data object database. If any of these objects are missing from the global environment, the execution of apollo_validateInputs fails." 
+
+# ################################################################# #
+#### DEFINE MODEL AND LIKELIHOOD FUNCTION                        ####
+# ################################################################# #
+
+#=function(apollo_beta, apollo_inputs, functionality="estimate"){
+  
+  ### Attach inputs and detach after function exit
+#  apollo_attach(apollo_beta, apollo_inputs)
+#  on.exit(apollo_detach(apollo_beta, apollo_inputs))
+  
+  ### Create list of probabilities P
+#  P = list()
+  
+  ### List of utilities: these must use the same names as in mnl_settings, order is irrelevant
+#  V = list()
+  
+#   V[["alt1"]]  = b_spatial  * Spatial_1 + b_temporal * Temporal_1 + b_drtpattern * DRTPattern_1 +
+#     b_waiting * Waitingtime_1 + b_discount * Discount_1 + b_compensation * Compensation_1 + b_price * Price_1
+#   V[["alt2"]]  = b_spatial  * Spatial_2 + b_temporal * Temporal_2 + b_drtpattern * DRTPattern_2 +
+ #    b_waiting * Waitingtime_2 + b_discount * Discount_2 + b_compensation * Compensation_2 + b_price * Price_2
+   
+     ### Define settings for MNL model component
+#  mnl_settings = list(
+#    alternatives  = c(alt1=1, alt2=2), 
+#    avail         = 1, 
+#    choiceVar     = CHOICE,
+#    utilities     = V
+#  )
+  
+  ### Compute probabilities using MNL model
+#  P[["model"]] = apollo_mnl(mnl_settings, functionality)
+  
+  ### Take product across observation for same individual
+#  P = apollo_panelProd(P, apollo_inputs, functionality)
+  
+  ### Prepare and return outputs of function
+#  P = apollo_prepareProb(P, apollo_inputs, functionality)
+#  return(P)
+#    }
+
+# ################################################################# #
+#### MODEL ESTIMATION                                            ####
+# ################################################################# #
+
+#model = apollo_estimate(apollo_beta, apollo_fixed, apollo_probabilities, apollo_inputs)
+
+# ################################################################# #
+#### MODEL OUTPUTS                                               ####
+# ################################################################# #
+
+# ----------------------------------------------------------------- #
+#---- FORMATTED OUTPUT (TO SCREEN)                               ----
+# ----------------------------------------------------------------- #
+
+#apollo_modelOutput(model)
+
+# ----------------------------------------------------------------- #
+#---- FORMATTED OUTPUT (TO FILE, using model name)               ----
+# ----------------------------------------------------------------- #
+
+#apollo_saveOutput(model)
+
+
+
+# deltaMethod_settings=list(expression=c(WTP_spatial="b_spatial/b_price",
+         ##                              WTP_temporal  = "b_temporal/b_price",
+          #                             WTP_drtpattern  = "b_drtpattern/b_price",
+          ##                             WTP_waiting = "b_waiting/b_price",
+          #                             WTP_discount  = "b_discount/b_price",
+           #                            WTP_compensation  = "b_compensation/b_price"))
+ 
+#apollo_deltaMethod(model, deltaMethod_settings)
+```
+
+
+## Multinomial Logit
+
+## Nested Multinomial Logit
+
+## Latent Class Model
 
