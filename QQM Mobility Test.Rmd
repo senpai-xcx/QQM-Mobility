@@ -193,30 +193,7 @@ ggplot(database_inhab_complete, aes(x = n_o_v_hh, fill = p_place_inhab)) +
        y = "Frequency") 
 ```
 
-## Distances driven in rural areas: Primary car
-*NB - VALUES HAVE YET TO BE DIVIDED BY 5*
-```{r}
-#Load libraries
-library(ggplot2)
-library(dplyr)
-
-# Vector assigning values 1 through 5 to the explanations of kilometrage_per_car_1 used for labeling
-km_driven_car_1 <- c("1" = "=<1,000km", "2" = "1,000 to 5,000km", "3" = "5,000 to 10,000km", "4" = "10,000 to 15,000", "5" = "15,000 to 25,000km", "6" = ">25,000km")
-
-# Converts p_place_inhab in database_inhab_complete into a factor variable with levels 1 to 5 and labels assigned from the inhabitants vector
-database_rural_km_car_1 <- database_rural_km_car_1 %>%
-    mutate(kilometrage_per_car_1 = factor(kilometrage_per_car_1, 
-                                          levels = as.character(1:6), 
-                                          labels = km_driven_car_1))
-# Designs the clustered bar chart
-ggplot(database_rural_km_car_1, aes(x = n_o_v_hh, fill = kilometrage_per_car_1)) +
-  geom_bar(position = "dodge") +
-  labs(title = "How many km did you drive with your primary car?",
-       x = "Kilometres driven by primary car",
-       y = "Frequency") 
-```
-
-## Mobility options in rural areas
+## Kilometres driven by owned cars
 ```{r}
 # Create a data frame
 library(dplyr)
