@@ -5,7 +5,7 @@ Please acknowledge the use of Apollo by citing Hess & Palma (2019)
 
 Model name                                  : MNL_SP
 Model description                           : Simple MNL model on PT guarantee choice
-Model run at                                : 2023-11-26 10:17:34.158462
+Model run at                                : 2023-11-24 09:56:07.054619
 Estimation method                           : bgw
 Model diagnosis                             : X- and relative function convergence
 Optimisation diagnosis                      : Maximum found
@@ -31,12 +31,12 @@ AIC                                         :  7549.7
 BIC                                         :  7596.59 
 
 Estimated parameters                        : 7
-Time taken (hh:mm:ss)                       :  00:00:2.76 
-     pre-estimation                         :  00:00:1.1 
-     estimation                             :  00:00:0.48 
-          initial estimation                :  00:00:0.4 
-          estimation after rescaling        :  00:00:0.07 
-     post-estimation                        :  00:00:1.18 
+Time taken (hh:mm:ss)                       :  00:00:2.04 
+     pre-estimation                         :  00:00:0.69 
+     estimation                             :  00:00:0.59 
+          initial estimation                :  00:00:0.44 
+          estimation after rescaling        :  00:00:0.15 
+     post-estimation                        :  00:00:0.76 
 Iterations                                  :  9  
      initial estimation                     :  7 
      estimation after rescaling             :  2 
@@ -64,76 +64,76 @@ Percentage chosen when available   51.28   48.72
 
 
 Classical covariance matrix:
-                    b_spatial     b_temporal   b_drtpattern      b_waiting     b_discount
-b_spatial           3.063e-06      1.720e-06      4.607e-06     -1.548e-07      8.644e-08
-b_temporal          1.720e-06      2.298e-05      1.116e-05     -7.212e-07      5.548e-07
-b_drtpattern        4.607e-06      1.116e-05     7.7059e-04     -3.962e-07      3.724e-07
-b_waiting          -1.548e-07     -7.212e-07     -3.962e-07      2.099e-07     -5.026e-08
-b_discount          8.644e-08      5.548e-07      3.724e-07     -5.026e-08      2.806e-07
-b_compensation      1.173e-06      1.472e-05      8.560e-06     -1.105e-06      1.046e-06
-b_price            -2.368e-07     -1.187e-06     -8.227e-07      1.129e-07     -7.528e-08
-               b_compensation        b_price
-b_spatial           1.173e-06     -2.368e-07
-b_temporal          1.472e-05     -1.187e-06
-b_drtpattern        8.560e-06     -8.227e-07
-b_waiting          -1.105e-06      1.129e-07
-b_discount          1.046e-06     -7.528e-08
-b_compensation     3.9590e-04     -1.820e-06
-b_price            -1.820e-06      1.709e-07
+                    b_spatial     b_temporal   b_drtpattern      b_waiting     b_discount b_compensation
+b_spatial           3.063e-06      1.720e-06      4.607e-06     -1.548e-07      8.644e-08      1.173e-06
+b_temporal          1.720e-06      2.298e-05      1.116e-05     -7.212e-07      5.548e-07      1.472e-05
+b_drtpattern        4.607e-06      1.116e-05     7.7059e-04     -3.962e-07      3.724e-07      8.560e-06
+b_waiting          -1.548e-07     -7.212e-07     -3.962e-07      2.099e-07     -5.026e-08     -1.105e-06
+b_discount          8.644e-08      5.548e-07      3.724e-07     -5.026e-08      2.806e-07      1.046e-06
+b_compensation      1.173e-06      1.472e-05      8.560e-06     -1.105e-06      1.046e-06     3.9590e-04
+b_price            -2.368e-07     -1.187e-06     -8.227e-07      1.129e-07     -7.528e-08     -1.820e-06
+                      b_price
+b_spatial          -2.368e-07
+b_temporal         -1.187e-06
+b_drtpattern       -8.227e-07
+b_waiting           1.129e-07
+b_discount         -7.528e-08
+b_compensation     -1.820e-06
+b_price             1.709e-07
 
 Robust covariance matrix:
-                    b_spatial     b_temporal   b_drtpattern      b_waiting     b_discount
-b_spatial           3.095e-06      1.635e-06      3.272e-06     -1.637e-07      7.982e-08
-b_temporal          1.635e-06      2.382e-05      9.983e-06     -6.621e-07      5.907e-07
-b_drtpattern        3.272e-06      9.983e-06     8.6815e-04     -5.675e-07      1.030e-06
-b_waiting          -1.637e-07     -6.621e-07     -5.675e-07      2.394e-07     -6.646e-08
-b_discount          7.982e-08      5.907e-07      1.030e-06     -6.646e-08      2.823e-07
-b_compensation      1.516e-06      1.839e-05      1.128e-05     -1.251e-06      9.855e-07
-b_price            -2.490e-07     -1.103e-06     -7.947e-07      1.173e-07     -7.282e-08
-               b_compensation        b_price
-b_spatial           1.516e-06     -2.490e-07
-b_temporal          1.839e-05     -1.103e-06
-b_drtpattern        1.128e-05     -7.947e-07
-b_waiting          -1.251e-06      1.173e-07
-b_discount          9.855e-07     -7.282e-08
-b_compensation     3.8748e-04     -2.000e-06
-b_price            -2.000e-06      2.138e-07
+                    b_spatial     b_temporal   b_drtpattern      b_waiting     b_discount b_compensation
+b_spatial           3.095e-06      1.635e-06      3.272e-06     -1.637e-07      7.982e-08      1.516e-06
+b_temporal          1.635e-06      2.382e-05      9.983e-06     -6.621e-07      5.907e-07      1.839e-05
+b_drtpattern        3.272e-06      9.983e-06     8.6815e-04     -5.675e-07      1.030e-06      1.128e-05
+b_waiting          -1.637e-07     -6.621e-07     -5.675e-07      2.394e-07     -6.646e-08     -1.251e-06
+b_discount          7.982e-08      5.907e-07      1.030e-06     -6.646e-08      2.823e-07      9.855e-07
+b_compensation      1.516e-06      1.839e-05      1.128e-05     -1.251e-06      9.855e-07     3.8748e-04
+b_price            -2.490e-07     -1.103e-06     -7.947e-07      1.173e-07     -7.282e-08     -2.000e-06
+                      b_price
+b_spatial          -2.490e-07
+b_temporal         -1.103e-06
+b_drtpattern       -7.947e-07
+b_waiting           1.173e-07
+b_discount         -7.282e-08
+b_compensation     -2.000e-06
+b_price             2.138e-07
 
 Classical correlation matrix:
-                    b_spatial     b_temporal   b_drtpattern      b_waiting     b_discount
-b_spatial             1.00000        0.20500        0.09481       -0.19298        0.09324
-b_temporal            0.20500        1.00000        0.08390       -0.32837        0.21851
-b_drtpattern          0.09481        0.08390        1.00000       -0.03115        0.02532
-b_waiting            -0.19298       -0.32837       -0.03115        1.00000       -0.20707
-b_discount            0.09324        0.21851        0.02532       -0.20707        1.00000
-b_compensation        0.03368        0.15434        0.01550       -0.12118        0.09924
-b_price              -0.32727       -0.59909       -0.07170        0.59589       -0.34381
-               b_compensation        b_price
-b_spatial             0.03368       -0.32727
-b_temporal            0.15434       -0.59909
-b_drtpattern          0.01550       -0.07170
-b_waiting            -0.12118        0.59589
-b_discount            0.09924       -0.34381
-b_compensation        1.00000       -0.22133
-b_price              -0.22133        1.00000
+                    b_spatial     b_temporal   b_drtpattern      b_waiting     b_discount b_compensation
+b_spatial             1.00000        0.20500        0.09481       -0.19298        0.09324        0.03368
+b_temporal            0.20500        1.00000        0.08390       -0.32837        0.21851        0.15434
+b_drtpattern          0.09481        0.08390        1.00000       -0.03115        0.02532        0.01550
+b_waiting            -0.19298       -0.32837       -0.03115        1.00000       -0.20707       -0.12118
+b_discount            0.09324        0.21851        0.02532       -0.20707        1.00000        0.09924
+b_compensation        0.03368        0.15434        0.01550       -0.12118        0.09924        1.00000
+b_price              -0.32727       -0.59909       -0.07170        0.59589       -0.34381       -0.22133
+                      b_price
+b_spatial            -0.32727
+b_temporal           -0.59909
+b_drtpattern         -0.07170
+b_waiting             0.59589
+b_discount           -0.34381
+b_compensation       -0.22133
+b_price               1.00000
 
 Robust correlation matrix:
-                    b_spatial     b_temporal   b_drtpattern      b_waiting     b_discount
-b_spatial             1.00000        0.19041        0.06311       -0.19014        0.08540
-b_temporal            0.19041        1.00000        0.06942       -0.27730        0.22780
-b_drtpattern          0.06311        0.06942        1.00000       -0.03937        0.06580
-b_waiting            -0.19014       -0.27730       -0.03937        1.00000       -0.25568
-b_discount            0.08540        0.22780        0.06580       -0.25568        1.00000
-b_compensation        0.04379        0.19143        0.01944       -0.12992        0.09423
-b_price              -0.30610       -0.48898       -0.05833        0.51862       -0.29646
-               b_compensation        b_price
-b_spatial             0.04379       -0.30610
-b_temporal            0.19143       -0.48898
-b_drtpattern          0.01944       -0.05833
-b_waiting            -0.12992        0.51862
-b_discount            0.09423       -0.29646
-b_compensation        1.00000       -0.21973
-b_price              -0.21973        1.00000
+                    b_spatial     b_temporal   b_drtpattern      b_waiting     b_discount b_compensation
+b_spatial             1.00000        0.19041        0.06311       -0.19014        0.08540        0.04379
+b_temporal            0.19041        1.00000        0.06942       -0.27730        0.22780        0.19143
+b_drtpattern          0.06311        0.06942        1.00000       -0.03937        0.06580        0.01944
+b_waiting            -0.19014       -0.27730       -0.03937        1.00000       -0.25568       -0.12992
+b_discount            0.08540        0.22780        0.06580       -0.25568        1.00000        0.09423
+b_compensation        0.04379        0.19143        0.01944       -0.12992        0.09423        1.00000
+b_price              -0.30610       -0.48898       -0.05833        0.51862       -0.29646       -0.21973
+                      b_price
+b_spatial            -0.30610
+b_temporal           -0.48898
+b_drtpattern         -0.05833
+b_waiting             0.51862
+b_discount           -0.29646
+b_compensation       -0.21973
+b_price               1.00000
 
  20 worst outliers in terms of lowest average per choice prediction:
    ID Avg prob per choice

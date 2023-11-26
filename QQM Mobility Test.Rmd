@@ -256,13 +256,54 @@ ggplot(database_inhab_complete, aes(x = n_o_v_hh, fill = p_place_inhab)) +
        y = "Frequency") 
 ```
 ```{r}
-tb1 <- lm(n_o_v_hh~p_place_inhab + p_central_nonwien + p_mob_time + p_mob_rural + kilometrage_per_car_2,data=database)
+#should the y variable be continous
+tb1 <- glm(p_place_inhab~n_o_v_hh + p_central_nonwien + p_mob_time + p_mob_rural + kilometrage_per_car_2,data=database)
 tbl_regression(tb1)
 plot(tb1)
 ```
+
 ```{r}
 tb2 <- rq(age_front~p_place_inhab + p_central_nonwien + p_mob_time + p_mob_rural + kilometrage_per_car_2,data=database, tau= seq(0.1, 0.9, by = 0.1))
 quantreg.plot <- summary(tb2)
 plot(quantreg.plot)
 ```
+
+
+```{r}
+database %>%
+  group_by(buy_actually_e1) %>%
+  count(sort = TRUE)
+
+database %>%
+  group_by(buy_actually_e2) %>%
+  count(sort = TRUE)
+
+database %>%
+  group_by(buy_actually_e3) %>%
+  count(sort = TRUE)
+
+database %>%
+  group_by(buy_actually_e4) %>%
+  count(sort = TRUE)
+
+database %>%
+  group_by(buy_actually_e5) %>%
+  count(sort = TRUE)
+```
+
+```{r}
+#Nested Logit
+library(mlogit)
+
+database_dummy_e1 <- database %>%
+  mutate(dummy_e1 = as.integer(buy_actually_e1 == 6))
+print(database_dummy_e1$dummy_e1)
+
+mlogit_model <- mlogit(dummy_e1 ~ NO_against_personal_1 +
+                       NO_against_personal_2 + 
+                      NO_against_personal_3,
+                       data = database_dummy_e1,
+                       reflevel = "baseline_choice")
+```
+
 
