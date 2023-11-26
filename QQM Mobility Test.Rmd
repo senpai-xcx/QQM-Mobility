@@ -216,4 +216,48 @@ ggplot(database_rural_km_car_1, aes(x = n_o_v_hh, fill = kilometrage_per_car_1))
        y = "Frequency") 
 ```
 
+## Mobility options in rural areas
+```{r}
+# Create a data frame
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(reshape2)
+library(tidyverse)
+
+#Create a copy of the database to play with.
+database_test_km_driven <- database_rural %>%
+  select(kilometrage_per_car_1, kilometrage_per_car_2, kilometrage_per_car_3, kilometrage_per_car_4)
+
+#Show tables for the kilometrage_per_car variables. We will use the values from the tables to manually create a data frame with which we can create a clustered bar chart.Remember, the values need to be divided by 5, as we multiplied the data by 5 when merging the two datasets.
+
+table(database_test_km_driven$kilometrage_per_car_1)
+table(database_test_km_driven$kilometrage_per_car_2)
+table(database_test_km_driven$kilometrage_per_car_3)
+table(database_test_km_driven$kilometrage_per_car_4)
+
+#Creating dataframes. Use values from the table divided by 5.
+database_test_km_driven_df <- data.frame(
+  "km.driven" = c("car 1", "car 2", "car 3", "car 4"),
+  "1_or_less" = c(12, 11, 63, 36),
+  "1_to_5" = c(31, 35, 54, 9),
+  "5_to_10" = c(45, 64, 56, 4),
+  "10_to_15" =c(44, 56, 31, 5),
+  "1_to_25" =c(22, 44, 19, 3),
+  "25_or_more" =c(18, 27, 14, 4)
+  )
+
+#I now need to reshape the data, which will make it possible to plot in a clustered bar graph.
+melted_data_km_driven <- reshape2::melt(database_test_km_driven_df, id.vars = "km.driven")
+melted_data_km_driven <- rename(melted_data_km_driven, km.driven.thousands = variable)
+
+# Create a clustered bar chart
+ggplot(melted_data_km_driven, aes(x = `km.driven`, y = value, fill = km.driven.thousands)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Kilometres driven by vehicle",
+       x = "Which car",
+       y = "Count") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+```
+
 
