@@ -36,6 +36,15 @@ library(ggdist)
 library(car)
 library(correlation)
 library(scales)
+library(cluster)
+library(factoextra)
+library(GGally)
+library(NbClust)
+library(hopkins)
+library(gt)
+library(gtsummary)
+library(RColorBrewer)
+library(expss)
 ```
 ```{r}
 load("database_PT_final.Rda")
@@ -326,6 +335,15 @@ modelsummary(mod, stars = TRUE)
 
 #https://modelsummary.com/articles/modelsummary.html#adding-new-information-to-existing-models-1
 ```
+# Ordinal Variable Analysis
+## Significant Difference Between Groups
+```{r}
+library(tigerstats)
+table(database_rural$income, database_rural$n_o_v_hh)
+#cross_rpct(database_rural, income, n_o_v_hh) I cant get this to work!
+```
+
+## Contingency Tables
 
 # Choice Models
 
