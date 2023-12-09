@@ -44,7 +44,6 @@ library(hopkins)
 library(gt)
 library(gtsummary)
 library(RColorBrewer)
-library(expss)
 ```
 ```{r}
 load("database_PT_final.Rda")
