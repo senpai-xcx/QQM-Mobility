@@ -5,41 +5,41 @@ Please acknowledge the use of Apollo by citing Hess & Palma (2019)
 
 Model name                                  : MNL_SP
 Model description                           : Simple MNL model on PT guarantee choice
-Model run at                                : 2023-12-06 14:51:12.576896
+Model run at                                : 2023-11-28 11:50:39.385613
 Estimation method                           : bgw
-Model diagnosis                             : X- and relative function convergence
+Model diagnosis                             : Relative function convergence
 Optimisation diagnosis                      : Maximum found
      hessian properties                     : Negative definite
-     maximum eigenvalue                     : -1297.033826
-     reciprocal of condition number         : 7.50612e-05
-Number of individuals                       : 1200
-Number of rows in database                  : 6000
-Number of modelled outcomes                 : 6000
+     maximum eigenvalue                     : -482.288112
+     reciprocal of condition number         : 7.4349e-05
+Number of individuals                       : 452
+Number of rows in database                  : 2260
+Number of modelled outcomes                 : 2260
 
 Number of cores used                        :  1 
 Model without mixing
 
-LL(start)                                   : -4158.88
-LL at equal shares, LL(0)                   : -4158.88
-LL at observed shares, LL(C)                : -4156.91
-LL(final)                                   : -3767.85
-Rho-squared vs equal shares                  :  0.094 
-Adj.Rho-squared vs equal shares              :  0.0923 
-Rho-squared vs observed shares               :  0.0936 
-Adj.Rho-squared vs observed shares           :  0.0921 
-AIC                                         :  7549.7 
-BIC                                         :  7596.59 
+LL(start)                                   : -1566.51
+LL at equal shares, LL(0)                   : -1566.51
+LL at observed shares, LL(C)                : -1564.03
+LL(final)                                   : -1413.51
+Rho-squared vs equal shares                  :  0.0977 
+Adj.Rho-squared vs equal shares              :  0.0932 
+Rho-squared vs observed shares               :  0.0962 
+Adj.Rho-squared vs observed shares           :  0.0924 
+AIC                                         :  2841.01 
+BIC                                         :  2881.08 
 
 Estimated parameters                        : 7
-Time taken (hh:mm:ss)                       :  00:00:3.56 
-     pre-estimation                         :  00:00:0.91 
-     estimation                             :  00:00:1.27 
-          initial estimation                :  00:00:1.03 
-          estimation after rescaling        :  00:00:0.24 
-     post-estimation                        :  00:00:1.38 
-Iterations                                  :  9  
-     initial estimation                     :  7 
-     estimation after rescaling             :  2 
+Time taken (hh:mm:ss)                       :  00:00:1.24 
+     pre-estimation                         :  00:00:0.73 
+     estimation                             :  00:00:0.17 
+          initial estimation                :  00:00:0.14 
+          estimation after rescaling        :  00:00:0.03 
+     post-estimation                        :  00:00:0.34 
+Iterations                                  :  7  
+     initial estimation                     :  6 
+     estimation after rescaling             :  1 
 
 Unconstrained optimisation.
 
@@ -48,10 +48,10 @@ Estimates:
 
 Overview of choices for MNL model component :
                                     alt1    alt2
-Times available                  6000.00 6000.00
-Times chosen                     3077.00 2923.00
-Percentage chosen overall          51.28   48.72
-Percentage chosen when available   51.28   48.72
+Times available                  2260.00 2260.00
+Times chosen                     1183.00 1077.00
+Percentage chosen overall          52.35   47.65
+Percentage chosen when available   52.35   47.65
 
 
 
@@ -99,13 +99,13 @@ numerical jacobian of LL analytical gradient
 Scaling used in computing Hessian
 ---------------------------------
                      Value
-b_spatial      0.014897504
-b_temporal     0.071885289
-b_drtpattern   0.147377343
-b_waiting      0.005936535
-b_discount     0.003098126
-b_compensation 0.039779595
-b_price        0.010203889
+b_spatial      0.016111500
+b_temporal     0.077084828
+b_drtpattern   0.156918551
+b_waiting      0.007032646
+b_discount     0.003123545
+b_compensation 0.081567023
+b_price        0.010685884
 
 
 apollo_probabilities
