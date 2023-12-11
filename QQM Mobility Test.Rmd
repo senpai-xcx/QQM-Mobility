@@ -64,6 +64,7 @@ database_nonrural <- subset(database, p_place_inhab %in% c(3,4,5))
 
 ```
 
+
 ```{r}
 table(database_rural$sex_front)
 
@@ -295,7 +296,9 @@ database %>%
 #Nested Logit
 library(mlogit)
 
-database_dummy_e1 <- database %>%
+database_cleaned <- na.omit(database)
+
+database_dummy_e1 <- database_cleaned %>%
   mutate(dummy_e1 = as.integer(buy_actually_e1 == 6))
 print(database_dummy_e1$dummy_e1)
 
@@ -306,4 +309,14 @@ mlogit_model <- mlogit(dummy_e1 ~ NO_against_personal_1 +
                        reflevel = "baseline_choice")
 ```
 
+```{r}
+library(correlation)
+library(corrplot)
+
+df_carownership <-c(database$p_mob_time,database$p_mob_rural)
+
+cor_matrix<-cor(df_carownership)
+corrplot(cor_matrix)
+
+```
 

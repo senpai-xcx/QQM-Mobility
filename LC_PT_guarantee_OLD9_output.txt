@@ -5,41 +5,41 @@ Please acknowledge the use of Apollo by citing Hess & Palma (2019)
 
 Model name                                  : LC_PT_guarantee
 Model description                           : LC model
-Model run at                                : 2023-11-28 11:50:41.999019
+Model run at                                : 2023-11-27 18:23:12.977998
 Estimation method                           : bgw
 Model diagnosis                             : Relative function convergence
 Optimisation diagnosis                      : Maximum found
      hessian properties                     : Negative definite
-     maximum eigenvalue                     : -11.599452
-     reciprocal of condition number         : 3.63814e-06
-Number of individuals                       : 452
-Number of rows in database                  : 2260
-Number of modelled outcomes                 : 2260
+     maximum eigenvalue                     : -43.209815
+     reciprocal of condition number         : 5.29145e-06
+Number of individuals                       : 1200
+Number of rows in database                  : 6000
+Number of modelled outcomes                 : 6000
 
 Number of cores used                        :  1 
 Model without mixing
 
-LL(start)                                   : -1566.51
-LL (whole model) at equal shares, LL(0)     : -1566.51
-LL (whole model) at observed shares, LL(C)  : -1564.03
-LL(final, whole model)                      : -1345.87
-Rho-squared vs equal shares                  :  0.1409 
-Adj.Rho-squared vs equal shares              :  0.1313 
-Rho-squared vs observed shares               :  0.1395 
-Adj.Rho-squared vs observed shares           :  0.1312 
-AIC                                         :  2721.74 
-BIC                                         :  2807.58 
+LL(start)                                   : -4158.88
+LL (whole model) at equal shares, LL(0)     : -4158.88
+LL (whole model) at observed shares, LL(C)  : -4156.91
+LL(final, whole model)                      : -3599.84
+Rho-squared vs equal shares                  :  0.1344 
+Adj.Rho-squared vs equal shares              :  0.1308 
+Rho-squared vs observed shares               :  0.134 
+Adj.Rho-squared vs observed shares           :  0.1309 
+AIC                                         :  7229.69 
+BIC                                         :  7330.18 
 
-LL(0,Class_1)                    : -1566.51
-LL(final,Class_1)                : -2465.04
-LL(0,Class_2)                    : -1566.51
-LL(final,Class_2)                : -1514.53
+LL(0,Class_1)                    : -4158.88
+LL(final,Class_1)                : -5997.95
+LL(0,Class_2)                    : -4158.88
+LL(final,Class_2)                : -4030.98
 
 Estimated parameters                        : 15
-Time taken (hh:mm:ss)                       :  00:00:13.43 
-     pre-estimation                         :  00:00:5.87 
-     estimation                             :  00:00:1.78 
-     post-estimation                        :  00:00:5.78 
+Time taken (hh:mm:ss)                       :  00:00:17.48 
+     pre-estimation                         :  00:00:5.83 
+     estimation                             :  00:00:2.7 
+     post-estimation                        :  00:00:8.95 
 Iterations                                  :  14  
 
 Unconstrained optimisation.
@@ -52,19 +52,19 @@ Summary of class allocation for model component :
 
 Overview of choices for MNL model component Class_1:
                                     alt1    alt2
-Times available                  2260.00 2260.00
-Times chosen                     1183.00 1077.00
-Percentage chosen overall          52.35   47.65
-Percentage chosen when available   52.35   47.65
+Times available                  6000.00 6000.00
+Times chosen                     3077.00 2923.00
+Percentage chosen overall          51.28   48.72
+Percentage chosen when available   51.28   48.72
 
 
 
 Overview of choices for MNL model component Class_2:
                                     alt1    alt2
-Times available                  2260.00 2260.00
-Times chosen                     1183.00 1077.00
-Percentage chosen overall          52.35   47.65
-Percentage chosen when available   52.35   47.65
+Times available                  6000.00 6000.00
+Times chosen                     3077.00 2923.00
+Percentage chosen overall          51.28   48.72
+Percentage chosen when available   51.28   48.72
 
 
 
@@ -141,7 +141,7 @@ function(apollo_beta, apollo_inputs){
   
   return(lcpars)
 }
-<bytecode: 0x7fcb26c08b20>
+<bytecode: 0x7fcb2d48abd0>
 
 
 apollo_probabilities

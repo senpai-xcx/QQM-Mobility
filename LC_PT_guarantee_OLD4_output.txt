@@ -1,0 +1,448 @@
+Model run by juliagershenzon using Apollo 0.3.1 on R 4.3.1 for Darwin.
+Please acknowledge the use of Apollo by citing Hess & Palma (2019)
+  DOI 10.1016/j.jocm.2019.100170
+  www.ApolloChoiceModelling.com
+
+Model name                                  : LC_PT_guarantee
+Model description                           : LC model
+Model run at                                : 2023-11-27 10:24:16.662986
+Estimation method                           : bgw
+Model diagnosis                             : Relative function convergence
+Optimisation diagnosis                      : Maximum found
+     hessian properties                     : Negative definite
+     maximum eigenvalue                     : -11.599452
+     reciprocal of condition number         : 3.63814e-06
+Number of individuals                       : 452
+Number of rows in database                  : 2260
+Number of modelled outcomes                 : 2260
+
+Number of cores used                        :  1 
+Model without mixing
+
+LL(start)                                   : -1566.51
+LL (whole model) at equal shares, LL(0)     : -1566.51
+LL (whole model) at observed shares, LL(C)  : -1564.03
+LL(final, whole model)                      : -1345.87
+Rho-squared vs equal shares                  :  0.1409 
+Adj.Rho-squared vs equal shares              :  0.1313 
+Rho-squared vs observed shares               :  0.1395 
+Adj.Rho-squared vs observed shares           :  0.1312 
+AIC                                         :  2721.74 
+BIC                                         :  2807.58 
+
+LL(0,Class_1)                    : -1566.51
+LL(final,Class_1)                : -2465.04
+LL(0,Class_2)                    : -1566.51
+LL(final,Class_2)                : -1514.53
+
+Estimated parameters                        : 15
+Time taken (hh:mm:ss)                       :  00:00:13.96 
+     pre-estimation                         :  00:00:5.64 
+     estimation                             :  00:00:1.68 
+     post-estimation                        :  00:00:6.64 
+Iterations                                  :  14  
+
+Unconstrained optimisation.
+
+Estimates:
+                    Estimate        s.e.   t.rat.(0)    Rob.s.e. Rob.t.rat.(0)
+b_spatial_1         0.014480    0.012262      1.1809    0.015458        0.9367
+b_temporal_1        0.033482    0.039158      0.8550    0.050961        0.6570
+b_drtpattern_1     -0.388356    0.263465     -1.4740    0.324511       -1.1967
+b_waiting_1        -0.002302    0.004321     -0.5327    0.006232       -0.3694
+b_discount_1        0.004850    0.003355      1.4454    0.003428        1.4149
+b_compensation_1    0.118849    0.108851      1.0918    0.089624        1.3261
+b_price_1          -0.031755    0.005064     -6.2702    0.005243       -6.0571
+b_spatial_2         0.012257    0.004017      3.0513    0.004353        2.8160
+b_temporal_2        0.088977    0.011345      7.8427    0.012582        7.0718
+b_drtpattern_2      0.302035    0.066684      4.5293    0.075308        4.0107
+b_waiting_2        -0.009719    0.001072     -9.0624    0.001103       -8.8129
+b_discount_2        0.004484    0.001197      3.7472    0.001216        3.6887
+b_compensation_2    0.051321    0.043083      1.1912    0.040391        1.2706
+b_price_2          -0.006433    0.001057     -6.0850    0.001271       -5.0612
+delta_1             0.000000          NA          NA          NA            NA
+delta_2             0.663836    0.207170      3.2043    0.247558        2.6815
+
+
+Summary of class allocation for model component :
+         Mean prob.
+Class_1      0.3399
+Class_2      0.6601
+
+
+Overview of choices for MNL model component Class_1:
+                                    alt1    alt2
+Times available                  2260.00 2260.00
+Times chosen                     1183.00 1077.00
+Percentage chosen overall          52.35   47.65
+Percentage chosen when available   52.35   47.65
+
+
+
+Overview of choices for MNL model component Class_2:
+                                    alt1    alt2
+Times available                  2260.00 2260.00
+Times chosen                     1183.00 1077.00
+Percentage chosen overall          52.35   47.65
+Percentage chosen when available   52.35   47.65
+
+
+
+Classical covariance matrix:
+                      b_spatial_1     b_temporal_1   b_drtpattern_1      b_waiting_1     b_discount_1 b_compensation_1
+b_spatial_1            1.5035e-04       2.8264e-04         0.001834       -2.771e-05        1.513e-05        8.692e-05
+b_temporal_1           2.8264e-04         0.001533         0.004297      -1.2963e-04        3.262e-05      -3.5540e-04
+b_drtpattern_1           0.001834         0.004297         0.069414      -5.7374e-04       1.2337e-04         0.001970
+b_waiting_1            -2.771e-05      -1.2963e-04      -5.7374e-04        1.867e-05       -3.440e-06        7.081e-05
+b_discount_1            1.513e-05        3.262e-05       1.2337e-04       -3.440e-06        1.126e-05        6.864e-05
+b_compensation_1        8.692e-05      -3.5540e-04         0.001970        7.081e-05        6.864e-05         0.011849
+b_price_1              -1.363e-06        8.654e-06       4.6936e-04       -1.747e-06       -8.514e-06      -1.3373e-04
+b_spatial_2            -1.315e-05       -2.196e-05      -1.2518e-04        2.220e-06       -1.393e-06        6.822e-06
+b_temporal_2           -1.604e-05      -1.0886e-04       1.0502e-04        4.782e-06       -5.258e-06       -5.238e-05
+b_drtpattern_2         -4.396e-05       1.3854e-04        -0.002473       -2.705e-05       -1.942e-05      -4.0358e-04
+b_waiting_2             1.085e-06        6.245e-06       -1.000e-05       -1.084e-06        4.678e-07       -2.534e-07
+b_discount_2           -1.329e-06       -4.132e-06       -1.328e-05        4.726e-07       -8.957e-07       -5.314e-06
+b_compensation_2       -9.125e-06      -1.1891e-04      -6.8444e-04        1.124e-05        3.345e-06      -5.9883e-04
+b_price_2               3.777e-06        1.723e-05        9.438e-05       -2.234e-06        3.290e-07       -7.970e-06
+delta_2               -6.7692e-04        -0.002990        -0.026523       4.5320e-04        4.830e-05         0.003265
+                        b_price_1      b_spatial_2     b_temporal_2   b_drtpattern_2      b_waiting_2     b_discount_2
+b_spatial_1            -1.363e-06       -1.315e-05       -1.604e-05       -4.396e-05        1.085e-06       -1.329e-06
+b_temporal_1            8.654e-06       -2.196e-05      -1.0886e-04       1.3854e-04        6.245e-06       -4.132e-06
+b_drtpattern_1         4.6936e-04      -1.2518e-04       1.0502e-04        -0.002473       -1.000e-05       -1.328e-05
+b_waiting_1            -1.747e-06        2.220e-06        4.782e-06       -2.705e-05       -1.084e-06        4.726e-07
+b_discount_1           -8.514e-06       -1.393e-06       -5.258e-06       -1.942e-05        4.678e-07       -8.957e-07
+b_compensation_1      -1.3373e-04        6.822e-06       -5.238e-05      -4.0358e-04       -2.534e-07       -5.314e-06
+b_price_1               2.565e-05        1.984e-07        1.373e-05        5.950e-05       -9.638e-07        6.347e-07
+b_spatial_2             1.984e-07        1.614e-05        8.686e-06        3.388e-05       -6.359e-07        3.315e-07
+b_temporal_2            1.373e-05        8.686e-06       1.2871e-04       1.1260e-04       -4.925e-06        3.573e-06
+b_drtpattern_2          5.950e-05        3.388e-05       1.1260e-04         0.004447       -3.274e-06        5.920e-06
+b_waiting_2            -9.638e-07       -6.359e-07       -4.925e-06       -3.274e-06        1.150e-06       -3.896e-07
+b_discount_2            6.347e-07        3.315e-07        3.573e-06        5.920e-06       -3.896e-07        1.432e-06
+b_compensation_2       -1.050e-05       -1.249e-06        5.425e-05        3.343e-06       -4.362e-06        3.572e-06
+b_price_2               1.184e-06       -1.360e-06       -5.292e-06        2.861e-06        5.430e-07       -3.874e-07
+delta_2               -6.1692e-04        8.502e-05      -3.2552e-04        -0.002551        8.028e-06       -2.129e-06
+                 b_compensation_2        b_price_2          delta_2
+b_spatial_1            -9.125e-06        3.777e-06      -6.7692e-04
+b_temporal_1          -1.1891e-04        1.723e-05        -0.002990
+b_drtpattern_1        -6.8444e-04        9.438e-05        -0.026523
+b_waiting_1             1.124e-05       -2.234e-06       4.5320e-04
+b_discount_1            3.345e-06        3.290e-07        4.830e-05
+b_compensation_1      -5.9883e-04       -7.970e-06         0.003265
+b_price_1              -1.050e-05        1.184e-06      -6.1692e-04
+b_spatial_2            -1.249e-06       -1.360e-06        8.502e-05
+b_temporal_2            5.425e-05       -5.292e-06      -3.2552e-04
+b_drtpattern_2          3.343e-06        2.861e-06        -0.002551
+b_waiting_2            -4.362e-06        5.430e-07        8.028e-06
+b_discount_2            3.572e-06       -3.874e-07       -2.129e-06
+b_compensation_2         0.001856       -1.096e-05       7.0108e-04
+b_price_2              -1.096e-05        1.118e-06      -1.0817e-04
+delta_2                7.0108e-04      -1.0817e-04         0.042919
+
+Robust covariance matrix:
+                      b_spatial_1     b_temporal_1   b_drtpattern_1      b_waiting_1     b_discount_1 b_compensation_1
+b_spatial_1            2.3895e-04       6.1168e-04         0.003569       -6.979e-05        2.634e-05       -8.254e-05
+b_temporal_1           6.1168e-04         0.002597         0.008817      -2.6654e-04        8.234e-05      -5.4751e-04
+b_drtpattern_1           0.003569         0.008817         0.105307        -0.001237       3.5337e-04        -0.002097
+b_waiting_1            -6.979e-05      -2.6654e-04        -0.001237        3.883e-05       -9.594e-06        8.782e-05
+b_discount_1            2.634e-05        8.234e-05       3.5337e-04       -9.594e-06        1.175e-05        8.957e-06
+b_compensation_1       -8.254e-05      -5.4751e-04        -0.002097        8.782e-05        8.957e-06         0.008032
+b_price_1               7.393e-06        2.402e-06       5.6373e-04       -3.944e-06       -8.262e-06       -7.463e-05
+b_spatial_2            -2.308e-05       -5.672e-05      -3.3256e-04        6.588e-06       -2.580e-06        1.789e-05
+b_temporal_2           -2.482e-05      -1.5408e-04       1.7414e-04        4.445e-06       -8.501e-06       -5.578e-05
+b_drtpattern_2         -3.581e-05       2.2029e-04        -0.004442       -5.813e-05       -2.191e-05       -3.019e-05
+b_waiting_2             3.104e-06        1.444e-05        2.205e-05       -2.392e-06        7.602e-07       -4.272e-06
+b_discount_2           -3.279e-06       -1.158e-05       -5.346e-05        1.463e-06       -1.038e-06        2.263e-06
+b_compensation_2       -3.091e-05      -1.7306e-04      -5.5796e-04        1.856e-05        2.254e-06      -3.5830e-04
+b_price_2               9.984e-06        3.546e-05       2.0261e-04       -5.063e-06        1.096e-06       -1.285e-05
+delta_2                 -0.001904        -0.006166        -0.046688         0.001007       -8.750e-05         0.003223
+                        b_price_1      b_spatial_2     b_temporal_2   b_drtpattern_2      b_waiting_2     b_discount_2
+b_spatial_1             7.393e-06       -2.308e-05       -2.482e-05       -3.581e-05        3.104e-06       -3.279e-06
+b_temporal_1            2.402e-06       -5.672e-05      -1.5408e-04       2.2029e-04        1.444e-05       -1.158e-05
+b_drtpattern_1         5.6373e-04      -3.3256e-04       1.7414e-04        -0.004442        2.205e-05       -5.346e-05
+b_waiting_1            -3.944e-06        6.588e-06        4.445e-06       -5.813e-05       -2.392e-06        1.463e-06
+b_discount_1           -8.262e-06       -2.580e-06       -8.501e-06       -2.191e-05        7.602e-07       -1.038e-06
+b_compensation_1       -7.463e-05        1.789e-05       -5.578e-05       -3.019e-05       -4.272e-06        2.263e-06
+b_price_1               2.749e-05       -1.216e-06        2.142e-05        6.177e-05       -5.326e-07        3.763e-07
+b_spatial_2            -1.216e-06        1.895e-05        1.061e-05        4.268e-05       -8.123e-07        8.016e-07
+b_temporal_2            2.142e-05        1.061e-05       1.5831e-04       1.4621e-04       -3.563e-06        4.176e-06
+b_drtpattern_2          6.177e-05        4.268e-05       1.4621e-04         0.005671        8.892e-06        6.936e-06
+b_waiting_2            -5.326e-07       -8.123e-07       -3.563e-06        8.892e-06        1.216e-06       -4.620e-07
+b_discount_2            3.763e-07        8.016e-07        4.176e-06        6.936e-06       -4.620e-07        1.478e-06
+b_compensation_2       -1.051e-05        5.812e-06        6.565e-05       -6.497e-05       -2.589e-06        1.172e-06
+b_price_2               1.876e-06       -2.330e-06       -4.334e-06        3.936e-06        7.006e-07       -6.136e-07
+delta_2               -7.5314e-04       2.4131e-04      -5.9595e-04        -0.003011       -3.633e-05        3.125e-05
+                 b_compensation_2        b_price_2          delta_2
+b_spatial_1            -3.091e-05        9.984e-06        -0.001904
+b_temporal_1          -1.7306e-04        3.546e-05        -0.006166
+b_drtpattern_1        -5.5796e-04       2.0261e-04        -0.046688
+b_waiting_1             1.856e-05       -5.063e-06         0.001007
+b_discount_1            2.254e-06        1.096e-06       -8.750e-05
+b_compensation_1      -3.5830e-04       -1.285e-05         0.003223
+b_price_1              -1.051e-05        1.876e-06      -7.5314e-04
+b_spatial_2             5.812e-06       -2.330e-06       2.4131e-04
+b_temporal_2            6.565e-05       -4.334e-06      -5.9595e-04
+b_drtpattern_2         -6.497e-05        3.936e-06        -0.003011
+b_waiting_2            -2.589e-06        7.006e-07       -3.633e-05
+b_discount_2            1.172e-06       -6.136e-07        3.125e-05
+b_compensation_2         0.001631       -1.024e-05       7.9928e-04
+b_price_2              -1.024e-05        1.615e-06      -2.0298e-04
+delta_2                7.9928e-04      -2.0298e-04         0.061285
+
+Classical correlation matrix:
+                      b_spatial_1     b_temporal_1   b_drtpattern_1      b_waiting_1     b_discount_1 b_compensation_1
+b_spatial_1               1.00000          0.58867          0.56783         -0.52302          0.36769         0.065126
+b_temporal_1              0.58867          1.00000          0.41647         -0.76617          0.24828        -0.083380
+b_drtpattern_1            0.56783          0.41647          1.00000         -0.50401          0.13956         0.068687
+b_waiting_1              -0.52302         -0.76617         -0.50401          1.00000         -0.23727         0.150566
+b_discount_1              0.36769          0.24828          0.13956         -0.23727          1.00000         0.187935
+b_compensation_1          0.06513         -0.08338          0.06869          0.15057          0.18793         1.000000
+b_price_1                -0.02195          0.04364          0.35176         -0.07983         -0.50108        -0.242587
+b_spatial_2              -0.26694         -0.13958         -0.11828          0.12791         -0.10335         0.015603
+b_temporal_2             -0.11530         -0.24503          0.03514          0.09756         -0.13813        -0.042415
+b_drtpattern_2           -0.05377          0.05306         -0.14075         -0.09388         -0.08680        -0.055599
+b_waiting_2               0.08250          0.14872         -0.03539         -0.23403          0.13001        -0.002171
+b_discount_2             -0.09059         -0.08818         -0.04211          0.09141         -0.22309        -0.040800
+b_compensation_2         -0.01727         -0.07048         -0.06030          0.06040          0.02314        -0.127691
+b_price_2                 0.29140          0.41618          0.33886         -0.48918          0.09275        -0.069264
+delta_2                  -0.26648         -0.36853         -0.48592          0.50630          0.06948         0.144797
+                        b_price_1      b_spatial_2     b_temporal_2   b_drtpattern_2      b_waiting_2     b_discount_2
+b_spatial_1             -0.021947        -0.266940         -0.11530        -0.053769         0.082505        -0.090594
+b_temporal_1             0.043640        -0.139578         -0.24503         0.053057         0.148717        -0.088183
+b_drtpattern_1           0.351764        -0.118277          0.03514        -0.140751        -0.035393        -0.042110
+b_waiting_1             -0.079834         0.127910          0.09756        -0.093878        -0.234029         0.091409
+b_discount_1            -0.501077        -0.103347         -0.13813        -0.086804         0.130005        -0.223094
+b_compensation_1        -0.242587         0.015603         -0.04242        -0.055599        -0.002171        -0.040800
+b_price_1                1.000000         0.009751          0.23904         0.176190        -0.177456         0.104739
+b_spatial_2              0.009751         1.000000          0.19059         0.126475        -0.147624         0.068965
+b_temporal_2             0.239043         0.190585          1.00000         0.148830        -0.404764         0.263214
+b_drtpattern_2           0.176190         0.126475          0.14883         1.000000        -0.045774         0.074185
+b_waiting_2             -0.177456        -0.147624         -0.40476        -0.045774         1.000000        -0.303636
+b_discount_2             0.104739         0.068965          0.26321         0.074185        -0.303636         1.000000
+b_compensation_2        -0.048134        -0.007215          0.11099         0.001164        -0.094416         0.069287
+b_price_2                0.221076        -0.320256         -0.44120         0.040578         0.478974        -0.306233
+delta_2                 -0.587993         0.102169         -0.13850        -0.184640         0.036135        -0.008587
+                 b_compensation_2        b_price_2          delta_2
+b_spatial_1             -0.017273          0.29140        -0.266476
+b_temporal_1            -0.070484          0.41618        -0.368526
+b_drtpattern_1          -0.060299          0.33886        -0.485925
+b_waiting_1              0.060399         -0.48918         0.506298
+b_discount_1             0.023140          0.09275         0.069482
+b_compensation_1        -0.127691         -0.06926         0.144797
+b_price_1               -0.048134          0.22108        -0.587993
+b_spatial_2             -0.007215         -0.32026         0.102169
+b_temporal_2             0.110991         -0.44120        -0.138499
+b_drtpattern_2           0.001164          0.04058        -0.184640
+b_waiting_2             -0.094416          0.47897         0.036135
+b_discount_2             0.069287         -0.30623        -0.008587
+b_compensation_2         1.000000         -0.24057         0.078548
+b_price_2               -0.240573          1.00000        -0.493920
+delta_2                  0.078548         -0.49392         1.000000
+
+Robust correlation matrix:
+                      b_spatial_1     b_temporal_1   b_drtpattern_1      b_waiting_1     b_discount_1 b_compensation_1
+b_spatial_1               1.00000         0.776481          0.71139         -0.72448          0.49716        -0.059575
+b_temporal_1              0.77648         1.000000          0.53316         -0.83932          0.47139        -0.119876
+b_drtpattern_1            0.71139         0.533157          1.00000         -0.61177          0.31770        -0.072094
+b_waiting_1              -0.72448        -0.839322         -0.61177          1.00000         -0.44917         0.157252
+b_discount_1              0.49716         0.471392          0.31770         -0.44917          1.00000         0.029157
+b_compensation_1         -0.05958        -0.119876         -0.07209          0.15725          0.02916         1.000000
+b_price_1                 0.09122         0.008991          0.33135         -0.12072         -0.45978        -0.158821
+b_spatial_2              -0.34299        -0.255702         -0.23544          0.24290         -0.17293         0.045863
+b_temporal_2             -0.12761        -0.240304          0.04265          0.05670         -0.19712        -0.049470
+b_drtpattern_2           -0.03076         0.057401         -0.18176         -0.12387         -0.08489        -0.004473
+b_waiting_2               0.18208         0.256860          0.06162         -0.34801          0.20112        -0.043226
+b_discount_2             -0.17449        -0.186956         -0.13551          0.19315         -0.24906         0.020773
+b_compensation_2         -0.04951        -0.084076         -0.04257          0.07376          0.01628        -0.098979
+b_price_2                 0.50818         0.547521          0.49124         -0.63920          0.25164        -0.112773
+delta_2                  -0.49742        -0.488734         -0.58117          0.65295         -0.10312         0.145282
+                        b_price_1      b_spatial_2     b_temporal_2   b_drtpattern_2      b_waiting_2     b_discount_2
+b_spatial_1              0.091221         -0.34299         -0.12761        -0.030762          0.18208         -0.17449
+b_temporal_1             0.008991         -0.25570         -0.24030         0.057401          0.25686         -0.18696
+b_drtpattern_1           0.331352         -0.23544          0.04265        -0.181758          0.06162         -0.13551
+b_waiting_1             -0.120723          0.24290          0.05670        -0.123872         -0.34801          0.19315
+b_discount_1            -0.459779         -0.17293         -0.19712        -0.084891          0.20112         -0.24906
+b_compensation_1        -0.158821          0.04586         -0.04947        -0.004473         -0.04323          0.02077
+b_price_1                1.000000         -0.05330          0.32468         0.156461         -0.09213          0.05904
+b_spatial_2             -0.053297          1.00000          0.19373         0.130212         -0.16923          0.15150
+b_temporal_2             0.324680          0.19373          1.00000         0.154307         -0.25681          0.27302
+b_drtpattern_2           0.156461          0.13021          0.15431         1.000000          0.10707          0.07576
+b_waiting_2             -0.092127         -0.16923         -0.25681         0.107067          1.00000         -0.34460
+b_discount_2             0.059043          0.15150          0.27302         0.075765         -0.34460          1.00000
+b_compensation_2        -0.049647          0.03306          0.12917        -0.021359         -0.05813          0.02388
+b_price_2                0.281601         -0.42124         -0.27100         0.041121          0.49981         -0.39718
+delta_2                 -0.580290          0.22395         -0.19133        -0.161513         -0.13308          0.10384
+                 b_compensation_2        b_price_2          delta_2
+b_spatial_1              -0.04951          0.50818         -0.49742
+b_temporal_1             -0.08408          0.54752         -0.48873
+b_drtpattern_1           -0.04257          0.49124         -0.58117
+b_waiting_1               0.07376         -0.63920          0.65295
+b_discount_1              0.01628          0.25164         -0.10312
+b_compensation_1         -0.09898         -0.11277          0.14528
+b_price_1                -0.04965          0.28160         -0.58029
+b_spatial_2               0.03306         -0.42124          0.22395
+b_temporal_2              0.12917         -0.27100         -0.19133
+b_drtpattern_2           -0.02136          0.04112         -0.16151
+b_waiting_2              -0.05813          0.49981         -0.13308
+b_discount_2              0.02388         -0.39718          0.10384
+b_compensation_2          1.00000         -0.19940          0.07994
+b_price_2                -0.19940          1.00000         -0.64513
+delta_2                   0.07994         -0.64513          1.00000
+
+ 20 worst outliers in terms of lowest average per choice prediction:
+   ID Avg prob per choice
+ 1521           0.3098510
+ 2027           0.3157098
+ 1572           0.3408550
+ 2314           0.3448764
+ 1879           0.3509844
+ 2263           0.3523717
+ 2976           0.3562581
+ 2438           0.3579304
+ 3243           0.3606260
+ 2170           0.3710566
+ 1529           0.3731889
+ 2322           0.3806191
+ 2487           0.3814422
+ 1814           0.3817254
+ 2186           0.3821312
+ 1496           0.3845279
+ 2676           0.3846300
+ 1540           0.3854458
+ 2612           0.3891982
+ 2708           0.3907937
+
+Changes in parameter estimates from starting values:
+                     Initial    Estimate  Difference
+b_spatial_1            0.000    0.014480    0.014480
+b_temporal_1           0.000    0.033482    0.033482
+b_drtpattern_1         0.000   -0.388356   -0.388356
+b_waiting_1            0.000   -0.002302   -0.002302
+b_discount_1           0.000    0.004850    0.004850
+b_compensation_1       0.000    0.118849    0.118849
+b_price_1              0.000   -0.031755   -0.031755
+b_spatial_2            0.000    0.012257    0.012257
+b_temporal_2           0.000    0.088977    0.088977
+b_drtpattern_2         0.000    0.302035    0.302035
+b_waiting_2            0.000   -0.009719   -0.009719
+b_discount_2           0.000    0.004484    0.004484
+b_compensation_2       0.000    0.051321    0.051321
+b_price_2              0.000   -0.006433   -0.006433
+delta_1                0.000    0.000000    0.000000
+delta_2                1.000    0.663836   -0.336164
+
+Settings and functions used in model definition:
+
+apollo_control
+--------------
+                       Value                                                
+modelName              "LC_PT_guarantee"                                    
+modelDescr             "LC model"                                           
+indivID                "RID"                                                
+debug                  "FALSE"                                              
+nCores                 "1"                                                  
+workInLogs             "FALSE"                                              
+seed                   "13"                                                 
+mixing                 "FALSE"                                              
+HB                     "FALSE"                                              
+noValidation           "FALSE"                                              
+noDiagnostics          "FALSE"                                              
+calculateLLC           "TRUE"                                               
+outputDirectory        "/Users/juliagershenzon/Desktop/quanti/QQM-Mobility/"
+panelData              "TRUE"                                               
+analyticGrad           "TRUE"                                               
+analyticGrad_manualSet "FALSE"                                              
+overridePanel          "FALSE"                                              
+preventOverridePanel   "FALSE"                                              
+noModification         "FALSE"                                              
+
+Hessian routines attempted
+--------------------------
+numerical second derivative of LL (using numDeriv)
+
+
+apollo_lcPars
+---------------
+function(apollo_beta, apollo_inputs){
+  lcpars = list()
+  lcpars[["b_spatial"]] = list(b_spatial_1, b_spatial_2)
+  lcpars[["b_temporal"]] = list(b_temporal_1, b_temporal_2)
+  lcpars[["b_drtpattern"]] = list(b_drtpattern_1, b_drtpattern_2)
+  lcpars[["b_waiting"]] = list(b_waiting_1,  b_waiting_2)
+  lcpars[["b_discount"]] = list(b_discount_1, b_discount_2)
+  lcpars[["b_compensation"]] = list(b_compensation_1, b_compensation_2)
+  lcpars[["b_price"]] = list(b_price_1, b_price_2)
+
+  
+  V=list() #class membership equations
+  V[["class_1"]] = delta_1 
+  V[["class_2"]] = delta_2 #+ gamma_notbought*buy_never+gamma_framing*deck
+  
+  mnl_settings = list(
+    alternatives = c(class_1=1, class_2=2), 
+    avail        = 1, 
+    choiceVar    = NA, 
+    V            = V
+  )
+  
+  
+  lcpars[["pi_values"]] = apollo_mnl(mnl_settings, functionality="raw")
+  
+  lcpars[["pi_values"]] = apollo_firstRow(lcpars[["pi_values"]], apollo_inputs)
+  
+  return(lcpars)
+}
+<bytecode: 0x7fe45b4bd040>
+
+
+apollo_probabilities
+----------------------
+function(apollo_beta, apollo_inputs, functionality="estimate"){
+  
+  ### Attach inputs and detach after function exit
+  apollo_attach(apollo_beta, apollo_inputs)
+  on.exit(apollo_detach(apollo_beta, apollo_inputs))
+  
+  ### Create list of probabilities P
+  P = list()
+  
+  
+  ### Define settings for MNL model component that are generic across classes
+  mnl_settings = list(
+    alternatives  = c(alt1=1, alt2=2),
+    avail        = list(1),
+    choiceVar    = CHOICE
+  )
+  
+
+  ### Loop over classes
+  s=1
+  while(s<=2){
+    
+    ### Compute class-specific utilities
+    V = list()
+    
+    V[["alt1"]]  = b_spatial[[s]]  * Spatial_1 + b_temporal[[s]] * Temporal_1 + b_drtpattern[[s]] * DRTPattern_1 +
+      b_waiting[[s]] * Waitingtime_1 + b_discount[[s]] * Discount_1 + b_compensation[[s]] * Compensation_1 + b_price[[s]] * Price_1
+    V[["alt2"]]  = b_spatial[[s]]  * Spatial_2 + b_temporal[[s]] * Temporal_2 + b_drtpattern[[s]] * DRTPattern_2 +
+      b_waiting[[s]] * Waitingtime_2 + b_discount[[s]] * Discount_2 + b_compensation[[s]] * Compensation_2 + b_price[[s]] * Price_2
+
+    
+    mnl_settings$V = V
+    mnl_settings$componentName = paste0("Class_",s)
+    
+    ### Compute within-class choice probabilities using MNL model
+    P[[paste0("Class_",s)]] = apollo_mnl(mnl_settings, functionality)
+    
+    ### Take product across observation for same individual
+    P[[paste0("Class_",s)]] = apollo_panelProd(P[[paste0("Class_",s)]], apollo_inputs ,functionality)
+    
+    s=s+1}
+  
+  ### Compute latent class model probabilities
+  lc_settings   = list(inClassProb = P, classProb=pi_values)
+  P[["model"]] = apollo_lc(lc_settings, apollo_inputs, functionality)
+  
+  ### Prepare and return outputs of function
+  P = apollo_prepareProb(P, apollo_inputs, functionality)
+  return(P)
+}

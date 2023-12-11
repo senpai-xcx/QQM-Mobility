@@ -5,7 +5,7 @@ Please acknowledge the use of Apollo by citing Hess & Palma (2019)
 
 Model name                                  : LC_PT_guarantee and explan var
 Model description                           : LC model and explan var
-Model run at                                : 2023-11-27 14:10:32.110834
+Model run at                                : 2023-11-27 12:04:36.848395
 Estimation method                           : bgw
 Model diagnosis                             : Relative function convergence
 Optimisation diagnosis                      : Maximum found
@@ -36,10 +36,10 @@ LL(0,Class_2)                    : -4158.88
 LL(final,Class_2)                : -4031.35
 
 Estimated parameters                        : 23
-Time taken (hh:mm:ss)                       :  00:00:29.7 
-     pre-estimation                         :  00:00:5.73 
-     estimation                             :  00:00:3.89 
-     post-estimation                        :  00:00:20.09 
+Time taken (hh:mm:ss)                       :  00:00:31.67 
+     pre-estimation                         :  00:00:6.03 
+     estimation                             :  00:00:3.82 
+     post-estimation                        :  00:00:21.82 
 Iterations                                  :  15  
 
 Unconstrained optimisation.
@@ -705,7 +705,7 @@ function(apollo_beta, apollo_inputs){
   
   return(lcpars)
 }
-<bytecode: 0x7fcb25ff1c10>
+<bytecode: 0x7fe451244028>
 
 
 apollo_probabilities
