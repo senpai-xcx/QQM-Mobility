@@ -32,12 +32,12 @@ library(quantreg)
 ```
 
 ```{r}
-load("database_PT_final.Rda")
+#load("database_PT_final.Rda")
 #NB - the data is called "database"
 
-database_choices=read.csv("finaldata.csv",header=TRUE)
+#database_choices=read.csv("finaldata.csv",header=TRUE)
 
-database<-inner_join(database_choices, database, by ='RID')
+#database<-inner_join(database_choices, database, by ='RID')
 ```
 
 
@@ -311,12 +311,64 @@ mlogit_model <- mlogit(dummy_e1 ~ NO_against_personal_1 +
 
 ```{r}
 library(correlation)
-library(corrplot)
+library(ggcorrplot)
 
-df_carownership <-c(database$p_mob_time,database$p_mob_rural)
 
-cor_matrix<-cor(df_carownership)
-corrplot(cor_matrix)
+database %>%
+  mutate(p_mob_time = as.factor(p_mob_time),
+         p_mob_rural = as.factor(p_mob_rural),
+         p_central_nonwien = as.factor(p_central_nonwien)
+         )   %>%
 
+  select(p_mob_time, p_mob_rural, p_central_nonwien) %>%
+
+  correlation() 
+```
+##Pre choice experiment correlation matrix
+```{r}
+library(correlation)
+library(ggcorrplot)
+
+#Car Ownership  
+database<-filter(database,p_mtools_1==2)
+#Rural
+#database<-filter(database,p_place_inhab<3)
+
+database %>%
+  mutate(sex_front = as.numeric(sex_front),
+         p_bundesland_front = as.numeric(p_bundesland_front),
+         p_educ_front = as.numeric(p_educ_front),
+         age_front = as.numeric(age_front),
+         m_known = as.numeric(m_known),
+         DRT_knowledge = as.numeric(DRT_knowledge),
+         p_place_inhab = as.numeric(p_place_inhab),
+         p_central_nonwien = as.numeric(p_central_nonwien),
+         p_mob_ptintensity = as.numeric(p_mob_ptintensity),
+         p_mob_time = as.numeric(p_mob_time),
+         p_mob_rural = as.numeric(p_mob_rural),
+         n_o_v_hh = as.numeric(n_o_v_hh),
+         kilometrage_per_car_1 = as.numeric(kilometrage_per_car_1),
+         kilometrage_per_car_2 = as.numeric(kilometrage_per_car_2),
+         p_mtools_1 = as.numeric(p_mtools_1)
+         )   %>%
+
+  select(sex_front,
+         p_bundesland_front,
+         p_educ_front,
+         age_front,
+         m_known,
+         DRT_knowledge,
+         p_place_inhab,
+         p_central_nonwien,
+         p_mob_ptintensity,
+         p_mob_time,
+         p_mob_rural,
+         n_o_v_hh,
+         kilometrage_per_car_1,
+         kilometrage_per_car_2,
+         p_mtools_1) %>%
+
+  cor() %>% 
+  ggcorrplot()
 ```
 
