@@ -330,11 +330,11 @@ library(correlation)
 library(ggcorrplot)
 
 #Car Ownership  
-database<-filter(database,p_mtools_1==2)
+#database<-filter(database,p_mtools_1==2)
 #Rural
 #database<-filter(database,p_place_inhab<3)
 
-database %>%
+database_rural %>%
   mutate(sex_front = as.numeric(sex_front),
          p_bundesland_front = as.numeric(p_bundesland_front),
          p_educ_front = as.numeric(p_educ_front),
@@ -370,5 +370,23 @@ database %>%
 
   cor() %>% 
   ggcorrplot()
+```
+ENTIRE POPULATION
+1 age_front and p_mob_time positively correlated: younger people are out longer
+
+2 cars per household and and use of pt negatively correlated
+
+3 p_mob_time positively correlated with p_mob_rural
+
+
+RURAL POPULATION
+1 p_central_nonwien and p_place_inhab negatively correlated, shows that smaller places are more likely to be less connected
+2 p_central_nonwien negative cor with p_mob_rural meaning people with bad connection to PT are more often in rural areas DUH
+3 p_central_nonwien pos cor with p_mob_ptintensity meaning that people who are not well connected, use PT less
+```{r}
+ggplot(data = database) + 
+  geom_point(mapping = aes(x = age_front, y = p_mob_time)) +
+  geom_smooth(mapping = aes(x = age_front, y = p_mob_time)) +
+ggtitle ("Age and out how long")
 ```
 
