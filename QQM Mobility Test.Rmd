@@ -32,12 +32,12 @@ library(quantreg)
 ```
 
 ```{r}
-#load("database_PT_final.Rda")
+load("database_PT_final.Rda")
 #NB - the data is called "database"
 
-#database_choices=read.csv("finaldata.csv",header=TRUE)
+database_choices=read.csv("finaldata.csv",header=TRUE)
 
-#database<-inner_join(database_choices, database, by ='RID')
+database<-inner_join(database_choices, database, by ='RID')
 ```
 
 
@@ -332,7 +332,7 @@ library(ggcorrplot)
 #Car Ownership  
 #database<-filter(database,p_mtools_1==2)
 #Rural
-#database<-filter(database,p_place_inhab<3)
+database<-filter(database,p_place_inhab<3)
 
 database_rural %>%
   mutate(sex_front = as.numeric(sex_front),
@@ -384,9 +384,66 @@ RURAL POPULATION
 2 p_central_nonwien negative cor with p_mob_rural meaning people with bad connection to PT are more often in rural areas DUH
 3 p_central_nonwien pos cor with p_mob_ptintensity meaning that people who are not well connected, use PT less
 ```{r}
-ggplot(data = database) + 
-  geom_point(mapping = aes(x = age_front, y = p_mob_time)) +
-  geom_smooth(mapping = aes(x = age_front, y = p_mob_time)) +
-ggtitle ("Age and out how long")
+#ggplot(data = database) + 
+  #geom_point(mapping = aes(x = age_front, y = p_mob_time)) +
+  #geom_smooth(mapping = aes(x = age_front, y = p_mob_time)) +
+#ggtitle ("Age and out how long")
 ```
 
+##Regression car ownership
+```{r}
+library(pROC)
+
+# Logistic regression model
+database_factor <- database %>%
+  mutate(sex_front = as.factor(sex_front),
+         p_bundesland_front = as.factor(p_bundesland_front),
+         p_educ_front = as.factor(p_educ_front),
+         age_front = as.factor(age_front),
+         m_known = as.factor(m_known),
+         DRT_knowledge = as.factor(DRT_knowledge),
+         p_place_inhab = as.factor(p_place_inhab),
+         p_central_nonwien = as.factor(p_central_nonwien),
+         p_mob_ptintensity = as.factor(p_mob_ptintensity),
+         p_mob_time = as.factor(p_mob_time),
+         p_mob_rural = as.factor(p_mob_rural),
+         n_o_v_hh = as.factor(n_o_v_hh),
+         kilometrage_per_car_1 = as.factor(kilometrage_per_car_1),
+         kilometrage_per_car_2 = as.factor(kilometrage_per_car_2),
+         p_mtools_1 = as.factor(p_mtools_1)
+         )   
+#sapply(lapply(database_factor, unique), length)
+
+#Regression model
+carownership_model <- glm(p_mtools_1 ~ #sex_front +
+         #p_bundesland_front +
+         p_educ_front +
+         #age_front +
+         m_known +
+         DRT_knowledge +
+         p_place_inhab +
+         p_central_nonwien +
+         p_mob_ptintensity +
+         p_mob_time +
+         p_mob_rural +
+         n_o_v_hh +
+         #kilometrage_per_car_1 +
+         kilometrage_per_car_2, 
+          
+         family = "binomial", data = database_factor)
+
+# Evaluate the model
+#roc_curve <- roc(database$p_mtools_1, p_age_front)
+#auc_value <- auc(roc_curve)
+
+# Display the ROC curve and AUC
+#plot(roc_curve, main = "ROC Curve")
+#legend("bottomright", legend = paste("AUC =", round(auc_value, 2)), col = "black")
+
+# Display coefficients of the model
+summary(carownership_model)
+```
+influencing yes i own a car
+- apprenticeship significant
+- not knowing about MG
+- not using public transport (p_mob_ptintensity)
