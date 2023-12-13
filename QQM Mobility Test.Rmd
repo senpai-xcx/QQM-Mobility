@@ -296,7 +296,10 @@ database_rural <-
          )
 
 library(polycor)
-poly_corr_income <- hetcor(database_rural[, c('income', 'p_season_1', 'p_season_2', 'p_season_3', 'p_season_4', 'n_o_v_hh')], ML = TRUE)
+#poly_corr_income <- hetcor(database_rural[, c('income', 'p_season_1', 'p_season_2', 'p_season_3', 'p_season_4', 'n_o_v_hh')], ML = TRUE)
+#print(poly_corr_income)
+
+poly_corr_income <- hetcor(database_rural[, c('p_mob_ptintensity', 'p_central_nonwien')], ML = TRUE)
 print(poly_corr_income)
 
 #Interpreting these results:
