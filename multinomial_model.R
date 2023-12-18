@@ -245,5 +245,5 @@ Tvalues_df <- as.data.frame(Tvalues)
 # Display the table
 print(Tvalues_df)
 
-
-
+model_wtp_df <- apollo_deltaMethod(model, deltaMethod_settings)
+print(database$age_front)
