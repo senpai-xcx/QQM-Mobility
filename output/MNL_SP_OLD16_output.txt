@@ -1,0 +1,160 @@
+Model run by juliagershenzon using Apollo 0.3.1 on R 4.3.1 for Darwin.
+Please acknowledge the use of Apollo by citing Hess & Palma (2019)
+  DOI 10.1016/j.jocm.2019.100170
+  www.ApolloChoiceModelling.com
+
+Model name                                  : MNL_SP
+Model description                           : Simple MNL model on PT guarantee choice
+Model run at                                : 2023-12-06 14:51:12.576896
+Estimation method                           : bgw
+Model diagnosis                             : X- and relative function convergence
+Optimisation diagnosis                      : Maximum found
+     hessian properties                     : Negative definite
+     maximum eigenvalue                     : -1297.033826
+     reciprocal of condition number         : 7.50612e-05
+Number of individuals                       : 1200
+Number of rows in database                  : 6000
+Number of modelled outcomes                 : 6000
+
+Number of cores used                        :  1 
+Model without mixing
+
+LL(start)                                   : -4158.88
+LL at equal shares, LL(0)                   : -4158.88
+LL at observed shares, LL(C)                : -4156.91
+LL(final)                                   : -3767.85
+Rho-squared vs equal shares                  :  0.094 
+Adj.Rho-squared vs equal shares              :  0.0923 
+Rho-squared vs observed shares               :  0.0936 
+Adj.Rho-squared vs observed shares           :  0.0921 
+AIC                                         :  7549.7 
+BIC                                         :  7596.59 
+
+Estimated parameters                        : 7
+Time taken (hh:mm:ss)                       :  00:00:3.56 
+     pre-estimation                         :  00:00:0.91 
+     estimation                             :  00:00:1.27 
+          initial estimation                :  00:00:1.03 
+          estimation after rescaling        :  00:00:0.24 
+     post-estimation                        :  00:00:1.38 
+Iterations                                  :  9  
+     initial estimation                     :  7 
+     estimation after rescaling             :  2 
+
+Unconstrained optimisation.
+
+Estimates:
+
+
+Overview of choices for MNL model component :
+                                    alt1    alt2
+Times available                  6000.00 6000.00
+Times chosen                     3077.00 2923.00
+Percentage chosen overall          51.28   48.72
+Percentage chosen when available   51.28   48.72
+
+
+
+Classical covariance matrix:
+
+Robust covariance matrix:
+
+Classical correlation matrix:
+
+Robust correlation matrix:
+
+ 20 worst outliers in terms of lowest average per choice prediction:
+
+Changes in parameter estimates from starting values:
+
+Settings and functions used in model definition:
+
+apollo_control
+--------------
+                       Value                                    
+modelName              "MNL_SP"                                 
+modelDescr             "Simple MNL model on PT guarantee choice"
+indivID                "RID"                                    
+outputDirectory        "output/"                                
+debug                  "FALSE"                                  
+nCores                 "1"                                      
+workInLogs             "FALSE"                                  
+seed                   "13"                                     
+mixing                 "FALSE"                                  
+HB                     "FALSE"                                  
+noValidation           "FALSE"                                  
+noDiagnostics          "FALSE"                                  
+calculateLLC           "TRUE"                                   
+panelData              "TRUE"                                   
+analyticGrad           "TRUE"                                   
+analyticGrad_manualSet "FALSE"                                  
+overridePanel          "FALSE"                                  
+preventOverridePanel   "FALSE"                                  
+noModification         "FALSE"                                  
+
+Hessian routines attempted
+--------------------------
+numerical jacobian of LL analytical gradient
+
+Scaling used in computing Hessian
+---------------------------------
+                     Value
+b_spatial      0.014897504
+b_temporal     0.071885289
+b_drtpattern   0.147377343
+b_waiting      0.005936535
+b_discount     0.003098126
+b_compensation 0.039779595
+b_price        0.010203889
+
+
+apollo_probabilities
+----------------------
+function(apollo_beta, apollo_inputs, functionality="estimate"){
+  
+  ### Attach inputs and detach after function exit
+  apollo_attach(apollo_beta, apollo_inputs)
+  on.exit(apollo_detach(apollo_beta, apollo_inputs))
+  
+  ### Create list of probabilities P
+  P = list()
+  
+  ### List of utilities: these must use the same names as in mnl_settings, order is irrelevant
+  V = list()
+  
+   V[["alt1"]]  = b_spatial  * Spatial_1 + b_temporal * Temporal_1 + b_drtpattern * DRTPattern_1 +
+     b_waiting * Waitingtime_1 + b_discount * Discount_1 + b_compensation * Compensation_1 + b_price * Price_1
+   V[["alt2"]]  = b_spatial  * Spatial_2 + b_temporal * Temporal_2 + b_drtpattern * DRTPattern_2 +
+     b_waiting * Waitingtime_2 + b_discount * Discount_2 + b_compensation * Compensation_2 + b_price * Price_2
+
+   # V[["alt1"]]  = b_price*(b_spatial  * Spatial_1 + b_temporal * Temporal_1 + b_drtpattern * DRTPattern_1 +
+   #   b_waiting * Waitingtime_1 + b_discount * Discount_1 + b_compensation * Compensation_1 + Price_1)
+   # V[["alt2"]]  = b_price*(b_spatial  * Spatial_2 + b_temporal * Temporal_2 + b_drtpattern * DRTPattern_2 +
+   #   b_waiting * Waitingtime_2 + b_discount * Discount_2 + b_compensation * Compensation_2 + Price_2)
+   # 
+   
+#  V[["alt1"]]  = asc_1 + b_spatial  * Spatial_1 + b_temporal17 * (Temporal_1==17) +b_temporal24 * (Temporal_1==24) + b_drtpattern * DRTPattern_1 +
+#    b_waiting * Waitingtime_1 + b_discount * Discount_1 + b_comp_improved * (Compensation_1==2) + b_comp_generous * (Compensation_1==3) + b_price * Price_1
+#  V[["alt2"]]  = b_spatial  * Spatial_2 + + b_temporal17 * (Temporal_2==17) +b_temporal24 * (Temporal_2==24) + + b_drtpattern * DRTPattern_2 +
+#    b_waiting * Waitingtime_2 + b_discount * Discount_2 + b_comp_improved * (Compensation_2==2) + b_comp_generous * (Compensation_2==3) + b_price * Price_2
+  
+
+   
+  ### Define settings for MNL model component
+  mnl_settings = list(
+    alternatives  = c(alt1=1, alt2=2), 
+    avail         = 1, 
+    choiceVar     = CHOICE,
+    utilities     = V
+  )
+  
+  ### Compute probabilities using MNL model
+  P[["model"]] = apollo_mnl(mnl_settings, functionality)
+  
+  ### Take product across observation for same individual
+  P = apollo_panelProd(P, apollo_inputs, functionality)
+  
+  ### Prepare and return outputs of function
+  P = apollo_prepareProb(P, apollo_inputs, functionality)
+  return(P)
+}

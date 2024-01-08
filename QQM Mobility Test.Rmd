@@ -429,7 +429,6 @@ carownership_model <- glm(p_mtools_1 ~ #sex_front +
          n_o_v_hh +
          #kilometrage_per_car_1 +
          kilometrage_per_car_2, 
-          
          family = "binomial", data = database_factor)
 
 # Evaluate the model
