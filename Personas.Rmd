@@ -1,0 +1,167 @@
+---
+title: "QQM Mobility"
+  knit: (function(input_file, encoding) {
+    out_dir <- 'docs';
+    rmarkdown::render(input_file,
+      encoding=encoding,
+      output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
+date: "2023-11-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#Load libraries
+library(dplyr)
+library(ggplot2)
+library(naniar)
+library(tidyverse)
+library(janitor)
+library(skimr)
+library(psych)
+library(ggdist)
+library(car)
+library(correlation)
+library(scales)
+library(gtsummary)
+library(quantreg)
+```
+
+```{r}
+load("database_PT_final.Rda")
+```
+
+
+
+```{r}
+database <-
+  database %>%
+  mutate(sex_front = as.factor(sex_front),
+         p_bundesland_front = as.factor(p_bundesland_front),
+         p_educ_front = as.factor(p_educ_front),
+         age_front = as.integer(age_front),
+         m_known = as.factor(m_known),
+         DRT_knowledge = as.factor(DRT_knowledge),
+         p_place_inhab = as.factor(p_place_inhab),
+         status = as.factor(status)
+         )
+```
+
+### Rural database
+```{r}
+database_rural <- subset(database, p_place_inhab %in% c(1,2))
+
+database_nonrural <- subset(database, p_place_inhab %in% c(3,4,5))
+```
+
+### Age quantiles
+```{r}
+# Defining breaks for age categories
+breaks <- c(0, 18, 30, 50, 65, Inf)
+
+# Creating age categories using cut
+database$age_category <- cut(database$age_front, breaks = breaks, labels = c("0-18", "18-29", "30-49", "50-64", "65+"), include.lowest = TRUE, right = FALSE)
+
+#head(database)
+print(table(database$age_front, database$age_category))
+```
+# Personas
+```{r}
+
+#The peripheral village person 
+peripheral <- database[database$p_central_nonwien %in% c(2, 4), ]
+peripheral_village <- database_rural[database_rural$p_central_nonwien %in% c(2, 4), ]
+peripheral_village_young <- database_rural[database_rural$p_central_nonwien %in% c(2, 4) & database_rural$age_front > 18 & database_rural$age_front < 65, ]
+
+
+#The elderly 
+elderly <- database[which(database$age_front > 60), ]
+
+
+#The student
+socialbutterfly <- database[database$status %in% c(3) & database$age_front < 26, ]
+socialbutterfly_rural <- database_rural[database_rural$status %in% c(3) & database_rural$age_front < 26, ]
+
+#The parent
+parent <- database_nonrural[database_nonrural$children_1 %in% c(2) | database_nonrural$children_2 %in% c(2), ]
+
+#The car commuter 
+commuter <- database[database$status %in% c(1, 2), ]
+
+#Underway in rural areas
+rural <- database[database$p_mob_rural %in% c(1), ]
+
+#The ticket holder
+ticket <- database[database$p_season_1 %in% c(2) | database$p_season_2 %in% c(2) | database$p_season_3 %in% c(2), ]
+
+#The blue collar worker
+bluecollar <- database[database$p_educ_front %in% c(6,7), ]
+
+#Men vs women
+women <- database[database$sex_front %in% c(1), ]
+men <- database[database$sex_front %in% c(2), ]
+
+#The environmentalist
+
+######### ANALYSIS ###########
+#tbl_summary(retiree)
+#gt_summary()
+table(bluecollar$p_mtools_1)
+
+### INCOME ###
+table(database$p_mtools_1, database$income)
+```
+
+# Car ownership regression model
+```{r}
+database <- database %>%
+  mutate(sex_front = as.factor(sex_front),
+         p_bundesland_front = as.factor(p_bundesland_front),
+         p_educ_front = as.factor(p_educ_front),
+         age_front = as.factor(age_front),
+         m_known = as.factor(m_known),
+         DRT_knowledge = as.factor(DRT_knowledge),
+         p_place_inhab = as.factor(p_place_inhab),
+         p_central_nonwien = as.factor(p_central_nonwien),
+         p_mob_ptintensity = as.factor(p_mob_ptintensity),
+         p_mob_time = as.factor(p_mob_time),
+         p_mob_rural = as.factor(p_mob_rural),
+         n_o_v_hh = as.factor(n_o_v_hh),
+         kilometrage_per_car_1 = as.factor(kilometrage_per_car_1),
+         kilometrage_per_car_2 = as.factor(kilometrage_per_car_2),
+         p_mtools_1 = as.factor(p_mtools_1)
+         )  
+
+library(MASS)
+#Regression model
+carownership_model <- polr(p_mtools_1 ~ #sex_front +
+         #p_bundesland_front +
+         p_educ_front +
+         #age_front +
+         m_known +
+         DRT_knowledge +
+         p_place_inhab +
+         p_central_nonwien +
+         p_mob_ptintensity +
+         p_mob_time +
+         p_mob_rural +
+         n_o_v_hh +
+         #kilometrage_per_car_1 +
+         kilometrage_per_car_2, 
+         data = database)
+
+# Evaluate the model
+#roc_curve <- roc(database$p_mtools_1, p_age_front)
+#auc_value <- auc(roc_curve)
+
+# Display the ROC curve and AUC
+#plot(roc_curve, main = "ROC Curve")
+#legend("bottomright", legend = paste("AUC =", round(auc_value, 2)), col = "black")
+
+# Display coefficients of the model
+summary(carownership_model)
+```
+
