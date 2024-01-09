@@ -1,0 +1,260 @@
+Model run by Rowan's PC using Apollo 0.3.1 on R 4.3.1 for Windows.
+Please acknowledge the use of Apollo by citing Hess & Palma (2019)
+  DOI 10.1016/j.jocm.2019.100170
+  www.ApolloChoiceModelling.com
+
+Model name                                  : MNL_SP
+Model description                           : Simple MNL model on PT guarantee choice
+Model run at                                : 2024-01-09 20:46:58.710425
+Estimation method                           : bgw
+Model diagnosis                             : Relative function convergence
+Optimisation diagnosis                      : Maximum found
+     hessian properties                     : Negative definite
+     maximum eigenvalue                     : -233.706636
+     reciprocal of condition number         : 7.28193e-05
+Number of individuals                       : 216
+Number of rows in database                  : 1080
+Number of modelled outcomes                 : 1080
+
+Number of cores used                        :  1 
+Model without mixing
+
+LL(start)                                   : -748.6
+LL at equal shares, LL(0)                   : -748.6
+LL at observed shares, LL(C)                : -748.55
+LL(final)                                   : -680.99
+Rho-squared vs equal shares                  :  0.0903 
+Adj.Rho-squared vs equal shares              :  0.081 
+Rho-squared vs observed shares               :  0.0903 
+Adj.Rho-squared vs observed shares           :  0.0822 
+AIC                                         :  1375.98 
+BIC                                         :  1410.87 
+
+Estimated parameters                        : 7
+Time taken (hh:mm:ss)                       :  00:00:1.68 
+     pre-estimation                         :  00:00:0.91 
+     estimation                             :  00:00:0.16 
+          initial estimation                :  00:00:0.12 
+          estimation after rescaling        :  00:00:0.04 
+     post-estimation                        :  00:00:0.6 
+Iterations                                  :  7  
+     initial estimation                     :  6 
+     estimation after rescaling             :  1 
+
+Unconstrained optimisation.
+
+Estimates:
+                  Estimate        s.e.   t.rat.(0)    Rob.s.e. Rob.t.rat.(0)
+b_spatial         0.020866    0.004144       5.035    0.004416         4.725
+b_temporal        0.089225    0.011762       7.586    0.012541         7.115
+b_drtpattern      0.120842    0.065407       1.848    0.071268         1.696
+b_waiting        -0.007937    0.001100      -7.213    0.001226        -6.475
+b_discount        0.003732    0.001262       2.958    0.001190         3.136
+b_compensation    0.121568    0.048153       2.525    0.047167         2.577
+b_price          -0.010123  9.9354e-04     -10.189    0.001180        -8.582
+
+
+Overview of choices for MNL model component :
+                                    alt1    alt2
+Times available                  1080.00 1080.00
+Times chosen                      545.00  535.00
+Percentage chosen overall          50.46   49.54
+Percentage chosen when available   50.46   49.54
+
+
+
+Classical covariance matrix:
+                    b_spatial     b_temporal   b_drtpattern      b_waiting     b_discount b_compensation
+b_spatial           1.717e-05      1.073e-05      3.398e-05     -7.912e-07      4.643e-07      8.138e-06
+b_temporal          1.073e-05     1.3833e-04      4.112e-05     -5.092e-06      3.977e-06     1.0181e-04
+b_drtpattern        3.398e-05      4.112e-05       0.004278     -3.741e-06      4.276e-06      1.553e-05
+b_waiting          -7.912e-07     -5.092e-06     -3.741e-06      1.211e-06     -3.258e-07     -9.158e-06
+b_discount          4.643e-07      3.977e-06      4.276e-06     -3.258e-07      1.592e-06      7.429e-06
+b_compensation      8.138e-06     1.0181e-04      1.553e-05     -9.158e-06      7.429e-06       0.002319
+b_price            -1.371e-06     -7.461e-06     -4.480e-06      6.696e-07     -4.790e-07     -1.336e-05
+                      b_price
+b_spatial          -1.371e-06
+b_temporal         -7.461e-06
+b_drtpattern       -4.480e-06
+b_waiting           6.696e-07
+b_discount         -4.790e-07
+b_compensation     -1.336e-05
+b_price             9.871e-07
+
+Robust covariance matrix:
+                    b_spatial     b_temporal   b_drtpattern      b_waiting     b_discount b_compensation
+b_spatial           1.950e-05      1.287e-05      2.489e-05     -1.151e-06      7.235e-07      6.192e-06
+b_temporal          1.287e-05     1.5727e-04      7.532e-05     -4.824e-06      4.479e-06     1.1047e-04
+b_drtpattern        2.489e-05      7.532e-05       0.005079     -5.256e-07      1.568e-05    -1.1078e-04
+b_waiting          -1.151e-06     -4.824e-06     -5.256e-07      1.503e-06     -4.776e-07     -6.006e-06
+b_discount          7.235e-07      4.479e-06      1.568e-05     -4.776e-07      1.416e-06      2.389e-06
+b_compensation      6.192e-06     1.1047e-04    -1.1078e-04     -6.006e-06      2.389e-06       0.002225
+b_price            -1.910e-06     -7.961e-06     -7.780e-07      8.212e-07     -5.792e-07     -1.276e-05
+                      b_price
+b_spatial          -1.910e-06
+b_temporal         -7.961e-06
+b_drtpattern       -7.780e-07
+b_waiting           8.212e-07
+b_discount         -5.792e-07
+b_compensation     -1.276e-05
+b_price             1.392e-06
+
+Classical correlation matrix:
+                    b_spatial     b_temporal   b_drtpattern      b_waiting     b_discount b_compensation
+b_spatial             1.00000        0.22019       0.125361       -0.17351        0.08881       0.040782
+b_temporal            0.22019        1.00000       0.053453       -0.39348        0.26800       0.179767
+b_drtpattern          0.12536        0.05345       1.000000       -0.05198        0.05182       0.004932
+b_waiting            -0.17351       -0.39348      -0.051982        1.00000       -0.23473      -0.172846
+b_discount            0.08881        0.26800       0.051822       -0.23473        1.00000       0.122285
+b_compensation        0.04078        0.17977       0.004932       -0.17285        0.12229       1.000000
+b_price              -0.33295       -0.63852      -0.068937        0.61249       -0.38218      -0.279205
+                      b_price
+b_spatial            -0.33295
+b_temporal           -0.63852
+b_drtpattern         -0.06894
+b_waiting             0.61249
+b_discount           -0.38218
+b_compensation       -0.27920
+b_price               1.00000
+
+Robust correlation matrix:
+                    b_spatial     b_temporal   b_drtpattern      b_waiting     b_discount b_compensation
+b_spatial             1.00000        0.23231       0.079077      -0.212688        0.13767        0.02972
+b_temporal            0.23231        1.00000       0.084273      -0.313781        0.30012        0.18676
+b_drtpattern          0.07908        0.08427       1.000000      -0.006017        0.18486       -0.03295
+b_waiting            -0.21269       -0.31378      -0.006017       1.000000       -0.32742       -0.10388
+b_discount            0.13767        0.30012       0.184859      -0.327421        1.00000        0.04256
+b_compensation        0.02972        0.18676      -0.032954      -0.103882        0.04256        1.00000
+b_price              -0.36672       -0.53817      -0.009254       0.567941       -0.41261       -0.22939
+                      b_price
+b_spatial           -0.366718
+b_temporal          -0.538172
+b_drtpattern        -0.009254
+b_waiting            0.567941
+b_discount          -0.412610
+b_compensation      -0.229391
+b_price              1.000000
+
+ 20 worst outliers in terms of lowest average per choice prediction:
+   ID Avg prob per choice
+ 1572           0.3288575
+ 1540           0.3311246
+ 2314           0.3380499
+ 1616           0.3385858
+ 2322           0.3414837
+ 1496           0.3476812
+ 1521           0.3740914
+ 2330           0.3743392
+ 2438           0.3785104
+ 2529           0.3805374
+ 2635           0.3828442
+ 2170           0.3838007
+ 2749           0.3920585
+ 2950           0.3948139
+ 2917           0.4014715
+ 2795           0.4035750
+ 1879           0.4067109
+ 3221           0.4073674
+ 1799           0.4086295
+ 2676           0.4095265
+
+Changes in parameter estimates from starting values:
+                   Initial    Estimate  Difference
+b_spatial            0.000    0.020866    0.020866
+b_temporal           0.000    0.089225    0.089225
+b_drtpattern         0.000    0.120842    0.120842
+b_waiting            0.000   -0.007937   -0.007937
+b_discount           0.000    0.003732    0.003732
+b_compensation       0.000    0.121568    0.121568
+b_price              0.000   -0.010123   -0.010123
+
+Settings and functions used in model definition:
+
+apollo_control
+--------------
+                       Value                                    
+modelName              "MNL_SP"                                 
+modelDescr             "Simple MNL model on PT guarantee choice"
+indivID                "RID"                                    
+outputDirectory        "output/"                                
+debug                  "FALSE"                                  
+nCores                 "1"                                      
+workInLogs             "FALSE"                                  
+seed                   "13"                                     
+mixing                 "FALSE"                                  
+HB                     "FALSE"                                  
+noValidation           "FALSE"                                  
+noDiagnostics          "FALSE"                                  
+calculateLLC           "TRUE"                                   
+panelData              "TRUE"                                   
+analyticGrad           "TRUE"                                   
+analyticGrad_manualSet "FALSE"                                  
+overridePanel          "FALSE"                                  
+preventOverridePanel   "FALSE"                                  
+noModification         "FALSE"                                  
+
+Hessian routines attempted
+--------------------------
+numerical jacobian of LL analytical gradient
+
+Scaling used in computing Hessian
+---------------------------------
+                     Value
+b_spatial      0.020865834
+b_temporal     0.089224564
+b_drtpattern   0.120842061
+b_waiting      0.007936945
+b_discount     0.003732062
+b_compensation 0.121567696
+b_price        0.010123446
+
+
+apollo_probabilities
+----------------------
+function(apollo_beta, apollo_inputs, functionality="estimate"){
+  
+  ### Attach inputs and detach after function exit
+  apollo_attach(apollo_beta, apollo_inputs)
+  on.exit(apollo_detach(apollo_beta, apollo_inputs))
+  
+  ### Create list of probabilities P
+  P = list()
+  
+  ### List of utilities: these must use the same names as in mnl_settings, order is irrelevant
+  V = list()
+  
+  V[["alt1"]]  = b_spatial  * Spatial_1 + b_temporal * Temporal_1 + b_drtpattern * DRTPattern_1 +
+    b_waiting * Waitingtime_1 + b_discount * Discount_1 + b_compensation * Compensation_1 + b_price * Price_1
+  V[["alt2"]]  = b_spatial  * Spatial_2 + b_temporal * Temporal_2 + b_drtpattern * DRTPattern_2 +
+    b_waiting * Waitingtime_2 + b_discount * Discount_2 + b_compensation * Compensation_2 + b_price * Price_2
+  
+  # V[["alt1"]]  = b_price*(b_spatial  * Spatial_1 + b_temporal * Temporal_1 + b_drtpattern * DRTPattern_1 +
+  #   b_waiting * Waitingtime_1 + b_discount * Discount_1 + b_compensation * Compensation_1 + Price_1)
+  # V[["alt2"]]  = b_price*(b_spatial  * Spatial_2 + b_temporal * Temporal_2 + b_drtpattern * DRTPattern_2 +
+  #   b_waiting * Waitingtime_2 + b_discount * Discount_2 + b_compensation * Compensation_2 + Price_2)
+  # 
+  
+  #  V[["alt1"]]  = asc_1 + b_spatial  * Spatial_1 + b_temporal17 * (Temporal_1==17) +b_temporal24 * (Temporal_1==24) + b_drtpattern * DRTPattern_1 +
+  #    b_waiting * Waitingtime_1 + b_discount * Discount_1 + b_comp_improved * (Compensation_1==2) + b_comp_generous * (Compensation_1==3) + b_price * Price_1
+  #  V[["alt2"]]  = b_spatial  * Spatial_2 + + b_temporal17 * (Temporal_2==17) +b_temporal24 * (Temporal_2==24) + + b_drtpattern * DRTPattern_2 +
+  #    b_waiting * Waitingtime_2 + b_discount * Discount_2 + b_comp_improved * (Compensation_2==2) + b_comp_generous * (Compensation_2==3) + b_price * Price_2
+  
+  
+  ### Define settings for MNL model component
+  mnl_settings = list(
+    alternatives  = c(alt1=1, alt2=2), 
+    avail         = 1, 
+    choiceVar     = CHOICE,
+    utilities     = V
+  )
+  
+  ### Compute probabilities using MNL model
+  P[["model"]] = apollo_mnl(mnl_settings, functionality)
+  
+  ### Take product across observation for same individual
+  P = apollo_panelProd(P, apollo_inputs, functionality)
+  
+  ### Prepare and return outputs of function
+  P = apollo_prepareProb(P, apollo_inputs, functionality)
+  return(P)
+}
