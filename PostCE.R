@@ -192,16 +192,65 @@ table(database$parent_dummy)
 #The Working Commuter UPDATE#
 library(dplyr)
 database <- database %>%
-  mutate(parent_dummy = ifelse(children_1 %in% c("2") | 
-                                 children_2 %in% c("2") |
-                                 children_3 %in% c("2"), "0", "1"))
+  mutate(commuter_dummy = ifelse(kilometrage_per_car_1 %in% c("5", "6")  | 
+                                 kilometrage_per_car_2 %in% c("5", "6") &
+                                 status %in% c("1", "2"), "0", "1"))
 
 database <-
   database %>%
-  mutate(parent_dummy = as.factor(parent_dummy))
+  mutate(commuter_dummy = as.factor(commuter_dummy))
 #0 = yes; 1 = no
 
-table(database$parent_dummy)
+table(database$commuter_dummy)
+
+#The Late-Night Driver#
+library(dplyr)
+database <- database %>%
+  mutate(latedriver_dummy = ifelse(p_mob_time %in% c("1"), "0", "1"))
+
+database <-
+  database %>%
+  mutate(latedriver_dummy = as.factor(latedriver_dummy))
+#0 = yes; 1 = no
+
+table(database$latedriver_dummy)
+
+#The Low-Income Resident#
+library(dplyr)
+database <- database %>%
+  mutate(lowincome_dummy = ifelse(income %in% c("1", "2"), "0", "1"))
+
+database <-
+  database %>%
+  mutate(lowincome_dummy = as.factor(lowincome_dummy))
+#0 = yes; 1 = no
+
+table(database$lowincome_dummy)
+
+#The Middle-Income Resident#
+library(dplyr)
+database <- database %>%
+  mutate(midincome_dummy = ifelse(income %in% c("3", "4"), "0", "1"))
+
+database <-
+  database %>%
+  mutate(midincome_dummy = as.factor(midincome_dummy))
+#0 = yes; 1 = no
+
+table(database$midincome_dummy)
+
+#The High-Income Resident#
+library(dplyr)
+database <- database %>%
+  mutate(highincome_dummy = ifelse(income %in% c("3", "4"), "0", "1"))
+
+database <-
+  database %>%
+  mutate(highincome_dummy = as.factor(highincome_dummy))
+#0 = yes; 1 = no
+
+table(database$highincome_dummy)
+
 
 ##ORDINAL LOGISTIC REGRESSION MODEL##
 model <- glm(buy_dummy ~ peripheral_dummy + 
@@ -211,7 +260,12 @@ model <- glm(buy_dummy ~ peripheral_dummy +
                pupil_dummy + 
                homeparent_dummy + 
                worker_dummy +
-               parent_dummy
+               parent_dummy +
+               commuter_dummy +
+               latedriver_dummy +
+               lowincome_dummy +
+               midincome_dummy +
+               highincome_dummy
                
              , data = database, family = "binomial")
 summary(model)
