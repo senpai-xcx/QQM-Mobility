@@ -87,7 +87,9 @@ database <- database %>%
                                   buy_actually_e2 %in% c("1", "2", "3", "4", "5") |
                                   buy_actually_e3 %in% c("1", "2", "3", "4", "5") | 
                                   buy_actually_e4 %in% c("1", "2", "3", "4", "5") | 
-                                  buy_actually_e5 %in% c("1", "2", "3", "4", "5"), "Yes", "No"))
+                                  buy_actually_e5 %in% c("1", "2", "3", "4", "5"), "1", "2"))
+
+#1 = yes; 2 = no
 
 table(database$combined_dummy)
 
