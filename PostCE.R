@@ -66,24 +66,17 @@ database <-
 
 glimpse(database)
 
-
+###########################################
 ###MODEL TO SEE IF PERSONA WOULD BUY###
-#Creating Dummy Variable#
-# Assuming 'category_var' is your categorical variable
-#database$category_var <- factor(mydata$category_var, levels = c("Value1", "Value2", "Value3", "Value4", "Value5", "Value6"))
+###########################################
 
-# Create dummy variables
-#dummy_variables <- model.matrix(~ category_var - 1, data = mydata)
+#Jump to line XXXXX for the model. Code below is creating dummy variables#
 
-# Give meaningful column names to the dummy variables
-#colnames(dummy_variables) <- c("Yes_Value1", "Yes_Value2", "Yes_Value3", "Yes_Value4", "Yes_Value5", "No_Value6")
 
-# Attach the dummy variables to your dataset
-#mydata <- cbind(mydata, dummy_variables)
-
+##CREATE DUMMY VARIABLE FOR BUY MOBILITY PACKAGE YES/NO##
 library(dplyr)
 database <- database %>%
-  mutate(combined_dummy = ifelse(buy_actually_e1 %in% c("1", "2", "3", "4", "5") | 
+  mutate(buy_dummy = ifelse(buy_actually_e1 %in% c("1", "2", "3", "4", "5") | 
                                   buy_actually_e2 %in% c("1", "2", "3", "4", "5") |
                                   buy_actually_e3 %in% c("1", "2", "3", "4", "5") | 
                                   buy_actually_e4 %in% c("1", "2", "3", "4", "5") | 
@@ -91,12 +84,143 @@ database <- database %>%
 
 database <-
   database %>%
-  mutate(combined_dummy = as.factor(combined_dummy))
+  mutate(buy_dummy = as.factor(buy_dummy))
 #0 = yes; 1 = no
 
-table(database$combined_dummy)
+table(database$buy_dummy)
 
-model <- glm(combined_dummy ~ p_central_nonwien=4, data = database, family = "binomial")
+##CREATE DUMMY VARIABLE FOR PERSONAS##
+#Peripheral Resident#
+library(dplyr)
+database <- database %>%
+  mutate(peripheral_dummy = ifelse(p_central_nonwien %in% c("4"), "0", "1"))
+
+database <-
+  database %>%
+  mutate(peripheral_dummy = as.factor(peripheral_dummy))
+#0 = yes; 1 = no
+
+table(database$peripheral_dummy)
+
+#The Frequent Driver#
+library(dplyr)
+database <- database %>%
+  mutate(frequentdriver_dummy = ifelse(p_mob_rural %in% c("1"), "0", "1"))
+
+database <-
+  database %>%
+  mutate(frequentdriver_dummy = as.factor(frequentdriver_dummy))
+#0 = yes; 1 = no
+
+table(database$frequentdriver_dummy)
+
+#The Environmentalist#
+library(dplyr)
+database <- database %>%
+  mutate(environmentalist_dummy = ifelse(p_mob_rural %in% c("1"), "0", "1"))
+
+database <-
+  database %>%
+  mutate(environmentalist_dummy = as.factor(environmentalist_dummy))
+#0 = yes; 1 = no
+
+table(database$environmentalist_dummy)
+
+#The Elderly#
+library(dplyr)
+database <- database %>%
+  mutate(elderly_dummy = ifelse(age_front >= 60, 0, 1))
+
+
+database <-
+  database %>%
+  mutate(elderly_dummy = as.factor(elderly_dummy))
+#0 = yes; 1 = no
+
+table(database$elderly_dummy)
+
+#The Pupil#
+library(dplyr)
+database <- database %>%
+  mutate(pupil_dummy = ifelse(status %in% c("3"), "0", "1"))
+
+database <-
+  database %>%
+  mutate(pupil_dummy = as.factor(pupil_dummy))
+#0 = yes; 1 = no
+
+table(database$pupil_dummy)
+
+#The Stay-At-Home-Parent#
+library(dplyr)
+database <- database %>%
+  mutate(homeparent_dummy = ifelse(status %in% c("5"), "0", "1"))
+
+database <-
+  database %>%
+  mutate(homeparent_dummy = as.factor(homeparent_dummy))
+#0 = yes; 1 = no
+
+table(database$homeparent_dummy)
+
+#The Full-Time Worker#
+library(dplyr)
+database <- database %>%
+  mutate(worker_dummy = ifelse(status %in% c("1"), "0", "1"))
+
+database <-
+  database %>%
+  mutate(worker_dummy = as.factor(worker_dummy))
+#0 = yes; 1 = no
+
+table(database$worker_dummy)
+
+#The Parent#
+library(dplyr)
+database <- database %>%
+  mutate(parent_dummy = ifelse(children_1 %in% c("2") | 
+                                 children_2 %in% c("2") |
+                                 children_3 %in% c("2"), "0", "1"))
+
+database <-
+  database %>%
+  mutate(parent_dummy = as.factor(parent_dummy))
+#0 = yes; 1 = no
+
+table(database$parent_dummy)
+
+#The Working Commuter UPDATE#
+library(dplyr)
+database <- database %>%
+  mutate(parent_dummy = ifelse(children_1 %in% c("2") | 
+                                 children_2 %in% c("2") |
+                                 children_3 %in% c("2"), "0", "1"))
+
+database <-
+  database %>%
+  mutate(parent_dummy = as.factor(parent_dummy))
+#0 = yes; 1 = no
+
+table(database$parent_dummy)
+
+##ORDINAL LOGISTIC REGRESSION MODEL##
+model <- glm(buy_dummy ~ peripheral_dummy + 
+                frequentdriver_dummy + 
+               environmentalist_dummy + 
+               elderly_dummy + 
+               pupil_dummy + 
+               homeparent_dummy + 
+               worker_dummy +
+               parent_dummy
+               
+             , data = database, family = "binomial")
+summary(model)
+
+#NB - I think I have issues with collinearity, and possibly something called the "dummy variable trap".
+
+##PROBABILITIES##
+
+#NB - I think these aren't the results I'm looking for. I'd like to calculate the probability of buying a mobility guarantee for each persona.
 
 # Predict probabilities for each observation
 predicted_probabilities <- predict(model, type = "response")
@@ -107,7 +231,8 @@ database_with_probs <- cbind(database, predicted_probabilities)
 # Show the results
 table(database_with_probs$predicted_probabilities)
 
-#test#
+
+##NEXT STEPS - LOOK AT OTHER POST-CHOICE EXPERIMENT VARIABLES#
 
 
 
