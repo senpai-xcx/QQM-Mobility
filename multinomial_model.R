@@ -56,12 +56,75 @@ database<-filter(database,p_place_inhab<3)
 #database<-filter(database,DURATION<500)
 
 #//////////////////////////////////////#
-#########ROWAN FILTERS################
+#########PERSONAS################
 #//////////////////////////////////////#
 
-rural_central_access_df <- filter(database,p_central_nonwien==4)
-database<-filter(database,p_central_nonwien==4)
+#rural_central_access_df <- filter(database,p_central_nonwien==4)
 
+##THE PERIPHERAL RESIDENT##
+#database<-filter(database,p_central_nonwien==4)
+
+##THE ELDERLY##
+#database<-filter(database,age_front>=60)
+
+##THE PUPIL##
+#database<-filter(database,status==3)
+
+##THE STAY-AT-HOME PARENT##
+#database<-filter(database,status==5)
+
+##THE FULL-TIME WORKER##
+#database<-filter(database,status==1)
+
+##THE PARENT##
+#nb - these are parents whose kids are still in the household#
+#database<-filter(database,children_1==2 | children_2==2 | children_3==2)
+
+##THE WORKING COMMUTER##
+#database<-filter(database,status==1 | status==2)
+#database<-filter(database,kilometrage_per_car_1>=5 | kilometrage_per_car_2>=5 | kilometrage_per_car_3>=5 | kilometrage_per_car_4>=5)
+
+##THE FREQUENT DRIVER##
+#database<-filter(database,p_mob_rural==1)
+
+##THE LATE NIGHT DRIVER##
+#database<-filter(database,p_mob_time==1)
+
+##THE LOW-INCOME RESIDENT##
+#database<-filter(database,income<=2)
+
+##THE MIDDLE-INCOME RESIDENT##
+#database<-filter(database,income==3 | income==4)
+
+##THE HIGH-INCOME RESIDENT##
+#database<-filter(database,income==5 | income==6)
+
+##THE BLUE COLLAR WORKER##
+#Assumption that former apprentices and technical students became blue-collar workers
+#database<-filter(database,p_educ_front==2 | p_educ_front==3)
+
+##THE ENVIRONMENTALIST##
+#database<-filter(database,Statements_1==5)
+
+##THE CLIMATE CHANGE DENIER##
+#database<-filter(database,Statements_1==1)
+
+##THE ENVIRONMENTALLY INDIFFERENT##
+#database<-filter(database,Statements_1==3)
+
+##THE INTREPID ENVIRONMENTALIST##
+database<-filter(database,Statements_1==4)
+
+##THE SEASON TICKET HOLDER##
+#database<-filter(database,p_season_1==2 | p_season_2==2 | p_season_3==2)
+
+##THE MAN##
+#database<-filter(database,sex_front==2)
+
+##THE WOMAN##
+#database<-filter(database,sex_front==1)
+
+####MOBILITY GUARANTEE CUSTOMIATION####
 #remove those who never consider buying a mobility guarantee
 #database<-filter(database,buy_never==0)
 #remove those who always opt to buy mobility guarantee
@@ -244,6 +307,9 @@ Tvalues_df <- as.data.frame(Tvalues)
 
 # Display the table
 print(Tvalues_df)
+
+model_wtp_df <- apollo_deltaMethod(model, deltaMethod_settings)
+#print(database$age_front)
 
 
 
