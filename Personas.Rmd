@@ -117,30 +117,14 @@ table(database$p_mtools_1, database$income)
 
 # Car ownership regression model
 ```{r}
-database <- database %>%
-  mutate(sex_front = as.factor(sex_front),
-         p_bundesland_front = as.factor(p_bundesland_front),
-         p_educ_front = as.factor(p_educ_front),
-         age_front = as.factor(age_front),
-         m_known = as.factor(m_known),
-         DRT_knowledge = as.factor(DRT_knowledge),
-         p_place_inhab = as.factor(p_place_inhab),
-         p_central_nonwien = as.factor(p_central_nonwien),
-         p_mob_ptintensity = as.factor(p_mob_ptintensity),
-         p_mob_time = as.factor(p_mob_time),
-         p_mob_rural = as.factor(p_mob_rural),
-         n_o_v_hh = as.factor(n_o_v_hh),
-         kilometrage_per_car_1 = as.factor(kilometrage_per_car_1),
-         kilometrage_per_car_2 = as.factor(kilometrage_per_car_2),
-         p_mtools_1 = as.factor(p_mtools_1)
-         )  
+ 
 
 library(MASS)
 #Regression model
-carownership_model <- polr(p_mtools_1 ~ #sex_front +
-         #p_bundesland_front +
+carownership_model <- lm(p_mtools_1 ~ #sex_front +
+         p_bundesland_front +
          p_educ_front +
-         #age_front +
+         age_front +
          m_known +
          DRT_knowledge +
          p_place_inhab +
@@ -149,9 +133,12 @@ carownership_model <- polr(p_mtools_1 ~ #sex_front +
          p_mob_time +
          p_mob_rural +
          n_o_v_hh +
-         #kilometrage_per_car_1 +
-         kilometrage_per_car_2, 
-         data = database)
+         p_place_inhab +
+        v_availability_2 + v_availability_3 + v_availability_4 +
+          car_decision_2 + car_decision_3 + 
+        # kilometrage_per_car_1 +
+        kilometrage_per_car_2 + kilometrage_per_car_3 + kilometrage_per_car_4,
+         data = database_rural)
 
 # Evaluate the model
 #roc_curve <- roc(database$p_mtools_1, p_age_front)
@@ -163,5 +150,9 @@ carownership_model <- polr(p_mtools_1 ~ #sex_front +
 
 # Display coefficients of the model
 summary(carownership_model)
+
+kruskal.test(p_mtools_1 ~ p_mob_ptintensity, data = database_rural)
+kruskal.test(p_mtools_1 ~ p_mob_ptintensity, data = database_nonrural)
+
 ```
 
