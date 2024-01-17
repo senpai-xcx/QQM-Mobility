@@ -30,7 +30,7 @@ database_choices=read.csv("finaldata.csv",header=TRUE)
 database<-inner_join(database_choices, database, by ='RID')
 
 #Filter by rural areas#
-#database<-filter(database,p_place_inhab<3)
+database<-filter(database,p_place_inhab<3)
 
 
 ###ADJUSTING VARIABLE TYPES###
@@ -67,10 +67,8 @@ database <-
 glimpse(database)
 
 ###########################################
-###MODEL TO SEE IF PERSONA WOULD BUY###
+###POST CHOICE EXPERIMENT ANALYSIS###
 ###########################################
-
-#Jump to line XXXXX for the model. Code below is creating dummy variables#
 
 
 ##CREATE DUMMY VARIABLE FOR BUY MOBILITY PACKAGE YES/NO##
@@ -86,7 +84,11 @@ database <-
   database %>%
   mutate(buy_dummy = as.factor(buy_dummy))
 
+
+#######################
 ###PERSONA FILTERS###
+######################
+
 ##THE PERIPHERAL RESIDENT##
 #database<-filter(database,p_central_nonwien==4)
 
@@ -154,210 +156,85 @@ database <-
 
 #0 = yes; 1 = no
 
-table(database$buy_dummy)
+#BUY MG?#
+#table(database$buy_dummy)
 
-###Don't need the below anymore :( ###
+#MG a good idea - considered buying?#
+#table(database$YES_ask_support)
 
-##CREATE DUMMY VARIABLE FOR PERSONAS##
-#Peripheral Resident#
-library(dplyr)
-database <- database %>%
-  mutate(peripheral_dummy = ifelse(p_central_nonwien %in% c("4"), "0", "1"))
+#MG a good idea - didn't consider buying?#
+#table(database$NO_ask_support)
 
-database <-
-  database %>%
-  mutate(peripheral_dummy = as.factor(peripheral_dummy))
-#0 = yes; 1 = no
+#################################
+###########WHY AGAINST###########
+#################################
 
-table(database$peripheral_dummy)
+#Not feasible anyway#
+#table(database$No_Support_MG_1)
 
-#The Frequent Driver#
-library(dplyr)
-database <- database %>%
-  mutate(frequentdriver_dummy = ifelse(p_mob_rural %in% c("1"), "0", "1"))
+#Existing public transport is sufficient#
+#table(database$No_Support_MG_2)
 
-database <-
-  database %>%
-  mutate(frequentdriver_dummy = as.factor(frequentdriver_dummy))
-#0 = yes; 1 = no
+#MG system too complicated#
+#table(database$No_Support_MG_3)
 
-table(database$frequentdriver_dummy)
-
-#The Environmentalist#
-library(dplyr)
-database <- database %>%
-  mutate(environmentalist_dummy = ifelse(p_mob_rural %in% c("1"), "0", "1"))
-
-database <-
-  database %>%
-  mutate(environmentalist_dummy = as.factor(environmentalist_dummy))
-#0 = yes; 1 = no
-
-table(database$environmentalist_dummy)
-
-#The Elderly#
-library(dplyr)
-database <- database %>%
-  mutate(elderly_dummy = ifelse(age_front >= 60, 0, 1))
+#Too expensive for taxpayer#
+#table(database$No_Support_MG_4)
 
 
-database <-
-  database %>%
-  mutate(elderly_dummy = as.factor(elderly_dummy))
-#0 = yes; 1 = no
+################################
+############WHY FOR#############
+################################
 
-table(database$elderly_dummy)
+#State complementary benefits (parking, safe roads, etc)
+#table(database$Yes_Support_MG_1)
 
-#The Pupil#
-library(dplyr)
-database <- database %>%
-  mutate(pupil_dummy = ifelse(status %in% c("3"), "0", "1"))
+#Reduce driving
+#table(database$Yes_Support_MG_2)
 
-database <-
-  database %>%
-  mutate(pupil_dummy = as.factor(pupil_dummy))
-#0 = yes; 1 = no
+#Back-up option for drivers
+#table(database$Yes_Support_MG_3)
 
-table(database$pupil_dummy)
-
-#The Stay-At-Home-Parent#
-library(dplyr)
-database <- database %>%
-  mutate(homeparent_dummy = ifelse(status %in% c("5"), "0", "1"))
-
-database <-
-  database %>%
-  mutate(homeparent_dummy = as.factor(homeparent_dummy))
-#0 = yes; 1 = no
-
-table(database$homeparent_dummy)
-
-#The Full-Time Worker#
-library(dplyr)
-database <- database %>%
-  mutate(worker_dummy = ifelse(status %in% c("1"), "0", "1"))
-
-database <-
-  database %>%
-  mutate(worker_dummy = as.factor(worker_dummy))
-#0 = yes; 1 = no
-
-table(database$worker_dummy)
-
-#The Parent#
-library(dplyr)
-database <- database %>%
-  mutate(parent_dummy = ifelse(children_1 %in% c("2") | 
-                                 children_2 %in% c("2") |
-                                 children_3 %in% c("2"), "0", "1"))
-
-database <-
-  database %>%
-  mutate(parent_dummy = as.factor(parent_dummy))
-#0 = yes; 1 = no
-
-table(database$parent_dummy)
-
-#The Working Commuter UPDATE#
-library(dplyr)
-database <- database %>%
-  mutate(commuter_dummy = ifelse(kilometrage_per_car_1 %in% c("5", "6")  | 
-                                 kilometrage_per_car_2 %in% c("5", "6") &
-                                 status %in% c("1", "2"), "0", "1"))
-
-database <-
-  database %>%
-  mutate(commuter_dummy = as.factor(commuter_dummy))
-#0 = yes; 1 = no
-
-table(database$commuter_dummy)
-
-#The Late-Night Driver#
-library(dplyr)
-database <- database %>%
-  mutate(latedriver_dummy = ifelse(p_mob_time %in% c("1"), "0", "1"))
-
-database <-
-  database %>%
-  mutate(latedriver_dummy = as.factor(latedriver_dummy))
-#0 = yes; 1 = no
-
-table(database$latedriver_dummy)
-
-#The Low-Income Resident#
-library(dplyr)
-database <- database %>%
-  mutate(lowincome_dummy = ifelse(income %in% c("1", "2"), "0", "1"))
-
-database <-
-  database %>%
-  mutate(lowincome_dummy = as.factor(lowincome_dummy))
-#0 = yes; 1 = no
-
-table(database$lowincome_dummy)
-
-#The Middle-Income Resident#
-library(dplyr)
-database <- database %>%
-  mutate(midincome_dummy = ifelse(income %in% c("3", "4"), "0", "1"))
-
-database <-
-  database %>%
-  mutate(midincome_dummy = as.factor(midincome_dummy))
-#0 = yes; 1 = no
-
-table(database$midincome_dummy)
-
-#The High-Income Resident#
-library(dplyr)
-database <- database %>%
-  mutate(highincome_dummy = ifelse(income %in% c("3", "4"), "0", "1"))
-
-database <-
-  database %>%
-  mutate(highincome_dummy = as.factor(highincome_dummy))
-#0 = yes; 1 = no
-
-table(database$highincome_dummy)
+#Right to have guaranteed mobility
+#table(database$Yes_Support_MG_4)
 
 
-##ORDINAL LOGISTIC REGRESSION MODEL##
-model <- glm(buy_dummy ~ peripheral_dummy + 
-                frequentdriver_dummy + 
-               environmentalist_dummy + 
-               elderly_dummy + 
-               pupil_dummy + 
-               homeparent_dummy + 
-               worker_dummy +
-               parent_dummy +
-               commuter_dummy +
-               latedriver_dummy +
-               lowincome_dummy +
-               midincome_dummy +
-               highincome_dummy
-               
-             , data = database, family = "binomial")
-summary(model)
+##################################
+############EXTRAS################
+##################################
 
-#NB - I think I have issues with collinearity, and possibly something called the "dummy variable trap".
+#Higher discount for cab services
+#table(database$Extra_1)
 
-##PROBABILITIES##
+#Higher discount for car-sharing membership
+#table(database$Extra_2)
 
+#Discounts abroad
+#table(database$Extra_3)
 
+#Compensation for time lost due to cancellations or missed connections
+#table(database$Extra_4)
 
-#NB - I think these aren't the results I'm looking for. I'd like to calculate the probability of buying a mobility guarantee for each persona.
+#Discounts on online delivery services
+#table(database$Extra_5)
 
-# Predict probabilities for each observation
-predicted_probabilities <- predict(model, type = "response")
+##########################################
+############CLIMATE ATTITUDES##############
+############################################
 
-# Combine the original dataset with the predicted probabilities
-database_with_probs <- cbind(database, predicted_probabilities)
+#Concerned about climate change
+table(database$Statements_1)
 
-# Show the results
-table(database_with_probs$predicted_probabilities)
+#Should use climate-friendly travel
+table(database$Statements_2)
 
+#Austrian government should do more for climate-friendly travel
+table(database$Statements_3)
 
-##NEXT STEPS - LOOK AT OTHER POST-CHOICE EXPERIMENT VARIABLES#
+#MG journeys should be cheaper than personal car
+table(database$Statements_4)
 
+#MG journeys should be faster than personal car
+table(database$Statements_5)
 
-
+# 
