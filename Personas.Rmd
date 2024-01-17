@@ -71,23 +71,21 @@ print(table(database$age_front, database$age_category))
 # Personas
 ```{r}
 
-#The peripheral village person 
-peripheral <- database[database$p_central_nonwien %in% c(2, 4), ]
-peripheral_village <- database_rural[database_rural$p_central_nonwien %in% c(2, 4), ]
-peripheral_village_young <- database_rural[database_rural$p_central_nonwien %in% c(2, 4) & database_rural$age_front > 18 & database_rural$age_front < 65, ]
-
+#The peripheral (rural) resident
+peripheral <- database_rural[database_rural$p_central_nonwien %in% c(4), ]
 
 #The elderly 
-elderly <- database[which(database$age_front > 60), ]
-
+elderly <- database_rural[which(database_rural$age_front > 60), ]
 
 #The student
-socialbutterfly <- database[database$status %in% c(3) & database$age_front < 26, ]
-socialbutterfly_rural <- database_rural[database_rural$status %in% c(3) & database_rural$age_front < 26, ]
+student <- database_rural[database_rural$status %in% c(3), ]
 
-#The parent
+#The parent of children below 16
 parent <- database_nonrural[database_nonrural$children_1 %in% c(2) | database_nonrural$children_2 %in% c(2), ]
 
+#The stay-at-home parent
+parent <- database_rural[database_rural$status %in% c(5) ]
+                         
 #The car commuter 
 commuter <- database[database$status %in% c(1, 2), ]
 
@@ -104,10 +102,70 @@ bluecollar <- database[database$p_educ_front %in% c(6,7), ]
 women <- database[database$sex_front %in% c(1), ]
 men <- database[database$sex_front %in% c(2), ]
 
-#The environmentalist
+
+#//////////////////////////////////////#
+#########PERSONAS################
+#//////////////////////////////////////#
+
+
+
+##THE FULL-TIME WORKER##
+#database<-filter(database,status==1)
+
+##THE PARENT##
+#nb - these are parents whose kids are still in the household#
+#database<-filter(database,children_1==2 | children_2==2 | children_3==2)
+
+##THE WORKING COMMUTER##
+#database<-filter(database,status==1 | status==2)
+#database<-filter(database,kilometrage_per_car_1>=5 | kilometrage_per_car_2>=5 | kilometrage_per_car_3>=5 | kilometrage_per_car_4>=5)
+
+##THE FREQUENT DRIVER##
+#database<-filter(database,p_mob_rural==1)
+
+##THE LATE NIGHT DRIVER##
+#database<-filter(database,p_mob_time==1)
+
+##THE LOW-INCOME RESIDENT##
+#database<-filter(database,income<=2)
+
+##THE MIDDLE-INCOME RESIDENT##
+#database<-filter(database,income==3 | income==4)
+
+##THE HIGH-INCOME RESIDENT##
+#database<-filter(database,income==5 | income==6)
+
+##THE BLUE COLLAR WORKER##
+#Assumption that former apprentices and technical students became blue-collar workers
+#database<-filter(database,p_educ_front==2 | p_educ_front==3)
+
+##THE ENVIRONMENTALIST##
+#database<-filter(database,Statements_1==5)
+
+##THE CLIMATE CHANGE DENIER##
+#database<-filter(database,Statements_1==1)
+
+##THE ENVIRONMENTALLY INDIFFERENT##
+#database<-filter(database,Statements_1==3)
+
+##THE INTREPID ENVIRONMENTALIST##
+database<-filter(database,Statements_1==4)
+
+##THE SEASON TICKET HOLDER##
+#database<-filter(database,p_season_1==2 | p_season_2==2 | p_season_3==2)
+
+##THE MAN##
+#database<-filter(database,sex_front==2)
+
+##THE WOMAN##
+#database<-filter(database,sex_front==1)
 
 ######### ANALYSIS ###########
 #tbl_summary(retiree)
+
+#library(formattable)
+#formattable
+
 #gt_summary()
 table(bluecollar$p_mtools_1)
 
@@ -156,5 +214,8 @@ carownership_model <- polr(n_o_v_hh ~ #sex_front +
 
 # Display coefficients of the model
 modelsummary(carownership_model)
+
+rhsi
+
 ```
 
