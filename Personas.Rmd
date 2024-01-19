@@ -1,13 +1,4 @@
----
-title: "QQM Mobility"
-  knit: (function(input_file, encoding) {
-    out_dir <- 'docs';
-    rmarkdown::render(input_file,
-      encoding=encoding,
-      output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
-date: "2023-11-03"
-output: html_document
----
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -46,7 +37,8 @@ database <-
          m_known = as.factor(m_known),
          DRT_knowledge = as.factor(DRT_knowledge),
          p_place_inhab = as.factor(p_place_inhab),
-         status = as.factor(status)
+         status = as.factor(status),
+         p_mtools_1 = as.factor(p_mtools_1)
          )
 ```
 
@@ -68,6 +60,14 @@ database$age_category <- cut(database$age_front, breaks = breaks, labels = c("0-
 #head(database)
 print(table(database$age_front, database$age_category))
 ```
+
+## Characterize rural population
+```{r}
+library(expss)
+cross_rpct(database_rural, n_o_v_hh, Statements_1)
+cross_rpct(database_rural, n_o_v_hh, YES_ask_support)
+```
+
 # Personas
 ```{r}
 
@@ -107,37 +107,110 @@ men <- database[database$sex_front %in% c(2), ]
 #The environmentalist
 
 ######### ANALYSIS ###########
-#tbl_summary(retiree)
 #gt_summary()
-table(bluecollar$p_mtools_1)
+#table(bluecollar$p_mtools_1)
 
 ### INCOME ###
-table(database$p_mtools_1, database$income)
+#tbl_summary(database$p_mtools_1, database$income)
 ```
 
 # Car ownership regression model
 ```{r}
- 
+library(gtsummary)
 
-library(MASS)
 #Regression model
-carownership_model <- lm(p_mtools_1 ~ #sex_front +
-         p_bundesland_front +
-         p_educ_front +
-         age_front +
-         m_known +
-         DRT_knowledge +
-         p_place_inhab +
-         p_central_nonwien +
+carownership_model <- glm(p_mtools_1 ~ 
+                            #sex_front +
+                            #p_bundesland_front +
+                            #p_educ_front +
+                            #age_front +
+                            m_known +
+                            #DRT_knowledge +
+                            #p_place_inhab +
+                            #p_central_nonwien +
+                            #p_season_1  
+                            p_season_2 + p_season_3 + p_season_4 +
+                            #p_mob_ptintensity +
+                            p_mob_time +
+                            p_mob_rural +
+                            p_place_inhab +
+                            v_availability_2 + v_availability_3 + v_availability_4 +
+                            car_decision_2 + car_decision_3 + 
+                            #kilometrage_per_car_1 + kilometrage_per_car_2 +
+                            kilometrage_per_car_3 + kilometrage_per_car_4 +
+                            #status +
+                            children_1 + children_2 + children_3 +
+                            #buy_actually_e1 + buy_actually_e2 + buy_actually_e3 +
+                            #buy_actually_e4 + buy_actually_e5 +
+                            #Statements_1 + Statements_2 + Statements_3 + Statements_4 +
+                            #Statements_5 +
+                            income,
+                          family = "binomial",
+                          data = database)
+
+tbl_regression(carownership_model)
+vif(carownership_model)
+plot(carownership_model)
+```
+
+
+
+
+```{r}
+
+carownership_model_2 <- lm(n_o_v_hh ~ #sex_front +
+                            p_bundesland_front +
+                            #p_educ_front +
+                            age_front +
+                            m_known +
+                            #DRT_knowledge +
+                            #p_place_inhab +
+                            p_central_nonwien +
+                            p_season_1 + p_season_2 + p_season_3 + p_season_4 +
+                            #p_mob_ptintensity +
+                            p_mob_time +
+                            p_mob_rural +
+                            p_place_inhab +
+                            v_availability_2 + v_availability_3 + v_availability_4 +
+                            car_decision_2 + car_decision_3 + 
+                            #kilometrage_per_car_1 + kilometrage_per_car_2 +
+                            kilometrage_per_car_3 + kilometrage_per_car_4 +
+                            status +
+                            children_1 + children_2 + children_3 +
+                            #buy_actually_e1 + buy_actually_e2 + buy_actually_e3 +
+                            #buy_actually_e4 + buy_actually_e5 +
+                            #Statements_1 + Statements_2 + Statements_3 + Statements_4 +
+                            #Statements_5 +
+                            income,
+         data = database)
+
+tbl_regression(carownership_model_2)
+```
+
+## Approval of MG
+#```{r}
+#Regression model
+approval_mg <- lm(YES_ask_support ~ #sex_front +
+         #p_bundesland_front +
+         #p_educ_front +
+        # age_front +
+         #m_known +
+         #DRT_knowledge +
+         #p_place_inhab +
+         #p_central_nonwien +
          p_mob_ptintensity +
          p_mob_time +
          p_mob_rural +
-         n_o_v_hh +
-         p_place_inhab +
-        v_availability_2 + v_availability_3 + v_availability_4 +
-          car_decision_2 + car_decision_3 + 
-        # kilometrage_per_car_1 +
-        kilometrage_per_car_2 + kilometrage_per_car_3 + kilometrage_per_car_4,
+        # n_o_v_hh +
+        # p_place_inhab +
+        #v_availability_2 + v_availability_3 + v_availability_4 +
+        #car_decision_2 + car_decision_3 + 
+        #kilometrage_per_car_1 +
+        #kilometrage_per_car_2 + kilometrage_per_car_3 + kilometrage_per_car_4 +
+        #status +
+        #  children_1 + children_2 + children_3 +
+          n_o_hhm +
+       income,
          data = database_rural)
 
 # Evaluate the model
@@ -149,10 +222,12 @@ carownership_model <- lm(p_mtools_1 ~ #sex_front +
 #legend("bottomright", legend = paste("AUC =", round(auc_value, 2)), col = "black")
 
 # Display coefficients of the model
-summary(carownership_model)
+summary(approval_mg)
 
-kruskal.test(p_mtools_1 ~ p_mob_ptintensity, data = database_rural)
-kruskal.test(p_mtools_1 ~ p_mob_ptintensity, data = database_nonrural)
+kruskal.test(p_mtools_1 ~ YES_ask_support, data = database_rural)
+kruskal.test(p_mtools_1 ~ YES_ask_support, data = database_nonrural)
 
 ```
+
+
 
