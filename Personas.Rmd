@@ -46,7 +46,8 @@ database <-
          m_known = as.factor(m_known),
          DRT_knowledge = as.factor(DRT_knowledge),
          p_place_inhab = as.factor(p_place_inhab),
-         status = as.factor(status)
+         status = as.factor(status),
+         YES_ask_support = as.factor(YES_ask_support)
          )
 ```
 
@@ -60,17 +61,17 @@ database_nonrural <- subset(database, p_place_inhab %in% c(3,4,5))
 ### Age quantiles
 ```{r}
 # Defining breaks for age categories
-breaks <- c(0, 18, 30, 50, 65, Inf)
+breaks <- c(17, 30, 50, 65, Inf)
 
 # Creating age categories using cut
-database$age_category <- cut(database$age_front, breaks = breaks, labels = c("0-18", "18-29", "30-49", "50-64", "65+"), include.lowest = TRUE, right = FALSE)
+database_rural$age_category <- cut(database_rural$age_front, breaks = breaks, labels = c("17-29", "30-49", "50-64", "65+"), include.lowest = TRUE, right = FALSE)
 
 #head(database)
-print(table(database$age_front, database$age_category))
+print(table(database_rural$age_front, database_rural$age_category))
 ```
+
 # Personas
 ```{r}
-
 #The peripheral (rural) resident
 peripheral <- database_rural[database_rural$p_central_nonwien %in% c(4), ]
 
@@ -81,84 +82,43 @@ elderly <- database_rural[which(database_rural$age_front > 60), ]
 student <- database_rural[database_rural$status %in% c(3), ]
 
 #The parent of children below 16
-parent <- database_nonrural[database_nonrural$children_1 %in% c(2) | database_nonrural$children_2 %in% c(2), ]
+parent <- database_rural[database_rural$children_1 %in% c(2) | database_rural$children_2 %in% c(2), ]
 
 #The stay-at-home parent
-parent <- database_rural[database_rural$status %in% c(5) ]
+stayhomeparent <- database_rural[database_rural$status %in% c(5), ]
                          
-#The car commuter 
-commuter <- database[database$status %in% c(1, 2), ]
+#The (car) commuter 
+commuter <- database_rural[database_rural$status %in% c(1, 2) & database_rural$kilometrage_per_car_1 %in% c(5, 6) | database_rural$kilometrage_per_car_2 %in% c(5, 6) | database_rural$kilometrage_per_car_3 %in% c(5, 6) | database_rural$kilometrage_per_car_4 %in% c(5, 6),  ]
 
 #Underway in rural areas
-rural <- database[database$p_mob_rural %in% c(1), ]
+rural <- database_rural[database_rural$p_mob_rural %in% c(1), ]
 
-#The ticket holder
-ticket <- database[database$p_season_1 %in% c(2) | database$p_season_2 %in% c(2) | database$p_season_3 %in% c(2), ]
+#Late night driver
+latenight <- database_rural[database_rural$p_mob_time %in% c(1), ]
+
+#Low income
+lowincome <- database_rural[database_rural$income %in% c(1, 2), ]
 
 #The blue collar worker
-bluecollar <- database[database$p_educ_front %in% c(6,7), ]
+bluecollar <- database_rural[database_rural$p_educ_front %in% c(2,3), ]
+
+#Climate change skeptic
+ccskeptic <- database_rural[database_rural$Statements_1 %in% c(1,2), ]
+
+
+#The ticket holder
+ticket <- database_rural[database_rural$p_season_1 %in% c(2) | database_rural$p_season_2 %in% c(2) | database_rural$p_season_3 %in% c(2), ]
 
 #Men vs women
-women <- database[database$sex_front %in% c(1), ]
-men <- database[database$sex_front %in% c(2), ]
-
-
-#//////////////////////////////////////#
-#########PERSONAS################
-#//////////////////////////////////////#
+women <- database_rural[database_rural$sex_front %in% c(1), ]
+men <- database_rural[database_rural$sex_front %in% c(2), ]
 
 
 
-##THE FULL-TIME WORKER##
-#database<-filter(database,status==1)
+#barplot(table(database_rural$p_mtools_1), main="Car Ownership in Rural Residents", xlab="Car Ownership", ylab="Count", col=c("skyblue", "salmon"))
 
-##THE PARENT##
-#nb - these are parents whose kids are still in the household#
-#database<-filter(database,children_1==2 | children_2==2 | children_3==2)
-
-##THE WORKING COMMUTER##
-#database<-filter(database,status==1 | status==2)
-#database<-filter(database,kilometrage_per_car_1>=5 | kilometrage_per_car_2>=5 | kilometrage_per_car_3>=5 | kilometrage_per_car_4>=5)
-
-##THE FREQUENT DRIVER##
-#database<-filter(database,p_mob_rural==1)
-
-##THE LATE NIGHT DRIVER##
-#database<-filter(database,p_mob_time==1)
-
-##THE LOW-INCOME RESIDENT##
-#database<-filter(database,income<=2)
-
-##THE MIDDLE-INCOME RESIDENT##
-#database<-filter(database,income==3 | income==4)
-
-##THE HIGH-INCOME RESIDENT##
-#database<-filter(database,income==5 | income==6)
-
-##THE BLUE COLLAR WORKER##
-#Assumption that former apprentices and technical students became blue-collar workers
-#database<-filter(database,p_educ_front==2 | p_educ_front==3)
-
-##THE ENVIRONMENTALIST##
-#database<-filter(database,Statements_1==5)
-
-##THE CLIMATE CHANGE DENIER##
-#database<-filter(database,Statements_1==1)
-
-##THE ENVIRONMENTALLY INDIFFERENT##
-#database<-filter(database,Statements_1==3)
-
-##THE INTREPID ENVIRONMENTALIST##
-database<-filter(database,Statements_1==4)
-
-##THE SEASON TICKET HOLDER##
-#database<-filter(database,p_season_1==2 | p_season_2==2 | p_season_3==2)
-
-##THE MAN##
-#database<-filter(database,sex_front==2)
-
-##THE WOMAN##
-#database<-filter(database,sex_front==1)
+# Box plot for parent group
+#boxplot(p_mtools_1 ~ children_1, data=parent, col=c("skyblue", "salmon"), main="Car Ownership Among Parents")
 
 ######### ANALYSIS ###########
 #tbl_summary(retiree)
@@ -167,55 +127,234 @@ database<-filter(database,Statements_1==4)
 #formattable
 
 #gt_summary()
-table(bluecollar$p_mtools_1)
+#table(bluecollar$p_mtools_1)
 
 ### INCOME ###
-table(database$p_mtools_1, database$income)
+#table(database$p_mtools_1, database_rural$income)
 ```
 
-# Car ownership regression model
+# Personas and Car Ownership
 ```{r}
-database_rural$sex_front <- as.factor(database_rural$sex_front)
-database_rural$p_bundesland_front <- as.factor(database_rural$p_bundesland)
+library(formattable)
 
-library(MASS)
-database_rural <- na.omit(database_rural)
+# Code to create the persona_data dataframe
+persona_data <- data.frame(
+  Persona = c('The Peripheral Villager', 'The Elderly', 'The Student', 'The Parent', 'The Commuter', 'The Late Night Driver','The Low Income','The Blue Collar Worker','The Climate Change Skeptic','The Season Ticket Holder','Women','Men'),
+  Car_Ownership_Yes = sapply(list(peripheral, elderly, student, parent, commuter, latenight, lowincome, bluecollar, ccskeptic, ticket, women, men), function(persona) sum(persona$p_mtools_1 == 2)),
+  Car_Ownership_No = sapply(list(peripheral, elderly, student, parent, commuter, latenight, lowincome, bluecollar, ccskeptic, ticket, women, men), function(persona) sum(persona$p_mtools_1 == 1))
+)
 
-# Remove duplicate levels
-database_rural$n_o_v_hh <- factor(database_rural$n_o_v_hh)
+# Convert character columns to numeric
+persona_data[, c("Car_Ownership_Yes", "Car_Ownership_No")] <- lapply(persona_data[, c("Car_Ownership_Yes", "Car_Ownership_No")], as.numeric)
 
-# Recreate factor variables
-database_rural$n_o_v_hh <- factor(database_rural$n_o_v_hh, levels = c("level1", "level2", "level 3", "level 4"))
+formatted_persona_data <- formattable(persona_data, list(
+  Car_Ownership_Yes = function(x) formatC(x, format = "d", digits = 0),
+  Car_Ownership_No = function(x) formatC(x, format = "d", digits = 0)
+))
 
-#Regression model
-carownership_model <- polr(n_o_v_hh ~ #sex_front +
-         p_bundesland_front +
-         p_educ_front +
-         age_front +
-         #m_known +
-         #DRT_knowledge +
-         p_place_inhab +
-         p_central_nonwien +
-         p_mob_ptintensity +
-         p_mob_time +
-         p_mob_rural +
-         kilometrage_per_car_1 +
-         kilometrage_per_car_2, 
-         data = database_rural, Hess = TRUE)
+# Print the formatted persona_data table
+print(formatted_persona_data)
+
+```
 
 
-# Evaluate the model
-#roc_curve <- roc(database$p_mtools_1, p_age_front)
-#auc_value <- auc(roc_curve)
+```{r}
+persona_data$Persona <- factor(persona_data$Persona, levels = c('The Peripheral Villager', 'The Elderly', 'The Student', 'The Parent', 'The Commuter', 'The Late Night Driver', 'The Low Income', 'The Blue Collar Worker', 'The Climate Change Skeptic', 'The Season Ticket Holder', 'Women', 'Men'))
 
-# Display the ROC curve and AUC
-#plot(roc_curve, main = "ROC Curve")
-#legend("bottomright", legend = paste("AUC =", round(auc_value, 2)), col = "black")
+ggplot(persona_data, aes(x = Persona)) +
+  geom_bar(aes(y = Car_Ownership_Yes, fill = "Yes"), stat = "identity", position = "dodge") +
+  geom_bar(aes(y = -Car_Ownership_No, fill = "No"), stat = "identity", position = "dodge") +
+  coord_flip() +
+  labs(title = "Car Ownership by Persona",
+       x = "Persona",
+       y = "Count") +
+  scale_fill_manual(values = c("Yes" = "green4", "No" = "orange2"),
+                    name = "Car Ownership") +
+  theme_minimal()
+```
 
-# Display coefficients of the model
-modelsummary(carownership_model)
+```{r}
+library(dplyr)
+library(ggplot2)
 
-rhsi
+# Calculate percentages
+persona_data <- persona_data %>%
+  mutate(Car_Ownership_Yes_Percentage = Car_Ownership_Yes / (Car_Ownership_Yes + Car_Ownership_No) * 100,
+         Car_Ownership_No_Percentage = Car_Ownership_No / (Car_Ownership_Yes + Car_Ownership_No) * 100)
 
+# Reorder the persona levels for better visualization
+persona_data$Persona <- factor(persona_data$Persona, levels = c('The Peripheral Villager', 'The Elderly', 'The Student', 'The Parent', 'The Commuter', 'The Late Night Driver', 'The Low Income', 'The Blue Collar Worker', 'The Climate Change Skeptic', 'The Season Ticket Holder', 'Women', 'Men'))
+
+# Plot the graph
+ggplot(persona_data, aes(x = Persona)) +
+  geom_bar(aes(y = Car_Ownership_Yes_Percentage, fill = "Yes"), stat = "identity", position = "dodge") +
+  geom_bar(aes(y = -Car_Ownership_No_Percentage, fill = "No"), stat = "identity", position = "dodge") +
+  coord_flip() +
+  labs(title = "Car Ownership by Persona",
+       x = "Persona",
+       y = "Percentage") +
+  scale_fill_manual(values = c("Yes" = "#212D74", "No" = "#9C254D"),
+                    name = "Car Ownership") +
+  theme_minimal()
+
+```
+
+
+```{r}
+library(formattable)
+
+# Code to create the persona_data dataframe
+persona_data_mg <- data.frame(
+  Persona_mg = c('The Peripheral Villager', 'The Elderly', 'The Student', 'The Parent', 'The Commuter', 'The Late Night Driver','The Low Income','The Blue Collar Worker','The Climate Change Skeptic','The Season Ticket Holder','Women','Men'),
+   MG_Yes = sapply(list(peripheral, elderly, student, parent, commuter, latenight, lowincome, bluecollar, ccskeptic, ticket, women, men), function(persona_mg) sum(persona_mg$choice_diff_yes == 1)),
+ MG_No = sapply(list(peripheral, elderly, student, parent, commuter, latenight, lowincome, bluecollar, ccskeptic, ticket, women, men), function(persona_mg) sum(persona_mg$choice_diff_yes == 2))
+)
+
+# Convert character columns to numeric
+persona_data_mg[, c("MG_Yes", "MG_No")] <- lapply(persona_data_mg[, c("MG_Yes", "MG_No")], as.numeric)
+
+# Create a formattable object
+formatted_persona_data_mg <- formattable(persona_data_mg, list(
+  Car_Ownership_Yes = function(x) formatC(x, format = "d", digits = 0),
+  Car_Ownership_No = function(x) formatC(x, format = "d", digits = 0)
+))
+
+# Print the formatted persona_data table
+print(formatted_persona_data_mg)
+
+
+ggplot(persona_data_mg, aes(x = Persona_mg)) +
+  geom_bar(aes(y = MG_Yes, fill = "Yes"), stat = "identity", position = "dodge") +
+  geom_bar(aes(y = -MG_No, fill = "No"), stat = "identity", position = "dodge") +
+  coord_flip() +
+  labs(title = "Car Ownership by Persona",
+       x = "Persona",
+       y = "Count") +
+  scale_fill_manual(values = c("Yes" = "pink2", "No" = "blue2"),
+                    name = "Support for a Mobility Guarantee") +
+  theme_minimal()
+```
+### NEEEEEDS
+```{r}
+ptintensityhigh_database <- database_rural[database_rural$p_mob_ptintensity == 1, ]
+
+ggplot(ptintensityhigh_database, aes(x = age_category)) +
+  geom_bar() +
+  labs(title = "Frequency of Public Transport Usage (p_mob_ptintensity == ) by Age",
+       x = "Age",
+       y = "Frequency") +
+  theme_minimal()
+
+```
+
+```{r}
+percentage_data <- database_rural %>%
+  group_by(age_category) %>%
+  summarise(percentage = mean(p_mob_ptintensity == 1) * 100)
+
+# Plot the percentages
+ggplot(percentage_data, aes(x = age_category, y = percentage, fill = factor(percentage > 0))) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Percentage of Public Transport Usage (p_mob_ptintensity == 1) by Age",
+       x = "Age",
+       y = "Percentage") +
+  scale_fill_manual(values = c("FALSE" = "orange2", "TRUE" = "green4"),
+                    name = "Public Transport Usage") +
+  theme_minimal()
+
+```
+
+```{r}
+# Calculate the overall percentage of p_mob_ptintensity being 1 or 2 for each age category
+percentage_data <- database_rural %>%
+  group_by(age_category) %>%
+  summarise(percentage = mean(p_mob_ptintensity %in% c(1, 2)) * 100)
+
+# Plot the percentages
+ggplot(percentage_data, aes(x = age_category, y = percentage)) +
+  geom_bar(stat = "identity", fill = "#212D74") +
+  labs(title = "Percentage of Users with High Public Transport Usage (> 3 days a week) by Age",
+       x = "Age Category",
+       y = "Percentage of Users") +
+  theme_minimal()
+
+
+table(database_rural$age_category, database_rural$p_mob_ptintensity %in% c(1, 2))
+table(database_rural$age_category)
+```
+```{r}
+persona_data_time <- data.frame(
+  Persona = c('The Elderly', 'The Student', 'The Parent', 'The Commuter', 'The Late Night Driver','The Blue Collar Worker','The Season Ticket Holder'),
+  Often = sapply(list(elderly, student, parent, commuter, latenight, bluecollar, ticket), function(persona) sum(persona$p_mob_time == 1)),
+  Occasionally = sapply(list(elderly, student, parent, commuter, latenight, bluecollar, ticket), function(persona) sum(persona$p_mob_time == 2))
+)
+
+
+ggplot(persona_data_time, aes(x = Persona)) +
+  geom_bar(aes(y = Often, fill = "Often"), stat = "identity", position = position_dodge(width = 0.8)) +
+  geom_bar(aes(y = Occasionally, fill = "Occasionally"), stat = "identity", position = position_dodge(width = 0.8)) +
+  labs(title = "Frequency of Often and Occasionally by Persona",
+       x = "Persona",
+       y = "Count",
+       fill = "Frequency") +
+  scale_fill_manual(values = c("Often" = "skyblue", "Occasionally" = "orange")) +
+  theme_minimal()
+
+ggplot(persona_data_time, aes(x = Persona, y = Count, fill = Frequency)) +
+  geom_bar(aes(y = Often, fill = "Often"), stat = "identity", position = position_dodge(width = 0.8)) +
+  geom_bar(aes(y = Occasionally, fill = "Occasionally"), stat = "identity", position = position_dodge(width = 0.8)) +
+  labs(title = "Frequency of Often and Occasionally by Persona",
+       x = "Persona",
+       y = "Count",
+       fill = "Frequency") +
+  scale_fill_manual(values = c("Often" = "skyblue", "Occasionally" = "orange")) +
+  theme_minimal() +
+  coord_flip()
+```
+```{r}
+persona_data_wide <- persona_data_time %>%
+  gather(key = "Frequency", value = "Count", -Persona)
+
+ggplot(persona_data_wide, aes(x = Persona, y = Count, fill = Frequency)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "How often are you out late (22- 6)?",
+       x = "Persona",
+       y = "Count",
+       fill = "Frequency") +
+  scale_fill_manual(values = c("Often" = "#212D74", "Occasionally" = "#9C254D")) +
+  theme_minimal() +
+  coord_flip()
+```
+```{r}
+###trying personas and kilometrage
+persona_data_kilometrage <- data.frame(
+  Persona = c('The Elderly', 'The Student', 'The Parent', 'The Commuter', 'The Late Night Driver','The Blue Collar Worker','The Season Ticket Holder'),
+  few = sapply(list(elderly, student, parent, commuter, latenight, bluecollar, ticket), function(persona) sum(persona$kilometrage_per_car_1 == 1)),
+  more = sapply(list(elderly, student, parent, commuter, latenight, bluecollar, ticket), function(persona) sum(persona$kilometrage_per_car_1 == 2)),
+  most = sapply(list(elderly, student, parent, commuter, latenight, bluecollar, ticket), function(persona) sum(persona$kilometrage_per_car_1 == 3))
+)
+
+persona_data_widee <- persona_data_kilometrage %>%
+  gather(key = "Frequency", value = "Count", -Persona)
+
+ggplot(persona_data_widee, aes(x = Persona, y = Count, fill = Frequency)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "How often are you out late (22- 6)?",
+       x = "Persona",
+       y = "Count",
+       fill = "Frequency") +
+  scale_fill_manual(values = c("Often" = "skyblue", "Occasionally" = "orange")) +
+  theme_minimal() +
+  coord_flip()
+```
+```{r}
+ggplot(database_rural, aes(x = age_category, y = kilometrage_per_car_1)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "How often are you out late (22- 6)?",
+       x = "Persona",
+       y = "Count",
+       fill = "Frequency") +
+  scale_fill_manual(values = c("Often" = "#212D74", "Occasionally" = "#9C254D")) +
+  theme_minimal() 
 ```
 

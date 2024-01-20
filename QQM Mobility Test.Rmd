@@ -513,9 +513,28 @@ database_rural <-
 ```
 
 
-## Multinomial Logit
+## NEEEEEEDS
 
-## Nested Multinomial Logit
 
-## Latent Class Model
+```{r}
+# Defining breaks for age categories
+breaks <- c(0, 18, 30, 50, 65, Inf)
+
+# Creating age categories using cut
+database$age_category <- cut(database$age_front, breaks = breaks, labels = c("0-18", "18-29", "30-49", "50-64", "65+"), include.lowest = TRUE, right = FALSE)
+
+#head(database)
+print(table(database$age_front, database$age_category))
+```
+
+
+```{r}
+ggplot(database, aes(x = age_category, fill = p_mob_ptintensity)) +
+  geom_bar(aes(y = after_stat(count/5)), position = "dodge") +
+  labs(title = "PT use at various ages",
+       x = "Age quantile",
+       y = "PT Frequency") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+```
+
 

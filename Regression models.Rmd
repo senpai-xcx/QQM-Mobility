@@ -1,0 +1,172 @@
+---
+title: "Regression models"
+output: html_document
+date: "2024-01-19"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE}
+#Load libraries
+library(dplyr)
+library(ggplot2)
+library(naniar)
+library(tidyverse)
+library(janitor)
+library(skimr)
+library(psych)
+library(ggdist)
+library(car)
+library(correlation)
+library(scales)
+library(gtsummary)
+library(quantreg)
+```
+
+```{r, echo=FALSE}
+load("database_PT_final.Rda")
+```
+
+
+
+```{r, echo=FALSE}
+database <-
+  database %>%
+  mutate(sex_front = as.factor(sex_front),
+         p_bundesland_front = as.factor(p_bundesland_front),
+         p_educ_front = as.factor(p_educ_front),
+         age_front = as.integer(age_front),
+         m_known = as.factor(m_known),
+         DRT_knowledge = as.factor(DRT_knowledge),
+         p_place_inhab = as.factor(p_place_inhab),
+         status = as.factor(status),
+         p_mtools_1 = as.factor(p_mtools_1),
+         YES_ask_support = as.factor(YES_ask_support)
+         )
+```
+
+
+```{r, echo=FALSE}
+database_rural <- subset(database, p_place_inhab %in% c(1,2))
+
+database_nonrural <- subset(database, p_place_inhab %in% c(3,4,5))
+```
+
+
+# Car ownership regression model
+```{r}
+library(gtsummary)
+
+#Regression model
+carownership_model <- glm(p_mtools_1 ~ 
+                            #sex_front +
+                            #p_bundesland_front +
+                            #p_educ_front +
+                            #age_front +
+                            #m_known +
+                            #DRT_knowledge +
+                            #p_place_inhab +
+                            #p_central_nonwien +
+                            #p_season_1  
+                            p_season_2 + p_season_3 + p_season_4 +
+                            #p_mob_ptintensity +
+                            p_mob_time +
+                            p_mob_rural +
+                            p_place_inhab +
+                            v_availability_2 + v_availability_3 + v_availability_4 +
+                            car_decision_2 + car_decision_3 + 
+                            #kilometrage_per_car_1 + kilometrage_per_car_2 +
+                            #kilometrage_per_car_3 + kilometrage_per_car_4 +
+                            #status +
+                            #children_1 + children_2 + children_3 +
+                            #buy_actually_e1 + buy_actually_e2 + buy_actually_e3 +
+                            #buy_actually_e4 + buy_actually_e5 +
+                            #Statements_1 + Statements_2 + Statements_3 + Statements_4 +
+                            #Statements_5 +
+                            income,
+                          family = "binomial",
+                          data = database_rural)
+
+tbl_regression(carownership_model)
+vif(carownership_model)
+plot(carownership_model)
+```
+
+# Number of cars
+```{r}
+
+carownership_model_2 <- lm(n_o_v_hh ~ #sex_front +
+                            p_bundesland_front +
+                            #p_educ_front +
+                            age_front +
+                            m_known +
+                            #DRT_knowledge +
+                            #p_place_inhab +
+                            p_central_nonwien +
+                            p_season_1 + p_season_2 + p_season_3 + p_season_4 +
+                            #p_mob_ptintensity +
+                            p_mob_time +
+                            p_mob_rural +
+                            p_place_inhab +
+                            v_availability_2 + v_availability_3 + v_availability_4 +
+                            car_decision_2 + car_decision_3 + 
+                            #kilometrage_per_car_1 + kilometrage_per_car_2 +
+                            kilometrage_per_car_3 + kilometrage_per_car_4 +
+                            status +
+                            children_1 + children_2 + children_3 +
+                            #buy_actually_e1 + buy_actually_e2 + buy_actually_e3 +
+                            #buy_actually_e4 + buy_actually_e5 +
+                            #Statements_1 + Statements_2 + Statements_3 + Statements_4 +
+                            #Statements_5 +
+                            income,
+         data = database_rural)
+
+tbl_regression(carownership_model_2)
+plot(carownership_model_2)
+```
+
+## Approval of MG
+```{r}
+#Regression model
+#YES_ask_support - purchase considered at least once, generally a good idea, 1=YES, 2=NO
+approval_mg <- glm(YES_ask_support ~ 
+                     sex_front +
+                            p_bundesland_front +
+                            p_educ_front +
+                            age_front +
+                            #m_known +
+                            DRT_knowledge +
+                            p_place_inhab +
+                            p_central_nonwien +
+                            #p_season_1  
+                            #p_season_2 + #p_season_3 + #p_season_4 +
+                            p_mob_ptintensity +
+                            p_mob_time +
+                            p_mob_rural +
+                            #p_place_inhab +
+                            #v_availability_2 + #v_availability_3 + #v_availability_4 +
+                            #car_decision_2 + car_decision_3 + 
+                            #kilometrage_per_car_1 + kilometrage_per_car_2 +
+                            kilometrage_per_car_3 + #kilometrage_per_car_4 +
+                            status,
+                            #children_1 + #children_2 + #children_3 +
+                            #buy_actually_e1 + buy_actually_e2 + buy_actually_e3 +
+                            #buy_actually_e4 + buy_actually_e5 +
+                            #Statements_1 + Statements_2 + Statements_3 + Statements_4 +
+                            #Statements_5 +
+                            #income
+                     
+                          family = "binomial",
+                          data = database_rural)
+
+
+tbl_regression(approval_mg)
+plot(approval_mg)
+```
+
+## p_place_inhab: 5.000-10.000
+
+
