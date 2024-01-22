@@ -42,11 +42,50 @@ database <-
          m_known = as.factor(m_known),
          DRT_knowledge = as.factor(DRT_knowledge),
          p_place_inhab = as.factor(p_place_inhab),
+         p_central_nonwien = as.factor(p_central_nonwien),
          status = as.factor(status),
          p_mtools_1 = as.factor(p_mtools_1),
-         YES_ask_support = as.factor(YES_ask_support)
+         YES_ask_support = as.factor(YES_ask_support),
+         kilometrage_per_car_1 = as.factor(kilometrage_per_car_1),
+         kilometrage_per_car_2 = as.factor(kilometrage_per_car_2),
+         kilometrage_per_car_3 = as.factor(kilometrage_per_car_3),
+         v_availability_1 = as.factor(v_availability_1),
+        v_availability_2 = as.factor(v_availability_2),
+        v_availability_3 = as.factor(v_availability_3),
+        v_availability_4 = as.factor(v_availability_4),
+        children_1 = as.factor(children_1),
+         Statements_1 = as.factor(Statements_1),
+        Statements_2 = as.factor(Statements_2),
+        Statements_3 = as.factor(Statements_3),
+        Statements_4 = as.factor(Statements_4),
+        Statements_5 = as.factor(Statements_5),
+        p_season_1 = as.factor(p_season_1),
+        p_season_2 = as.factor(p_season_2),
+        p_season_3 = as.factor(p_season_3),
+        p_season_4 = as.factor(p_season_4)
          )
 ```
+
+```{r}
+#database <-
+  #database %>%
+#  mutate(sex_front = as.numeric(sex_front),
+   #      p_bundesland_front = as.numeric(p_bundesland_front),
+    #     p_educ_front = as.numeric(p_educ_front),
+     #    age_front = as.numeric(age_front),
+      #   m_known = as.numeric(m_known),
+      #   DRT_knowledge = as.numeric(DRT_knowledge),
+      #   p_place_inhab = as.numeric(p_place_inhab),
+      #   status = as.numeric(status),
+      #   p_mtools_1 = as.numeric(p_mtools_1),
+       #  YES_ask_support = as.numeric(YES_ask_support),
+       #  kilometrage_per_car_1 = as.numeric(kilometrage_per_car_1),
+      #   kilometrage_per_car_2 = as.numeric(kilometrage_per_car_2),
+       #  Statements_4 = as.numeric(Statements_4),
+       #  Statements_5 = as.numeric(Statements_5),
+    #     )
+```
+
 
 
 ```{r, echo=FALSE}
@@ -56,117 +95,162 @@ database_nonrural <- subset(database, p_place_inhab %in% c(3,4,5))
 ```
 
 
-# Car ownership regression model
+# Car ownership
 ```{r}
 library(gtsummary)
 
+database_rural$status_above_3 <- as.factor(database_rural$status %in% c(4, 5, 6))
+
 #Regression model
 carownership_model <- glm(p_mtools_1 ~ 
-                            #sex_front +
-                            #p_bundesland_front +
-                            #p_educ_front +
-                            #age_front +
-                            #m_known +
-                            #DRT_knowledge +
-                            #p_place_inhab +
-                            #p_central_nonwien +
-                            #p_season_1  
-                            p_season_2 + p_season_3 + p_season_4 +
-                            #p_mob_ptintensity +
+                            sex_front + #a little
+                           p_bundesland_front +
+                            p_educ_front +
+                           # p_matura +
+                           #p_license +
+                            #age_front + no
+                            #m_known + no
+                            DRT_knowledge +
+                            #p_place_inhab + no
+                           p_central_nonwien + #yes
+                            p_season_1 + #a little
+                            p_season_2 + # a little more
+                            #p_season_3 + no
+                            #p_season_4 + no
+                            p_mob_ptintensity +
                             p_mob_time +
-                            p_mob_rural +
-                            p_place_inhab +
-                            v_availability_2 + v_availability_3 + v_availability_4 +
-                            car_decision_2 + car_decision_3 + 
-                            #kilometrage_per_car_1 + kilometrage_per_car_2 +
-                            #kilometrage_per_car_3 + kilometrage_per_car_4 +
-                            #status +
-                            #children_1 + children_2 + children_3 +
-                            #buy_actually_e1 + buy_actually_e2 + buy_actually_e3 +
-                            #buy_actually_e4 + buy_actually_e5 +
-                            #Statements_1 + Statements_2 + Statements_3 + Statements_4 +
-                            #Statements_5 +
-                            income,
+                            #p_mob_rural +
+                           #p_place_inhab +
+                         status_above_3 +
+                            #children_1 + no
+                            #children_2 + barely
+                            #children_3 + no
+                            #children_count+ no
+                           Statements_1 + Statements_2 + 
+                            Statements_3 + 
+                           Statements_4 +
+                           Statements_5,
+                         #  income,
                           family = "binomial",
                           data = database_rural)
 
+summary(carownership_model)
+#test for heterescedasticity
+#library(lmtest)
+#bptest(carownership_model)
+
 tbl_regression(carownership_model)
-vif(carownership_model)
+#vif(carownership_model)
 plot(carownership_model)
 ```
 
 # Number of cars
 ```{r}
+database_rural$status_above_3 <- as.factor(database_rural$status %in% c(4, 5, 6, 7))
+database_rural$m_known_in2 <- as.factor(database_rural$status %in% c(2))
+#31 is the magic age
+database_rural$olderthan31 <- as.factor(database_rural$age_front >= 31)
+database_rural$inwien <- as.factor(database_rural$p_bundesland_front %in% c(8))
 
-carownership_model_2 <- lm(n_o_v_hh ~ #sex_front +
-                            p_bundesland_front +
-                            #p_educ_front +
-                            age_front +
-                            m_known +
-                            #DRT_knowledge +
-                            #p_place_inhab +
-                            p_central_nonwien +
-                            p_season_1 + p_season_2 + p_season_3 + p_season_4 +
-                            #p_mob_ptintensity +
-                            p_mob_time +
-                            p_mob_rural +
-                            p_place_inhab +
-                            v_availability_2 + v_availability_3 + v_availability_4 +
-                            car_decision_2 + car_decision_3 + 
-                            #kilometrage_per_car_1 + kilometrage_per_car_2 +
-                            kilometrage_per_car_3 + kilometrage_per_car_4 +
-                            status +
-                            children_1 + children_2 + children_3 +
-                            #buy_actually_e1 + buy_actually_e2 + buy_actually_e3 +
-                            #buy_actually_e4 + buy_actually_e5 +
-                            #Statements_1 + Statements_2 + Statements_3 + Statements_4 +
-                            #Statements_5 +
+carownership_model_2 <- lm(sqrt(n_o_v_hh) ~ sex_front +
+                        # p_bundesland_front + 
+                         # inwien+
+                           p_educ_front + 
+                           # age_front 
+                            olderthan31 +
+                           m_known + 
+                           # DRT_knowledge + NO
+                            #p_place_inhab + NO
+                           p_central_nonwien +
+                            #p_season_1 + no
+                             #p_season_2 + no
+                             #p_season_3 + no
+                            # p_season_4 + no
+                            p_mob_ptintensity +
+                          #  p_mob_time + NO 
+                          # p_mob_rural + NO
+                            #p_place_inhab +NO
+                            #v_availability_2 no
+                             #v_availability_3 + v_availability_4 +no
+                            #car_decision_2 +# car_decision_3 + 
+                           # kilometrage_per_car_1 + 
+                          # kilometrage_per_car_2 +
+                            #kilometrage_per_car_3 + kilometrage_per_car_4 +
+                          status + 
+                           # children_1 + 
+                           #children_2 + 
+                            # children_3 +
+                             n_o_hhm +
+                          # buy_actually_e1 + no
+                             buy_actually_e2 + 
+                            buy_actually_e3 +
+                           # buy_actually_e4 + no
+                            #buy_actually_e5 + no
+                           # Statements_1 + no
+                           # Statements_2 +no
+                           # Statements_3 + no
+                           # Statements_4 + no
+                            #Statements_5+
+                           YES_ask_support +
                             income,
          data = database_rural)
+summary(carownership_model_2)
+#test for heterescedasticity
+library(lmtest)
+bptest(carownership_model_2)
+
+#library(sandwich)
+#coeftest(carownership_model_2, vcov = vcovHC(carownership_model_2))
 
 tbl_regression(carownership_model_2)
 plot(carownership_model_2)
 ```
+
 
 ## Approval of MG
 ```{r}
 #Regression model
 #YES_ask_support - purchase considered at least once, generally a good idea, 1=YES, 2=NO
 approval_mg <- glm(YES_ask_support ~ 
-                     sex_front +
-                            p_bundesland_front +
-                            p_educ_front +
-                            age_front +
-                            #m_known +
-                            DRT_knowledge +
-                            p_place_inhab +
-                            p_central_nonwien +
-                            #p_season_1  
-                            #p_season_2 + #p_season_3 + #p_season_4 +
-                            p_mob_ptintensity +
-                            p_mob_time +
-                            p_mob_rural +
+                     #sex_front + NO
+                          #p_bundesland_front + NO
+                            #p_educ_front +
+                            #age_front + NO
+                            m_known +
+                           DRT_knowledge +
+                            #p_place_inhab +
+                            #p_central_nonwien +
+                           p_season_1  +
+                           p_season_2 + 
+                    # p_season_3 + NO
+                     p_season_4 +
+                           #p_mob_ptintensity +
+                            #p_mob_time +
+                           # p_mob_rural +
                             #p_place_inhab +
                             #v_availability_2 + #v_availability_3 + #v_availability_4 +
                             #car_decision_2 + car_decision_3 + 
                             #kilometrage_per_car_1 + kilometrage_per_car_2 +
-                            kilometrage_per_car_3 + #kilometrage_per_car_4 +
-                            status,
+                            kilometrage_per_car_3+#kilometrage_per_car_4 +
+                           # status+
                             #children_1 + #children_2 + #children_3 +
                             #buy_actually_e1 + buy_actually_e2 + buy_actually_e3 +
                             #buy_actually_e4 + buy_actually_e5 +
-                            #Statements_1 + Statements_2 + Statements_3 + Statements_4 +
-                            #Statements_5 +
-                            #income
-                     
+                            Statements_1+
+                     Statements_2,# + Statements_3 + Statements_4 +
+                           # Statements_5 +
+                           #income,
                           family = "binomial",
                           data = database_rural)
-
+summary(approval_mg)
+#test for heterescedasticity
+#library(lmtest)
+#bptest(approval_mg)
 
 tbl_regression(approval_mg)
 plot(approval_mg)
 ```
 
-## p_place_inhab: 5.000-10.000
+
 
 

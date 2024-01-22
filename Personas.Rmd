@@ -54,6 +54,7 @@ database <-
 ### Rural database
 ```{r}
 database_rural <- subset(database, p_place_inhab %in% c(1,2))
+database_rural <- subset(database_rural, YES_ask_support %in% c(1,2))
 
 database_nonrural <- subset(database, p_place_inhab %in% c(3,4,5))
 ```
@@ -206,33 +207,40 @@ library(formattable)
 # Code to create the persona_data dataframe
 persona_data_mg <- data.frame(
   Persona_mg = c('The Peripheral Villager', 'The Elderly', 'The Student', 'The Parent', 'The Commuter', 'The Late Night Driver','The Low Income','The Blue Collar Worker','The Climate Change Skeptic','The Season Ticket Holder','Women','Men'),
-   MG_Yes = sapply(list(peripheral, elderly, student, parent, commuter, latenight, lowincome, bluecollar, ccskeptic, ticket, women, men), function(persona_mg) sum(persona_mg$choice_diff_yes == 1)),
- MG_No = sapply(list(peripheral, elderly, student, parent, commuter, latenight, lowincome, bluecollar, ccskeptic, ticket, women, men), function(persona_mg) sum(persona_mg$choice_diff_yes == 2))
+   MG_Yes = sapply(list(peripheral, elderly, student, parent, commuter, latenight, lowincome, bluecollar, ccskeptic, ticket, women, men), function(persona_mg) sum(persona_mg$YES_ask_support == 1)),
+ MG_No = sapply(list(peripheral, elderly, student, parent, commuter, latenight, lowincome, bluecollar, ccskeptic, ticket, women, men), function(persona_mg) sum(persona_mg$YES_ask_support == 2))
 )
+
+# Calculate percentages
+persona_data_mg <- persona_data_mg %>%
+  mutate(MG_Yes_Percentage = MG_Yes / (MG_Yes + MG_No) * 100,
+         MG_No_Percentage = MG_No / (MG_Yes + MG_No) * 100)
 
 # Convert character columns to numeric
 persona_data_mg[, c("MG_Yes", "MG_No")] <- lapply(persona_data_mg[, c("MG_Yes", "MG_No")], as.numeric)
 
+persona_data_mg$Persona_mg <- factor(persona_data_mg$Persona_mg, levels = c('The Peripheral Villager', 'The Elderly', 'The Student', 'The Parent', 'The Commuter', 'The Late Night Driver', 'The Low Income', 'The Blue Collar Worker', 'The Climate Change Skeptic', 'The Season Ticket Holder', 'Women', 'Men'))
+
 # Create a formattable object
 formatted_persona_data_mg <- formattable(persona_data_mg, list(
-  Car_Ownership_Yes = function(x) formatC(x, format = "d", digits = 0),
-  Car_Ownership_No = function(x) formatC(x, format = "d", digits = 0)
+  MG_Yes = function(x) formatC(x, format = "d", digits = 0),
+  MG_No = function(x) formatC(x, format = "d", digits = 0)
 ))
 
 # Print the formatted persona_data table
 print(formatted_persona_data_mg)
 
-
 ggplot(persona_data_mg, aes(x = Persona_mg)) +
-  geom_bar(aes(y = MG_Yes, fill = "Yes"), stat = "identity", position = "dodge") +
-  geom_bar(aes(y = -MG_No, fill = "No"), stat = "identity", position = "dodge") +
+  geom_bar(aes(y = MG_Yes_Percentage, fill = "Yes"), stat = "identity", position = "dodge") +
+  geom_bar(aes(y = -MG_No_Percentage, fill = "No"), stat = "identity", position = "dodge") +
   coord_flip() +
-  labs(title = "Car Ownership by Persona",
+  labs(title = "Approval of Mobility Guarantee by Persona",
        x = "Persona",
-       y = "Count") +
-  scale_fill_manual(values = c("Yes" = "pink2", "No" = "blue2"),
+       y = "Percentage") +
+  scale_fill_manual(values = c("Yes" = "#212D74", "No" = "#9C254D"),
                     name = "Support for a Mobility Guarantee") +
   theme_minimal()
+
 ```
 ### NEEEEEDS
 ```{r}
@@ -356,5 +364,36 @@ ggplot(database_rural, aes(x = age_category, y = kilometrage_per_car_1)) +
        fill = "Frequency") +
   scale_fill_manual(values = c("Often" = "#212D74", "Occasionally" = "#9C254D")) +
   theme_minimal() 
+```
+```{r}
+
+inhabitants <- c("1" = "up to 1,000", "2" = "1,000 to 5,000", "3" = "5,000 to 50,000", "4" = "50,000 to 100,000", "5" = "more than 100.000")
+
+database_rural <- database_rural %>%
+    mutate(kilometrage_per_car_1 = factor(kilometrage_per_car_1, 
+                                          levels = as.character(1:5), 
+                                          labels = inhabitants))
+
+# Designs the clustered bar chart
+ggplot(database_rural, aes(x = age_category, fill = kilometrage_per_car_1)) +
+  geom_bar(position = "dodge") +
+  labs(title = "How many cars in which sized town?",
+       x = "Number of cars",
+       y = "Frequency") 
+
+# Assuming 'database_rural' is your actual data frame
+# Change the variable names accordingly if needed
+
+
+
+
+# Designs the clustered bar chart
+ggplot(database_rural, aes(x = factor(kilometrage_per_car_1), fill = inhabitants)) +
+  geom_bar(position = "dodge") +
+  labs(title = "How many cars in which sized town?",
+       x = "Number of cars",
+       y = "Frequency")
+
+
 ```
 
