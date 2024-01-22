@@ -34,8 +34,7 @@ database$klimaticket<-ifelse(database$klimaticket<2,database$klimaticket,1)
 
 #database<-filter(database,buy_actually==6)
 #database<-filter(database,p_mtools_1==2)
-#RURAL/LOCATION
-database<-filter(database,p_place_inhab<3)
+
 #PT usage
 #database<-filter(database,p_mob_ptintensity<4)
 #INCOME
@@ -59,7 +58,9 @@ database<-filter(database,p_place_inhab<3)
 #########PERSONAS################
 #//////////////////////////////////////#
 
-#rural_central_access_df <- filter(database,p_central_nonwien==4)
+#RURAL/LOCATION
+#database<-filter(database,p_place_inhab<3)
+database<-filter(database,p_place_inhab>2)
 
 ##THE PERIPHERAL RESIDENT##
 #database<-filter(database,p_central_nonwien==4)
@@ -113,7 +114,7 @@ database<-filter(database,p_place_inhab<3)
 #database<-filter(database,Statements_1==3)
 
 ##THE INTREPID ENVIRONMENTALIST##
-database<-filter(database,Statements_1==4)
+#database<-filter(database,Statements_1==4)
 
 ##THE SEASON TICKET HOLDER##
 #database<-filter(database,p_season_1==2 | p_season_2==2 | p_season_3==2)
@@ -311,5 +312,114 @@ print(Tvalues_df)
 model_wtp_df <- apollo_deltaMethod(model, deltaMethod_settings)
 #print(database$age_front)
 
+
+
+############################################
+##############DATA FRAMES###################
+############################################
+
+#DOOR TO DOOR#
+data_drt <- data.frame(
+  Persona = c("Full Sample", 
+              "Rural Person", 
+              "The Urban Resident", 
+              "The Peripheral Resident",
+              "The Environmentalist",
+              "The Rail Season Ticket Holder",
+              "The Working Commuter"),
+  WTP_Euro = c(14.4433,
+               14.6847,
+               11.1858,
+               27.7081,
+               21.4257,
+               19.423,
+               17.5899),
+  WTP_T_Ratio = c(-4.94,
+                  -3.12,
+                  -2.37,
+                  -3.25,
+                  -2.18,
+                  -1.7,
+                  -1.86)
+)
+
+# Displaying the data frame
+print(data_drt)
+
+#SPATIAL COVERAGE#
+# Creating a data frame
+data_spatial <- data.frame(
+  Persona = c("Full Sample",
+              "Rural Person",
+              "The Peripheral Resident",
+              "The Full-Time Worker",
+              "The Parent",
+              "The Frequent Driver",
+              "The Late Night Driver",
+              "The Environmentalist",
+              "The Rail Season Ticket Holder"),
+  WTP_Euro = c(14.6, 15.077, 17.206, 20.611, 20.606, 17.361, 25.12, 10.754, 17.704),
+  WTP_T_Ratio = c(0.16, -5.86, -4.01, -4.98, -4.87, -4.16, -3.51, -2.22, -2.7)
+)
+
+# Display the created data frame
+print(data_spatial)
+
+
+###############################################
+#############VISUALISATIONS####################
+###############################################
+
+#########D2D#############
+#TABLE#
+library(formattable)
+
+formattable(data_spatial, 
+            align = c("l", rep("r", NCOL(data_drt) - 1)),
+            list(
+              `WTP_Euro` = formatter("span", 
+                                     style = ~ style(
+                                       color = ifelse(`WTP_Euro` > 14.6, "green", 
+                                                      ifelse(`WTP_Euro` < 14.6, "red", "black"))
+                                     ),
+                                     ~ icontext(sapply(`WTP_Euro`, 
+                                                       function(x) if (x < 14.6) "arrow-down" else if (x > 14.6) "arrow-up" else ""),
+                                                `WTP_Euro`)
+              ),
+              `Persona` = formatter("span", 
+                                           style = ~ style(
+                                             color = "grey",
+                                             font.weight = "bold"
+                                           )
+              ),
+              `WTP_T_Ratio` = formatter("span", 
+                                     style = ~ style(
+                                       #color = ifelse(`WTP_T_Ratio` < -1.96, "blue","black"),
+                                       font.weight = ifelse(`WTP_T_Ratio` < -1.96, "bold", "none")
+                                     ))
+              
+            ),
+            caption = "Willingness to Pay for 10p.p. spatial coverage"
+)
+
+
+#CLUSTERED BAR#
+
+library(ggplot2)
+
+# Reorder the levels of Persona based on WTP_Euro
+data_spatial$Persona <- reorder(data_spatial$Persona, -data_spatial$WTP_Euro)
+
+ggplot(data_spatial, aes(x = Persona, y = WTP_Euro, fill = Persona)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = sprintf("%.2f", WTP_Euro)), 
+            vjust = -0.5, 
+            position = position_dodge(width = 0.9), 
+            size = 3, angle = 20, hjust = 0.5) +
+  labs(title = "Willingness to Pay for 10p.p. spatial coverage",
+       x = "",
+       y = "WTP in Euro") +
+  geom_hline(yintercept = 14.6, linetype = "dashed", size = 0.75, color="red") +
+  theme_minimal()
 
 

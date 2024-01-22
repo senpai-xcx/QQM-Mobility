@@ -5,7 +5,7 @@ Please acknowledge the use of Apollo by citing Hess & Palma (2019)
 
 Model name                                  : MNL_SP
 Model description                           : Simple MNL model on PT guarantee choice
-Model run at                                : 2024-01-22 11:02:42.917307
+Model run at                                : 2024-01-21 20:16:01.30289
 Estimation method                           : bgw
 Model diagnosis                             : Relative function convergence
 Optimisation diagnosis                      : Maximum found
@@ -31,12 +31,12 @@ AIC                                         :  3089.43
 BIC                                         :  3129.99 
 
 Estimated parameters                        : 7
-Time taken (hh:mm:ss)                       :  00:00:1.76 
-     pre-estimation                         :  00:00:0.83 
-     estimation                             :  00:00:0.25 
-          initial estimation                :  00:00:0.2 
-          estimation after rescaling        :  00:00:0.05 
-     post-estimation                        :  00:00:0.68 
+Time taken (hh:mm:ss)                       :  00:00:5.82 
+     pre-estimation                         :  00:00:2.03 
+     estimation                             :  00:00:2.36 
+          initial estimation                :  00:00:2.03 
+          estimation after rescaling        :  00:00:0.33 
+     post-estimation                        :  00:00:1.43 
 Iterations                                  :  7  
      initial estimation                     :  6 
      estimation after rescaling             :  1 
