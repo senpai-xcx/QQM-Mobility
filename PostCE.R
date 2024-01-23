@@ -237,4 +237,90 @@ table(database$Statements_4)
 #MG journeys should be faster than personal car
 table(database$Statements_5)
 
-# 
+#####################################
+###########VISUALISATION#############
+####################################
+
+#######MG GOOD IDEA - DID BUY#########
+# Creating a data frame
+data_buy_goodidea <- data.frame(Yes = 185, No = 39)
+
+# Displaying the data frame
+print(data_buy_goodidea)
+
+# Making a pie chart
+pie(c(data_buy_goodidea$Yes, data_buy_goodidea$No), labels = c(paste("Yes: ", data_buy_goodidea$Yes), paste("No: ", data_buy_goodidea$No)), main = "Bought MG: Is a MG a good idea?", col = c("blue", "red"))
+
+#######MG GOOD IDEA - DIDN'T BUY#########
+# Creating a data frame
+data_nobuy_goodidea <- data.frame(Yes = 139, No = 89)
+
+# Making a pie chart
+pie(c(data_nobuy_goodidea$Yes, data_nobuy_goodidea$No), labels = c(paste("Yes: ", data_nobuy_goodidea$Yes), paste("No: ", data_nobuy_goodidea$No)), main = "Didn't Buy MG: Is a MG a good idea?", col = c("blue", "red"))
+
+
+
+######LIKERT ATTEMPT#######
+
+database_og = load("database_PT_final.Rda")
+likert_database <- database[, c("RID", "Statements_3")]
+# Remove rows with missing values in any of the selected columns
+likert_database_1 <- likert_database[complete.cases(likert_database), ]
+
+#Fake data set
+RID <- c("99991", "99992", "99993", "99994", "99995")
+Statements_3 <- c(1, 2, 3, 4, 5)
+fake <- data.frame(RID, Statements_3)
+
+
+#Some weird shit idk
+likert_database_2 <- rbind(likert_database_1, fake)
+likert_database_2$Statements_3_f <- as.factor(likert_database_2$Statements_3)
+
+#Attach factor levels
+factor_levels <- c("Strongly Disagree","Disagree","Neutral",
+                   "Agree","Strongly Agree")
+
+levels(likert_database_2$Statements_3_f) <- factor_levels
+
+#Remove fake data
+nrow(likert_database_2)
+likert_database_3 <- subset(likert_database_2, RID < 99991)
+nrow(likert_database_3)
+
+
+###Remove RID
+likert_database_4 <- as.data.frame(likert_database_3[, c("Statements_3_f")])
+
+###Include Likert Statement
+VarHeadings <- c("Gov Expand CF Transport")
+
+names(likert_database_4) <- VarHeadings
+colnames(likert_database_4)
+
+
+##CHATGPT HELP
+# Convert the Likert column to a factor with specified levels
+#likert_database_4$Yes_Support_MG_4_f <- factor(likert_database_4$Yes_Support_MG_4_f, levels = factor_levels)
+
+# Remove rows with missing values in any of the selected columns
+#likert_database_4 <- likert_database_4[complete.cases(likert_database_4), ]
+
+# Check if the factor levels are consistent
+#if (!all(levels(likert_database_4$Yes_Support_MG_4_f) %in% factor_levels)) {
+ # warning("Not all factor levels are present in the data. Adjusting levels.")
+ # likert_database_4$Yes_Support_MG_4_f <- factor(likert_database_4$Yes_Support_MG_4_f, levels = factor_levels)
+#}
+
+##PLOT###
+
+
+library(likert)
+p <- likert(likert_database_4)
+a <- likert.bar.plot(p, legend.position = "right", text.size = 4, bar.height=0.6) +
+  theme(text = element_text(size = rel(4)),axis.text.y = element_text(size = rel(2))) +
+  theme_update(legend.text = element_text(size = rel(0.7))) +
+  theme_classic()
+plot(a)
+
+
