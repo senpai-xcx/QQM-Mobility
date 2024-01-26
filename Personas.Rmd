@@ -128,7 +128,7 @@ men <- database_rural[database_rural$sex_front %in% c(2), ]
 #formattable
 
 #gt_summary()
-#table(bluecollar$p_mtools_1)
+table(database_rural$n_o_v_hh)
 
 ### INCOME ###
 #table(database$p_mtools_1, database_rural$income)

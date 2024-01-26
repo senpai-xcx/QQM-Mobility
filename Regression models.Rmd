@@ -149,24 +149,26 @@ plot(carownership_model)
 database_rural$status_above_3 <- as.factor(database_rural$status %in% c(4, 5, 6, 7))
 database_rural$m_known_in2 <- as.factor(database_rural$status %in% c(2))
 #31 is the magic age
-database_rural$olderthan31 <- as.factor(database_rural$age_front >= 31)
+database_rural$olderthan31 <- as.factor(database_rural$age_front < 31)
 database_rural$inwien <- as.factor(database_rural$p_bundesland_front %in% c(8))
+database_rural$p_central_nonwien_34 <- as.factor(database_rural$p_central_nonwien %in% c(3,4))
 
-carownership_model_2 <- lm(sqrt(n_o_v_hh) ~ sex_front +
-                        # p_bundesland_front + 
+
+carownership_model_2 <- lm(sqrt(n_o_v_hh) ~ sex_front + 
+                        #p_bundesland_front + 
                          # inwien+
-                           p_educ_front + 
+                          p_educ_front +
                            # age_front 
                             olderthan31 +
-                           m_known + 
+                           m_known +
                            # DRT_knowledge + NO
                             #p_place_inhab + NO
-                           p_central_nonwien +
+                          p_central_nonwien_34 +
                             #p_season_1 + no
                              #p_season_2 + no
                              #p_season_3 + no
                             # p_season_4 + no
-                            p_mob_ptintensity +
+                           p_mob_ptintensity+
                           #  p_mob_time + NO 
                           # p_mob_rural + NO
                             #p_place_inhab +NO
@@ -180,10 +182,10 @@ carownership_model_2 <- lm(sqrt(n_o_v_hh) ~ sex_front +
                            # children_1 + 
                            #children_2 + 
                             # children_3 +
-                             n_o_hhm +
+                            n_o_hhm +
                           # buy_actually_e1 + no
-                             buy_actually_e2 + 
-                            buy_actually_e3 +
+                            buy_actually_e2 + 
+                          buy_actually_e3 + 
                            # buy_actually_e4 + no
                             #buy_actually_e5 + no
                            # Statements_1 + no
@@ -191,10 +193,15 @@ carownership_model_2 <- lm(sqrt(n_o_v_hh) ~ sex_front +
                            # Statements_3 + no
                            # Statements_4 + no
                             #Statements_5+
-                           YES_ask_support +
+                           YES_ask_support + 
                             income,
          data = database_rural)
 summary(carownership_model_2)
+#x <- summary(carownership_model_2) 
+#rownames(x$coef) <- c("Female", "Apprenticeship", "Technical college", "Secondary school","Secondary vocational school", "Higher educ- rel. training","College, university", "Age (older than 31)", "Mobility Guarantee not known", "Unsure about MG","Rather peripheral, bad PT", "PT intensity", "Part-time employment", "Pupil/student", "Retired", "Housewife/househusband", "Seeking employment", "Other","Household members", "YES, MG, get rid of car", "YES, MG, but I keep my car", "MG generally a good/bad idea", "Income")
+#x$coef
+
+
 #test for heterescedasticity
 library(lmtest)
 bptest(carownership_model_2)
@@ -202,7 +209,7 @@ bptest(carownership_model_2)
 #library(sandwich)
 #coeftest(carownership_model_2, vcov = vcovHC(carownership_model_2))
 
-tbl_regression(carownership_model_2)
+tbl_regression(carownership_model_2) 
 plot(carownership_model_2)
 ```
 
