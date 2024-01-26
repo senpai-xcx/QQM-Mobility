@@ -66,6 +66,8 @@ database <-
          )
 ```
 
+
+
 ```{r}
 #database <-
   #database %>%
@@ -94,25 +96,46 @@ database_rural <- subset(database, p_place_inhab %in% c(1,2))
 database_nonrural <- subset(database, p_place_inhab %in% c(3,4,5))
 ```
 
+# Categories
+```{r}
+database_rural <- database_rural %>%
+  mutate(educ_category = case_when(
+    p_educ_front %in% c(1, 4) ~ "tier1",
+    p_educ_front %in% c(2, 3, 5) ~ "tier2",
+    p_educ_front %in% c(6, 7) ~ "tier3",
+    TRUE ~ NA_character_
+  ))
+
+database_rural <- database_rural %>%
+  mutate(status_category = case_when(
+    status %in% c(1, 2) ~ "employed",
+    status %in% c(3, 4, 5, 6, 7) ~ "not employed",
+    TRUE ~ NA_character_
+  ))
+database_rural <- database_rural %>%
+ mutate(educ_category = as.factor(educ_category),
+        status_category = as.factor(status_category))
+```
 
 # Car ownership
 ```{r}
 library(gtsummary)
 
 database_rural$status_above_3 <- as.factor(database_rural$status %in% c(4, 5, 6))
+database_rural$p_central_nonwien_45 <- as.factor(database_rural$p_central_nonwien %in% c(4, 5))
 
 #Regression model
 carownership_model <- glm(p_mtools_1 ~ 
                             sex_front + #a little
-                           p_bundesland_front +
-                            p_educ_front +
+                        #   p_bundesland_front + HERE
+                            educ_category +
                            # p_matura +
                            #p_license +
                             #age_front + no
                             #m_known + no
-                            DRT_knowledge +
+                          #  DRT_knowledge + HERE
                             #p_place_inhab + no
-                           p_central_nonwien + #yes
+                           p_central_nonwien_45 + #yes
                             p_season_1 + #a little
                             p_season_2 + # a little more
                             #p_season_3 + no
@@ -121,15 +144,15 @@ carownership_model <- glm(p_mtools_1 ~
                             p_mob_time +
                             #p_mob_rural +
                            #p_place_inhab +
-                         status_above_3 +
+                         status_category +
                             #children_1 + no
                             #children_2 + barely
                             #children_3 + no
                             #children_count+ no
-                           Statements_1 + Statements_2 + 
-                            Statements_3 + 
-                           Statements_4 +
-                           Statements_5,
+                        #   Statements_1 + Statements_2 + HERE
+                            Statements_3,
+                         #  Statements_4 + HERE
+                         #  Statements_5, HERE
                          #  income,
                           family = "binomial",
                           data = database_rural)
@@ -151,19 +174,24 @@ database_rural$m_known_in2 <- as.factor(database_rural$status %in% c(2))
 #31 is the magic age
 database_rural$olderthan31 <- as.factor(database_rural$age_front < 31)
 database_rural$inwien <- as.factor(database_rural$p_bundesland_front %in% c(8))
-database_rural$p_central_nonwien_34 <- as.factor(database_rural$p_central_nonwien %in% c(3,4))
+database_rural$p_central_nonwien_45 <- as.factor(database_rural$p_central_nonwien %in% c(4, 5))
 
+## Reference categories
+#database_rural$educ_category <- relevel(database_rural$educ_category, ref = "tier1")
+#database_rural$olderthan31 <- relevel(database_rural$olderthan31, ref = "FALSE")
+#database_rural$m_known <- relevel(database_rural$m_known, ref = "1")
+#database_rural$p_central_nonwien_34 <- relevel(database_rural$p_central_nonwien_34, ref = "FALSE")
+database_rural$status_category <- relevel(database_rural$status_category, ref = "not employed")
 
 carownership_model_2 <- lm(sqrt(n_o_v_hh) ~ sex_front + 
                         #p_bundesland_front + 
                          # inwien+
-                          p_educ_front +
-                           # age_front 
-                            olderthan31 +
+                         educ_category +
+                           # age_front +
                            m_known +
                            # DRT_knowledge + NO
                             #p_place_inhab + NO
-                          p_central_nonwien_34 +
+                          p_central_nonwien_45 +
                             #p_season_1 + no
                              #p_season_2 + no
                              #p_season_3 + no
@@ -178,13 +206,13 @@ carownership_model_2 <- lm(sqrt(n_o_v_hh) ~ sex_front +
                            # kilometrage_per_car_1 + 
                           # kilometrage_per_car_2 +
                             #kilometrage_per_car_3 + kilometrage_per_car_4 +
-                          status + 
+                          status_category + 
                            # children_1 + 
                            #children_2 + 
                             # children_3 +
                             n_o_hhm +
                           # buy_actually_e1 + no
-                            buy_actually_e2 + 
+                          buy_actually_e2 + 
                           buy_actually_e3 + 
                            # buy_actually_e4 + no
                             #buy_actually_e5 + no
@@ -218,13 +246,18 @@ plot(carownership_model_2)
 ```{r}
 #Regression model
 #YES_ask_support - purchase considered at least once, generally a good idea, 1=YES, 2=NO
+
+database_rural$Statements_2_concern <- as.factor(database_rural$Statements_2 %in% c(1, 2, 3))
+database_rural$Statements_1_concern <- as.factor(database_rural$Statements_1 %in% c(1, 2, 3))
+database_rural$kilometrage_per_car_3_low <- as.factor(database_rural$kilometrage_per_car_3 %in% c(1, 2, 3))
+
 approval_mg <- glm(YES_ask_support ~ 
                      #sex_front + NO
                           #p_bundesland_front + NO
                             #p_educ_front +
                             #age_front + NO
                             m_known +
-                           DRT_knowledge +
+                           #DRT_knowledge +
                             #p_place_inhab +
                             #p_central_nonwien +
                            p_season_1  +
@@ -243,8 +276,8 @@ approval_mg <- glm(YES_ask_support ~
                             #children_1 + #children_2 + #children_3 +
                             #buy_actually_e1 + buy_actually_e2 + buy_actually_e3 +
                             #buy_actually_e4 + buy_actually_e5 +
-                            Statements_1+
-                     Statements_2,# + Statements_3 + Statements_4 +
+                            Statements_1_concern +
+                     Statements_2_concern,# + Statements_3 + Statements_4 +
                            # Statements_5 +
                            #income,
                           family = "binomial",
