@@ -123,10 +123,11 @@ library(gtsummary)
 
 database_rural$status_above_3 <- as.factor(database_rural$status %in% c(4, 5, 6))
 database_rural$p_central_nonwien_45 <- as.factor(database_rural$p_central_nonwien %in% c(4, 5))
+database_rural$Statements_3_concern <- as.factor(database_rural$Statements_3 %in% c(1))
 
 #Regression model
 carownership_model <- glm(p_mtools_1 ~ 
-                            sex_front + #a little
+                        #    sex_front + #a little
                         #   p_bundesland_front + HERE
                             educ_category +
                            # p_matura +
@@ -135,7 +136,7 @@ carownership_model <- glm(p_mtools_1 ~
                             #m_known + no
                           #  DRT_knowledge + HERE
                             #p_place_inhab + no
-                           p_central_nonwien_45 + #yes
+                        #   p_central_nonwien_45 + #yes
                             p_season_1 + #a little
                             p_season_2 + # a little more
                             #p_season_3 + no
@@ -150,7 +151,7 @@ carownership_model <- glm(p_mtools_1 ~
                             #children_3 + no
                             #children_count+ no
                         #   Statements_1 + Statements_2 + HERE
-                            Statements_3,
+                            Statements_3_concern,
                          #  Statements_4 + HERE
                          #  Statements_5, HERE
                          #  income,
@@ -164,7 +165,7 @@ summary(carownership_model)
 
 tbl_regression(carownership_model)
 #vif(carownership_model)
-plot(carownership_model)
+#plot(carownership_model)
 ```
 
 # Number of cars
@@ -183,15 +184,15 @@ database_rural$p_central_nonwien_45 <- as.factor(database_rural$p_central_nonwie
 #database_rural$p_central_nonwien_34 <- relevel(database_rural$p_central_nonwien_34, ref = "FALSE")
 database_rural$status_category <- relevel(database_rural$status_category, ref = "not employed")
 
-carownership_model_2 <- lm(sqrt(n_o_v_hh) ~ sex_front + 
+carownership_model_2 <- lm(n_o_v_hh ~ #sex_front + 
                         #p_bundesland_front + 
                          # inwien+
-                         educ_category +
+                       #  educ_category +here
                            # age_front +
-                           m_known +
+                        #   m_known + here
                            # DRT_knowledge + NO
                             #p_place_inhab + NO
-                          p_central_nonwien_45 +
+                        #  p_central_nonwien_45 + here
                             #p_season_1 + no
                              #p_season_2 + no
                              #p_season_3 + no
@@ -212,7 +213,7 @@ carownership_model_2 <- lm(sqrt(n_o_v_hh) ~ sex_front +
                             # children_3 +
                             n_o_hhm +
                           # buy_actually_e1 + no
-                          buy_actually_e2 + 
+                         # buy_actually_e2 + 
                           buy_actually_e3 + 
                            # buy_actually_e4 + no
                             #buy_actually_e5 + no
@@ -221,7 +222,7 @@ carownership_model_2 <- lm(sqrt(n_o_v_hh) ~ sex_front +
                            # Statements_3 + no
                            # Statements_4 + no
                             #Statements_5+
-                           YES_ask_support + 
+                          # YES_ask_support + 
                             income,
          data = database_rural)
 summary(carownership_model_2)
@@ -237,8 +238,16 @@ bptest(carownership_model_2)
 #library(sandwich)
 #coeftest(carownership_model_2, vcov = vcovHC(carownership_model_2))
 
-tbl_regression(carownership_model_2) 
-plot(carownership_model_2)
+#tbl_regression(carownership_model_2) 
+#plot(carownership_model_2)
+```
+## Stargazer
+```{r}
+library(stargazer)
+#stargazer(carownership_model, carownership_model_2, title = "Table 1: Regression Results - Car Ownership", align = TRUE, type = "text")
+
+library(jtools)
+export_summs(carownership_model, carownership_model_2, title = "Table 1: Regression Results - Car Ownership") 
 ```
 
 
