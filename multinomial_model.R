@@ -403,23 +403,163 @@ formattable(data_spatial,
 )
 
 
-#CLUSTERED BAR#
 
+
+###############################
+#######TABLE###################
+###############################
+
+#SPATIAL COVERAGE#
+# Creating a data frame
+# Creating the data frame
+data_WTP <- data.frame(
+  Persona = c("The Rural Resident", "The Urban Resident", "The Pupil", "The Elderly", 
+              "The Peripheral Resident", "The Full-Time Worker", 
+              "The Frequent Driver", "The Late-Night Driver", 
+              "The Rail Season-Ticket Holder", "The Environmentalist", 
+              "The Climate Change Denier", "The Low-Income Resident", 
+              "The Middle-Income Resident", "The High-Income Resident"),
+  WTP_door_to_door = round(c(-14.6847, -11.1858, -13.0446, -15.0797, -27.7081, 
+                       -11.9369, -16.6494, -11.4078, -19.423, -21.4257, 
+                       -17.6626, -12.7072, -12.1471, -30.5703),2),
+  t_ratio_1 = c(-3.12, -2.37, -0.86, -1.73, -3.25, -1.67, -2.03, -0.87, -1.74, 
+                -2.18, -1.06, -1.43, -1.72, -1.54),
+  WTP_spatial_coverage = round(c(-15.077, -6.5189, -14.749, -16.135, -17.206, 
+                           -20.611, -17.361, -25.12, -17.704, -10.754, 
+                           -16.611, -17.246, -12.455, -10.3929),2),
+  t_ratio_2 = c(-5.86, -9.38, -1.5, -3.36, -4.01, -4.98, -4.16, -3.51, -2.7, 
+                -2.22, -1.78, -3.98, -3.4, 0.22),
+  WTP_temporal = round(c(-7.2137, -2.7584, -7.9756, -2.8552, -7.9685, -8.8137, 
+                   -8.4016, -12.9122, -7.0452, -6.0431, -9.8846, -12.9122, 
+                   -5.6441, -7.7913),2),
+  t_ratio_3 = c(-10.71, 0.37, -2.89, -2.47, -6.81, -7.98, -7.09, -5.38, -4.02, 
+                -4.6, -4.01, -5.38, -4.99, -7.41),
+  WTP_compensation = c(-7.6332, -9.38, -5.9414, -3.421, -4.22, -12.0085, 
+                       -10.1105, -2.9797, -5.6904, -6.1323, -13.9086, -5.4281, 
+                       -8.9105, -5.8858),
+  t_ratio_4 = round(c(-2.7, 0.37, -0.51, -0.64, -0.97, -2.64, -2.27, 0.38, -0.74, 
+                -1.08, -1.49, -1.09, -2.07, -0.51),2)
+)
+
+# Print the created data frame
+print(data_WTP)
+
+data_WTP$WTP_door_to_door <- as.numeric(as.character(data_WTP$WTP_door_to_door))
+data_WTP$WTP_spatial_coverage <- as.numeric(as.character(data_WTP$WTP_spatial_coverage))
+data_WTP$WTP_temporal <- as.numeric(as.character(data_WTP$WTP_temporal))
+data_WTP$WTP_compensation <- as.numeric(as.character(data_WTP$WTP_compensation))
+
+data_WTP$t_ratio_1 <- as.numeric(as.character(data_WTP$t_ratio_1))
+data_WTP$t_ratio_2 <- as.numeric(as.character(data_WTP$t_ratio_2))
+data_WTP$t_ratio_3 <- as.numeric(as.character(data_WTP$t_ratio_3))
+data_WTP$t_ratio_4 <- as.numeric(as.character(data_WTP$t_ratio_4))
+
+
+library(formattable)
+formattable(
+  data_WTP, 
+  align = c("l", rep("r", NCOL(data_WTP) - 1)),
+  list(
+    Persona = formatter("span", 
+                        style = ~ style(
+                          color = "grey",
+                          font.weight = "bold"
+                        )
+    ),
+    area(col = 2:2) ~ color_tile("#5ab4ac", "#e5e5e5"),
+    area(col = 4:4) ~ color_tile("#5ab4ac", "#e5e5e5"),
+    area(col = 6:6) ~ color_tile("#5ab4ac", "#e5e5e5"),
+    area(col = 8:8) ~ color_tile("#5ab4ac", "#e5e5e5"),
+    #area(col = 8:8) ~ color_tile("#5ab4ac", "#ebd9b2"),
+    #`WTP_door_to_door` = color_bar("#acd9d5"),
+    #`WTP_spatial_coverage` = color_bar("#ebd9b2"),
+    #`WTP_temporal` = color_bar("#acd9d5"),
+   # `WTP_compensation` = color_bar("#acd9d5"),
+    `t_ratio_1` = formatter("span", 
+                              style = ~ style(
+                                font.weight = ifelse(`t_ratio_1` < -1.96, "bold", "none")
+                              )),
+    `t_ratio_2` = formatter("span", 
+                            style = ~ style(
+                              font.weight = ifelse(`t_ratio_2` < -1.96, "bold", "none")
+                            )),
+    `t_ratio_3` = formatter("span", 
+                            style = ~ style(
+                              font.weight = ifelse(`t_ratio_3` < -1.96, "bold", "none")
+                            )),
+    `t_ratio_4` = formatter("span", 
+                            style = ~ style(
+                              font.weight = ifelse(`t_ratio_4` < -1.96, "bold", "none")
+                            ))
+  ), caption = ("Willingness to Pays for DRT attributes")
+)
+
+
+####TEST
+library(formattable)
+
+formattable(data_spatial, 
+            align = c("l", rep("r", NCOL(data_spatial) - 1)),
+            list(
+              `Persona` = formatter("span", 
+                                    style = ~ style(
+                                      color = "grey",
+                                      font.weight = "bold"
+                                    )
+              ),
+              `WTP_door_to_door` = color_bar("#acd9d5"),
+              
+            )
+)
+
+################
+#CLUSTERED BAR#
+###############
+
+#library(ggplot2)
+
+# Reorder the levels of Persona based on WTP_Euro
+#data_spatial$Persona <- reorder(data_spatial$Persona, -data_spatial$WTP_Euro)
+
+#ggplot(data_spatial, aes(x = Persona, y = WTP_Euro, fill = Persona)) +
+ # geom_bar(stat = "identity", position = "dodge") +
+ # geom_text(aes(label = sprintf("%.2f", WTP_Euro)), 
+ #           vjust = -0.5, 
+  #          position = position_dodge(width = 0.9), 
+ # ##          size = 3, angle = 20, hjust = 0.5) +
+ # labs(title = "Willingness to Pay for 10p.p. spatial coverage",
+  #     x = "",
+  #     y = "WTP in Euro") +
+ # geom_hline(yintercept = 14.6, linetype = "dashed", size = 0.75, color="red") +
+ # theme_minimal()
+
+
+##TRY 2
 library(ggplot2)
+
+# Define a color scale manually for Persona column
+color_scale <- scale_fill_manual(values = c(
+  "#5ab4ac", "#7bb8ad", "#9dbdae", "#bec1af", "#dfc5b0",
+  "#f1ccb3", "#f3d6bb", "#f5e1c3", "#f7ebcb", "#f9f5d3",
+  "#faf1dc", "#f8e8e7", "#f5dee3", "#f3d4de"
+))
 
 # Reorder the levels of Persona based on WTP_Euro
 data_spatial$Persona <- reorder(data_spatial$Persona, -data_spatial$WTP_Euro)
 
-ggplot(data_spatial, aes(x = Persona, y = WTP_Euro, fill = Persona)) +
-  geom_bar(stat = "identity", position = "dodge") +
+# Create the plot with the defined color scale
+ggplot(data_spatial, aes(x = Persona, y = WTP_Euro)) +
+  geom_bar(stat = "identity", aes(fill = Persona), position = "dodge") +
   geom_text(aes(label = sprintf("%.2f", WTP_Euro)), 
             vjust = -0.5, 
             position = position_dodge(width = 0.9), 
             size = 3, angle = 20, hjust = 0.5) +
-  labs(title = "Willingness to Pay for 10p.p. spatial coverage",
+  labs(title = "Willingness to pay for 10p.p. increase in spatial coverage",
        x = "",
        y = "WTP in Euro") +
-  geom_hline(yintercept = 14.6, linetype = "dashed", size = 0.75, color="red") +
-  theme_minimal()
+  geom_hline(yintercept = 14.6, linetype = "dashed", size = 0.75, color = "red") +
+  theme_minimal() +
+  color_scale
+
 
 
