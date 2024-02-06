@@ -33,3 +33,5 @@ docs/
 po/*~
 # RStudio Connect folder
 rsconnect/
+~$final_covariates_1200_completes.xlsx
+~$finaldata.xlsx
