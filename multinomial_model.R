@@ -59,8 +59,8 @@ database$klimaticket<-ifelse(database$klimaticket<2,database$klimaticket,1)
 #//////////////////////////////////////#
 
 #RURAL/LOCATION
-#database<-filter(database,p_place_inhab<3)
-database<-filter(database,p_place_inhab>2)
+database<-filter(database,p_place_inhab<3)
+#database<-filter(database,p_place_inhab>2)
 
 ##THE PERIPHERAL RESIDENT##
 #database<-filter(database,p_central_nonwien==4)
@@ -365,6 +365,36 @@ data_spatial <- data.frame(
 # Display the created data frame
 print(data_spatial)
 
+#COMPENSATION#
+# Creating a data frame
+data_comp <- data.frame(
+  Persona = c("Full Sample",
+              "Rural Person",
+              "The Full-Time Worker",
+              "The Frequent Driver",
+              "The Middle-Income Resident"),
+  WTP_Euro = c(3.90, 7.63, 8.91, 10.11, 12.01)
+)
+
+# Display the created data frame
+print(data_comp)
+
+#COMPENSATION#
+# Creating a data frame
+data_temp<- data.frame(
+  Persona = c("Full Sample",
+              "Rural Person",
+              "The Elderly",
+              "The Late Night Driver",
+              "The Low-Income Resident",
+              "The Middle-Income Resident",
+              "The High-Income Resident",
+              "The Climate Change Skeptic"),
+  WTP_Euro = c(7.04, 7.21, 2.86, 12.91, 5.64, 7.79, 4.54, 9.88)
+)
+
+# Display the created data frame
+print(data_comp)
 
 ###############################################
 #############VISUALISATIONS####################
@@ -561,5 +591,89 @@ ggplot(data_spatial, aes(x = Persona, y = WTP_Euro)) +
   theme_minimal() +
   color_scale
 
+##TRY 3 - DRT
 
+library(ggplot2)
+
+# Define a color scale manually for Persona column
+color_scale <- scale_fill_manual(values = c(
+  "#5ab4ac", "#7bb8ad", "#9dbdae", "#bec1af", "#dfc5b0",
+  "#f1ccb3", "#f3d6bb", "#f5e1c3", "#f7ebcb", "#f9f5d3",
+  "#faf1dc", "#f8e8e7", "#f5dee3", "#f3d4de"
+))
+
+# Reorder the levels of Persona based on WTP_Euro
+data_drt$Persona <- reorder(data_drt$Persona, -data_drt$WTP_Euro)
+
+# Create the plot with the defined color scale
+ggplot(data_drt, aes(x = Persona, y = WTP_Euro)) +
+  geom_bar(stat = "identity", aes(fill = Persona), position = "dodge") +
+  geom_text(aes(label = sprintf("%.2f", WTP_Euro)), 
+            vjust = -0.5, 
+            position = position_dodge(width = 0.9), 
+            size = 3, angle = 20, hjust = 0.5) +
+  labs(title = "Willingness to pay for door to door service",
+       x = "",
+       y = "WTP in Euro") +
+  geom_hline(yintercept = 14.6, linetype = "dashed", size = 0.75, color = "red") +
+  theme_minimal() +
+  color_scale
+
+##TRY 3 - Compensation
+library(ggplot2)
+
+# Define a color scale manually for Persona column
+color_scale <- scale_fill_manual(values = c(
+  "#5ab4ac", "#7bb8ad", "#9dbdae", "#bec1af", "#dfc5b0",
+  "#f1ccb3", "#f3d6bb", "#f5e1c3", "#f7ebcb", "#f9f5d3",
+  "#faf1dc", "#f8e8e7", "#f5dee3", "#f3d4de"
+))
+
+# Reorder the levels of Persona based on WTP_Euro
+data_comp$Persona <- reorder(data_comp$Persona, -data_comp$WTP_Euro)
+
+# Create the plot with the defined color scale
+ggplot(data_comp, aes(x = Persona, y = WTP_Euro)) +
+  geom_bar(stat = "identity", aes(fill = Persona), position = "dodge") +
+  geom_text(aes(label = sprintf("%.2f", WTP_Euro)), 
+            vjust = -0.5, 
+            position = position_dodge(width = 0.9), 
+            size = 3, angle = 20, hjust = 0.5) +
+  labs(title = "Willingness to pay for better compensation",
+       x = "",
+       y = "WTP in Euro") +
+  geom_hline(yintercept = 3.9, linetype = "dashed", size = 0.75, color = "red") +
+  theme_minimal() +
+  color_scale
+
+
+
+###TRY 3 - Temporal
+
+
+library(ggplot2)
+
+# Define a color scale manually for Persona column
+color_scale <- scale_fill_manual(values = c(
+  "#5ab4ac", "#7bb8ad", "#9dbdae", "#bec1af", "#dfc5b0",
+  "#f1ccb3", "#f3d6bb", "#f5e1c3", "#f7ebcb", "#f9f5d3",
+  "#faf1dc", "#f8e8e7", "#f5dee3", "#f3d4de"
+))
+
+# Reorder the levels of Persona based on WTP_Euro
+data_temp$Persona <- reorder(data_temp$Persona, -data_temp$WTP_Euro)
+
+# Create the plot with the defined color scale
+ggplot(data_temp, aes(x = Persona, y = WTP_Euro)) +
+  geom_bar(stat = "identity", aes(fill = Persona), position = "dodge") +
+  geom_text(aes(label = sprintf("%.2f", WTP_Euro)), 
+            vjust = -0.5, 
+            position = position_dodge(width = 0.9), 
+            size = 3, angle = 20, hjust = 0.5) +
+  labs(title = "Willingness to pay to increase temporal coverage by one hour",
+       x = "",
+       y = "WTP in Euro") +
+  geom_hline(yintercept = 7.04, linetype = "dashed", size = 0.75, color = "red") +
+  theme_minimal() +
+  color_scale
 
